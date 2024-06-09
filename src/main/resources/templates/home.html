@@ -543,9 +543,9 @@
 			          </div>
 			        </div>
 			        <div class="modal-footer justify-content-between">
-			          <a th:href="@{/order/{orderId}}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
+			          <a th:href="@{'/order/' +${orderId}}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
 			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			          <a th:href="@{/order/{orderId}}"><button type="button" class="btn btn-primary">Payment</button></a>
+			          <a th:href="@{'/order/' +${orderId}}"><button type="button" class="btn btn-primary">Payment</button></a>
 			        </div>
 			      </div>
 			    </div> 
