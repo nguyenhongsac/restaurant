@@ -9,8 +9,10 @@
 <meta content="" name="keywords">
 
 <!-- Favicons -->
-<link href="assets/img/favicon.png" rel="icon">
-<link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+<link th:href="@{/img/logo.svg}" href="assets/img/favicon.png"
+	rel="icon">
+<link th:href="@{/img/apple-touch-icon.png}"
+	href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,17 +22,46 @@
 	rel="stylesheet">
 
 <!-- CSS Files -->
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-<link href="/css/bootstrap-icons.css" rel="stylesheet">
-<link href="/css/boxicons.min.css" rel="stylesheet">
-<link href="/css/quill.snow.css" rel="stylesheet">
-<link href="/css/quill.bubble.css" rel="stylesheet">
-<link href="/css/remixicon.css" rel="stylesheet">
-<link href="/css/simple-datatables/style.css" rel="stylesheet">
+<link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css"
+	rel="stylesheet">
+<link th:href="@{/css/bootstrap-icons.css}"
+	href="/css/bootstrap-icons.css" rel="stylesheet">
+<link th:href="@{/css/boxicons.min.css}" href="/css/boxicons.min.css"
+	rel="stylesheet">
+<link th:href="@{/css/aos.css}" href="/css/quill.snow.css"
+	rel="stylesheet">
+<link th:href="@{/css/quill.bubble.css}" href="/css/quill.bubble.css"
+	rel="stylesheet">
+<link th:href="@{/css/remixicon.css}" href="/css/remixicon.css"
+	rel="stylesheet">
+<link th:href="@{/css/simple-datatables/style.css}"
+	href="/css/simple-datatables/style.css" rel="stylesheet">
 
 <!-- Template Main CSS File -->
-<link href="/css/style.css" rel="stylesheet">
-<link href="/css/custom_coang.css" rel="stylesheet">
+<link th:href="@{/css/style.css}" href="/css/style.css" rel="stylesheet">
+<link th:href="@{/css/custom_coang.css}" href="/css/custom_coang.css"
+	rel="stylesheet">
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var orderDetails = /*[[${OrderDetailDTOs}]]*/'[]';
+	/*]]>*/
+	var orderItems = [];
+
+	// Chuyển đổi OrderDetailDTOs thành orderItems
+	for (var i = 0; i < orderDetails.length; i++) {
+		orderItems.push({
+			id : orderDetails[i].id,
+			foodId : orderDetails[i].foodId,
+			quantity : orderDetails[i].quantity,
+			itemName : orderDetails[i].itemName,
+			price : orderDetails[i].price,
+			note : orderDetails[i].note
+		});
+	}
+	var i = orderItems.length;
+	console.log("orderItems: " + orderItems);
+</script>
 </head>
 <body>
 	<div class="container-fluid">
@@ -265,6 +296,7 @@
 					th:id="${category.catName}">
 					<div class="col-sm-12 fs-5" th:text="${category.catName}"></div>
 					<div th:each="food : ${foods}"
+						th:if="${food.catId.catId} == ${category.catId}"
 						class="col-sm-3 border m-0 p-0 text-center">
 						<button th:id="${food.foodId}" th:data-name="${food.foodName}"
 							th:data-price="${food.foodPrice}" class="btn-outline-primary p-0"
@@ -293,8 +325,7 @@
 
 						&nbsp; Phiếu báo bếp &nbsp;
 
-						<button th:data-note="${orderId}" type="button" class="btn"
-							onclick="deleteAllBill(this.getAttribute('data-note'))">
+						<button type="button" class="btn" onclick="deleteAllBill()">
 							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
 								fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                 <path
@@ -305,8 +336,9 @@
 				</div>
 
 				<!-- Bill -->
-				<div th:id="bill" th:class="${orderId}" style="overflow: auto;">
-					<!-- 					<div th:each="item : ${billItems}"> -->
+				<div th:id="bill" th:class="${orderId}" style="overflow: auto;"
+					th:onload="updateBill()">
+					<!-- 					<div th:each="item : ${OrderDetailDTOs}"> -->
 					<!-- 						<div th:id="${item.foodId}" class="row my-3"> -->
 					<!-- 							<input min="0" th:id="${item.foodId}" type="number" -->
 					<!-- 								class="quantity col-sm-1 p-0 ms-3 fs-5" -->
@@ -321,8 +353,8 @@
 
 				<div class="row text-center mt-3 mb-5 bot-bill">
 					<div class="col-sm-12">
-						<button type="button" class="btn btn-outline-primary fs-5"
-							th:text="${total + 'vnđ | Thanh Toán'}"></button>
+						<button id="total" type="button"
+							class="btn btn-outline-primary fs-5">Thanh Toán</button>
 					</div>
 				</div>
 			</div>
@@ -333,193 +365,18 @@
 		class="bi bi-arrow-up-short"></i></a>
 
 	<!-- Vendor JS Files -->
-	<script src="js/apexcharts.min.js"></script>
-	<script src="js/bootstrap.bundle.min.js"></script>
-	<script src="js/chart.umd.js"></script>
-	<script src="js/echarts.min.js"></script>
-	<script src="js/quill.min.js"></script>
-	<script src="js/simple-datatables.js"></script>
-	<script src="js/tinymce.min.js"></script>
+	<script th:src="@{/js/apexcharts.min.js}" src="js/apexcharts.min.js"></script>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"
+		src="js/bootstrap.bundle.min.js"></script>
+	<script th:src="@{/js/chart.js}" src="js/chart.umd.js"></script>
+	<script th:src="@{/js/echarts.min.js}" src="js/echarts.min.js"></script>
+	<script th:src="@{/js/quill.min.js}" src="js/quill.min.js"></script>
+	<script th:src="@{/js/aos.js}" src="js/simple-datatables.js"></script>
+	<script th:src="@{/js/tinymce.min.js}" src="js/tinymce.min.js"></script>
 
 	<!-- Template Main JS File -->
-	<script src="js/main.js"></script>
-	<script src="js/custom.js"></script>
-	<script language="javascript">
-// 		function addToBill(foodId, orderId) {
-// 			var xhr = new XMLHttpRequest();
-// 			xhr
-// 					.open("POST", "/order/" + orderId + "/addToBill/" + foodId,
-// 							true);
-// 			xhr.setRequestHeader("Content-Type", "application/json");
-// 			xhr.send();
-// 			setTimeout(function() {
-// 				if (xhr.readyState === XMLHttpRequest.DONE) {
-// 					// Kiểm tra nếu request thành công
-// 					if (xhr.status === 200) {
-// 						location.reload(true);
-// 					} else {
-// 						console.error("Request thất bại:", xhr.status,
-// 								xhr.statusText);
-// 					}
-// 				}
-// 			}, 300)
-// 		}
-
-// 		function updateQuantity(quantity, foodId, orderId) {
-// 			var xhr = new XMLHttpRequest();
-// 			xhr.open("POST", "/order/" + orderId + "/updateQuantity/" + foodId
-// 					+ "/" + quantity, true);
-// 			xhr.setRequestHeader("Content-Type", "application/json");
-// 			xhr.send();
-// 			setTimeout(function() {
-// 				if (xhr.readyState === XMLHttpRequest.DONE) {
-// 					// Kiểm tra nếu request thành công
-// 					if (xhr.status === 200) {
-// 						location.reload(true);
-// 					} else {
-// 						console.error("Request thất bại:", xhr.status,
-// 								xhr.statusText);
-// 					}
-// 				}
-// 			}, 200)
-// 		}
-		
-		let orderItems = {};
-
-        function addToBill(button) {
-            const foodId = button.id;
-            const foodName = button.getAttribute('data-name');
-            const foodPrice = button.getAttribute('data-price');
-
-            if (orderItems[foodId]) {
-                orderItems[foodId].quantity += 1;
-            } else {
-                orderItems[foodId] = {
-                    name: foodName,
-                    price: foodPrice,
-                    quantity: 1
-                };
-            }
-
-            updateBill();
-        }
-        
-        function updateQuantity(foodId, quantity) {
-            if (orderItems[foodId]) {
-                orderItems[foodId].quantity = parseInt(quantity);
-            }
-            updateBill();
-        }
-
-        function updateBill() {
-            const billDiv = document.getElementById('bill');
-            billDiv.innerHTML = '';
-
-            for (const [foodId, item] of Object.entries(orderItems)) {
-                if (item.quantity > 0) {
-                    const orderItemDiv = document.createElement('div');
-                    orderItemDiv.classList.add('order-item');
-
-                    const quantityInput = document.createElement('input');
-                    quantityInput.type = 'number';
-                    quantityInput.value = item.quantity;
-                    quantityInput.min = '0';
-                    quantityInput.onchange = () => updateQuantity(foodId, quantityInput.value);
-
-                    const itemName = document.createElement('span');
-                    itemName.textContent = item.name;
-
-                    const itemPrice = document.createElement('span');
-                    itemPrice.textContent = `${item.price}vnđ`;
-
-                    orderItemDiv.appendChild(quantityInput);
-                    orderItemDiv.appendChild(itemName);
-                    orderItemDiv.appendChild(itemPrice);
-
-                    billDiv.appendChild(orderItemDiv);
-                }
-            }
-        }
-        
-
-
-		function deleteAllBill(orderId) {
-			const confirmed = confirm("Bạn có chắc chắn muốn xóa không?");
-			if (confirmed) {
-				var xhr = new XMLHttpRequest();
-				xhr.open("POST", "/order/" + orderId + "/deleteFromBill", true);
-				xhr.setRequestHeader("Content-Type", "application/json");
-				xhr.send();
-				setTimeout(function() {
-					if (xhr.readyState === XMLHttpRequest.DONE) {
-						// Kiểm tra này request này
-						if (xhr.status === 200) {
-							location.reload(true);
-						} else {
-							console.error("Request thất bại:", xhr.status,
-									xhr.statusText);
-						}
-					}
-				}, 300)
-			}
-		}
-		
-		document.getElementById('back').onclick = function() {
-            // Thu thập thông tin order
-            const billItems = document.querySelectorAll('#bill .row');
-            const orders = [];
-
-            billItems.forEach(item => {
-                const id = item.getAttribute('th:id');
-                const quantity = item.querySelector('input.quantity').value;
-
-                // Chỉ thêm vào đơn hàng nếu số lượng lớn hơn 0
-                if (quantity > 0) {
-                    orders.push({
-                        id: id,
-                        quantity: quantity
-                    });
-                }
-            });
-
-            // Gửi thông tin đơn hàng về server
-            fetch('/order/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orders)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                alert('Order has been completed successfully!');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                alert('There was an error completing the order.');
-            });
-        };
-
-		function adjustMainContentHeight() {
-			const topBarHeight = document.querySelector('.top-bar').offsetHeight;
-			const totalBarHeight = topBarHeight;
-			const topBillHeight = document.querySelector('.top-bill').offsetHeight;
-			const BotBillHeight = document.querySelector('.bot-bill').offsetHeight;
-			const totalBillHeight = topBillHeight + BotBillHeight;
-
-			const mainContent = document.getElementById('mainContent');
-			mainContent.style.height = `calc(100vh - ${totalBarHeight}px)`;
-
-			const mainContentBill = document.getElementById('bill');
-			mainContentBill.style.height = `calc(100vh - ${totalBarHeight}px - ${totalBillHeight}px - 50px)`;
-		}
-
-		// Gọi hàm khi tải trang
-		window.onload = adjustMainContentHeight;
-
-		// Gọi hàm khi thay đổi kích thước cửa sổ
-		window.onresize = adjustMainContentHeight;
-	</script>
+	<script th:src="@{/js/main.js}" src="js/main.js"></script>
+	<script th:src="@{/js/custom.js}" src="js/custom.js"></script>
+	<script th:src="@{/js/order.js}" src="js/order.js"></script>
 </body>
 </html>
