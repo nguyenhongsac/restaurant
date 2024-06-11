@@ -24,6 +24,11 @@ public class OrderDetailService {
 	public void deleteOrderDetail(OrderDetail orderDetail) {
 		orderDetailRepository.delete(orderDetail);
 	}
+	
+	public void deleteOrderDetailByOrder(Integer orderId) {
+		List<OrderDetail> orderDetails = orderDetailRepository.findByOrderId(orderId);
+		orderDetails.forEach(orderDetail -> orderDetailRepository.delete(orderDetail));
+	}
 	 
 	public void updateOrderDetail(OrderDetail orderDetail) {
 		orderDetailRepository.save(orderDetail);
