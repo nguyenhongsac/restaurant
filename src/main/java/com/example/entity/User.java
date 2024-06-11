@@ -44,7 +44,7 @@ public class User {
 	@Column(name="user_address")
 	String address;
 	@Column(name="user_role")
-	Integer role;
+	String role;
 	@CreationTimestamp
 	@Column(name="user_created_time")
 	String createdTime;

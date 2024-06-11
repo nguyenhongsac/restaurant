@@ -40,6 +40,10 @@ public class LoginController {
 		try {
 	        User loggedUser = us.authenticate(username, password);
 	        if (loggedUser != null) {
+	        	if ("admin".equalsIgnoreCase(loggedUser.getRole())) {
+	        		session.setAttribute("loggedUser", loggedUser);
+		            return "redirect:/index"; 
+	        	}
 	        	session.setAttribute("loggedUser", loggedUser);
 	            return "redirect:/home";  
 	        } else {
