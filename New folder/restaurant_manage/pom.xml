@@ -6,21 +6,14 @@
 	<artifactId>restaurant_manage</artifactId>
 	<version>1.0</version>
 	<parent>
-
 		<groupId>org.springframework.boot</groupId>
-
 		<artifactId>spring-boot-starter-parent</artifactId>
-
 		<version>3.3.0</version>
-
 	</parent>
-
 	<properties>
 		<mysql.version>8.0.33</mysql.version>
 		<java.version>17</java.version>
-
 	</properties>
-
 	<dependencies>
 	
 		<dependency>

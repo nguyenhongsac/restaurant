@@ -15,13 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.entity.CategoryEntity;
 import com.example.service.CategoryService;
 
-@Controller
+import lombok.AllArgsConstructor;
 
+@Controller
+@AllArgsConstructor
 public class CategoryController {
-	@Autowired
+	
 	private CategoryService categoryService;
 
-	@RequestMapping("/category")
+	@GetMapping("/cate")
 	public String category(Model model) {
 		List<CategoryEntity> category = this.categoryService.getAll();
 		model.addAttribute("category", category);
@@ -31,10 +33,12 @@ public class CategoryController {
 	@PostMapping("/category")
 	public String addCategory(@RequestParam String name, @RequestParam String description, Model model) {
 		CategoryEntity category = new CategoryEntity();
+		category.setCatId(11);
 		category.setCatName(name);
 		category.setCatDescription(description);
-		this.categoryService.create(category);
-		return "redirect:/category";
+		categoryService.create(category);
+		System.out.println(category.getCatName());
+		return "redirect:/cate";
 	}
 //	@ModelAttribute(value = "myCategory")
 //	public CategoryEntity newEntity()

@@ -26,12 +26,10 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public Boolean create(CategoryEntity category) {
-		// TODO Auto-generated method stub
 		try {
 			this.categoryRepository.save(category);
 			return true;
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
 		return false;
