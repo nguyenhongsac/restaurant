@@ -295,7 +295,7 @@
 					th:id="${category.catName}">
 					<div class="col-sm-12 fs-5" th:text="${category.catName}"></div>
 					<div th:each="food : ${foods}"
-						th:if="${food.catId.catId} == ${category.catId}"
+						th:if="${food.category.catId} == ${category.catId}"
 						class="col-sm-3 border m-0 p-0 text-center">
 						<button th:id="${food.foodId}" th:data-name="${food.foodName}"
 							th:data-price="${food.foodPrice}" class="btn-outline-primary p-0"

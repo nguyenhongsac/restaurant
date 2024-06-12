@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,28 +15,25 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "tblcategory")
 public class CategoryEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="cat_id")
-	private Integer catId;
-	
+	public Integer catId;
+	@Column(name="cat_name")
+	public String catName;	
+	@Column(name="cat_description")
+	public String catDescription;
 	@Column
-	private String catName;	
+	public Date catCreatedTime;
 	@Column
-	private String catDescription;
-	@Column
-	private Date catCreateTime;
-	@Column
-	private Date catModifieTime;
-	@OneToMany(mappedBy="catId")
-    private List<FoodEntity> foodId = new ArrayList<>();
+	public Date catModifiedTime;
 }
