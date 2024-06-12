@@ -10,39 +10,42 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tblfood")
 public class FoodEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="food_id")
-	private Integer foodId;
+	public Integer foodId;
 	@Column
-	private String foodName;
+	public String foodImg;
 	@Column
-	private String foodImg;
+	public String foodName;
 	@Column
-	private Float foodPrice;
+	public float foodPrice;
 	@Column
-	private String foodNote;
+	public String foodNote;
 	@Column
-	private byte foodAvaiable;
+	public byte foodAvaiable;
 	@Column
-	private String foodAllergenInfo;
+	public String foodAllergenInfo;
 	@Column
-	private String foodIngredients;
+	public String foodIngredients;
 	@Column
-	private Date foodCreateTime;
+	public Date foodCreateTime;
 	@Column
-	private Date foodModifieTime;
+	public Date foodModifieTime;
 	@ManyToOne
-    @JoinColumn(name="cat_id", nullable=false)
-	private CategoryEntity catId;
+    @JoinColumn(name="cat_id")
+	public CategoryEntity category;
+	
 }
