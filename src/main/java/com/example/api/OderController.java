@@ -22,13 +22,16 @@ import com.example.entity.CategoryEntity;
 import com.example.entity.FoodEntity;
 import com.example.entity.Order;
 import com.example.entity.OrderDetail;
+import com.example.entity.Table;
 import com.example.service.BillService;
 import com.example.service.CategoryService;
 import com.example.service.FoodService;
 import com.example.service.OrderDetailService;
 import com.example.service.OrderService;
+import com.example.service.TableService;
 import com.example.service.impl.CategoryServiceImpl;
 import com.example.service.impl.FoodServiceImpl;
+import com.example.service.impl.TableServiceImpl;
 
 import lombok.Getter;
 
@@ -45,6 +48,8 @@ public class OderController {
 	private OrderDetailService orderDetailService;
 	@Autowired
 	private FoodServiceImpl foodService;
+	@Autowired
+	private TableServiceImpl tableService;
 
 	List<OrderDetailDTO> OrderDetailDTOs = new ArrayList<>();
 
@@ -65,21 +70,38 @@ public class OderController {
 			i++;
 		}
 
+		// Table
+		Table thisTable = new Table();
+		Order order = orderService.getOrderByOrder(orderId);
+		List<Table> tables = new ArrayList<>();
+		tableService.getByStatus("available").forEach(item -> {
+			if (item.getId() != order.getTable_id()) {
+				tables.add(item);
+			}else if(item.getId() == order.getTable_id()){
+				thisTable.setName(item.getName());
+				thisTable.setId(item.getId());
+			}
+		});
+		
+		
+		model.addAttribute("thisTable", thisTable);
+
 		List<FoodEntity> foods = foodService.getAll();
 		model.addAttribute("orderId", orderId);
 		model.addAttribute("OrderDetailDTOs", OrderDetailDTOs);
 		model.addAttribute("foods", foods);
 		model.addAttribute("categories", items);
+		model.addAttribute("tables", tables);
 		return "order";
 	}
 
 	@PostMapping("/{orderId}/save")
-	public ResponseEntity<String> saveOrder(@PathVariable Integer orderId, @RequestBody List<OrderDetailDTO> orders) {
-		
+	public String saveOrder(@PathVariable Integer orderId, @RequestBody List<OrderDetailDTO> orders) {
+
 		// Cập nhật danh sách order detail theo orderId
 		orderDetailService.deleteOrderDetailByOrder(orderId);
 		for (OrderDetailDTO order : orders) {
-			
+
 			// Thực hiện cập nhật bill
 			Integer foodId = order.getFoodId();
 			Integer quantity = order.getQuantity();
@@ -99,7 +121,15 @@ public class OderController {
 				orderDetailService.saveOrderDetail(newOrderDetail);
 			}
 		}
-		return ResponseEntity.ok("Order has been updated successfully");
+		return "redirect:/order/" + orderId;
+	}
+	
+	@PostMapping("/{orderId}/changeTable/{tableId}")
+	public String addOrder(@PathVariable Integer orderId, @PathVariable Integer tableId) {
+		Order orderEntity = orderService.getOrderByOrder(orderId);
+		orderEntity.setTable_id(tableId);
+		orderService.updateOrder(orderEntity);
+		return "redirect:/order/" + orderId;
 	}
 
 }

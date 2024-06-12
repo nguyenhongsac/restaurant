@@ -13,5 +13,7 @@ import com.example.entity.OrderDetail;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 	@Query("SELECT od FROM Order od WHERE od.order_id = :orderId")
     Order findByOrderId(Integer orderId);
+	@Query("SELECT od FROM Order od WHERE od.table_id = :tableId")
+	List<Order> findByTableId(Integer tableId);
 }
 

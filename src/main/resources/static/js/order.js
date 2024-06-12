@@ -112,7 +112,7 @@ function updateBill() {
 			const itemPrice = document.createElement('span');
 			itemPrice.classList.add('p-0', 'fs-5');
 			itemPrice.textContent = `${item.price}vnđ`;
-			
+
 			priceDiv.appendChild(itemPrice)
 			orderItemDiv.appendChild(quantityInput);
 			orderItemDiv.appendChild(itemName);
@@ -135,7 +135,7 @@ function deleteAllBill() {
 		orderItems.forEach(item => {
 			item.quantiy = 0;
 		})
-		
+
 		updateBill;
 	}
 }
@@ -151,13 +151,18 @@ document.getElementById('back').onclick = function() {
 		},
 		body: JSON.stringify(orderItems)
 	})
-		.then(response => response.json())
-		.then(data => {
-			console.log('Success:', data);
-			alert('Order has been completed successfully!');
-		})
-		.catch((error) => {
-			console.error('Error:', error);
-			alert('There was an error completing the order.');
-		});
 };
+
+function tableClick(table) {
+	const tableId = table.id;
+
+	fetch('/order/' + orderId + '/changeTable/' + tableId, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+	const button = document.getElementById('dropdownTableButton');
+	button.textContent = table.textContent;
+	console.log('Chuyển bàn thành công!');
+}
