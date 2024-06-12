@@ -32,6 +32,28 @@ import com.example.service.TableService;
 import com.example.service.impl.CategoryServiceImpl;
 import com.example.service.impl.FoodServiceImpl;
 import com.example.service.impl.TableServiceImpl;
+import com.itextpdf.awt.geom.Rectangle;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 import lombok.Getter;
 
@@ -77,13 +99,12 @@ public class OderController {
 		tableService.getByStatus("available").forEach(item -> {
 			if (item.getId() != order.getTable_id()) {
 				tables.add(item);
-			}else if(item.getId() == order.getTable_id()){
+			} else if (item.getId() == order.getTable_id()) {
 				thisTable.setName(item.getName());
 				thisTable.setId(item.getId());
 			}
 		});
-		
-		
+
 		model.addAttribute("thisTable", thisTable);
 
 		List<FoodEntity> foods = foodService.getAll();
@@ -123,13 +144,165 @@ public class OderController {
 		}
 		return "redirect:/order/" + orderId;
 	}
-	
+
 	@PostMapping("/{orderId}/changeTable/{tableId}")
 	public String addOrder(@PathVariable Integer orderId, @PathVariable Integer tableId) {
 		Order orderEntity = orderService.getOrderByOrder(orderId);
 		orderEntity.setTable_id(tableId);
 		orderService.updateOrder(orderEntity);
 		return "redirect:/order/" + orderId;
+	}
+
+//	@PostMapping("/{orderId}/print-order")
+//	public ResponseEntity<byte[]> printOrder(@PathVariable Integer orderId) {
+//		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(orderId);
+//		OrderDetailDTOs.clear();
+//		int i = 0;
+//		for (OrderDetail item : orderDetails) {
+//			OrderDetailDTOs.add(new OrderDetailDTO(i, item.getFood().getFoodId(), item.getFood_number(),
+//					item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_note()));
+//			i++;
+//		}
+//		ByteArrayOutputStream out = new ByteArrayOutputStream();
+//		
+//		// Load font hỗ trợ tiếng Việt
+//        BaseFont bf = null;
+//		try {
+//			bf = BaseFont.createFont("times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+//		} catch (DocumentException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		com.itextpdf.text.Font font = new com.itextpdf.text.Font(bf, 12);
+//
+//        Document document = new Document();
+//        try {
+//            PdfWriter.getInstance(document, out);
+//            document.open();
+//            document.add(new Paragraph("Hóa đơn của bạn", font));
+//            document.add(new Paragraph(" "));
+//
+//            for (OrderDetailDTO item : OrderDetailDTOs) {
+//                document.add(new Paragraph(item.getItemName() + " - " + item.getQuantity(), font));
+//            }
+//            document.close();
+//        } catch (DocumentException e) {
+//            e.printStackTrace();
+//        }
+//
+//        byte[] pdfBytes = out.toByteArray();
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setContentType(MediaType.APPLICATION_PDF);
+//        headers.setContentDispositionFormData("attachment", "order.pdf");
+//
+//        return ResponseEntity.ok()
+//                .headers(headers)
+//                .body(pdfBytes);
+//	}
+
+	@PostMapping("{orderId}/print-order")
+	public ResponseEntity<byte[]> printOrder(@PathVariable Integer orderId) {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		// Thiết lập khổ giấy
+		com.itextpdf.text.Rectangle pageSize = new com.itextpdf.text.Rectangle(200f, 1000f); // 80mm x 200mm
+		Document document = new Document(pageSize, 5f, 5f, 5f, 5f); // margins: left, right, top, bottom
+		try {
+			PdfWriter.getInstance(document, out);
+			document.open();
+
+			// Load font hỗ trợ tiếng Việt
+			String fontPath = "times.ttf"; // Đường dẫn tương đối đến file font
+			BaseFont bf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			Font font = new Font(bf, 12);
+
+			// Tạo header
+			Paragraph header = new Paragraph("Phiếu báo bếp", font);
+
+			// Thiết lập alignment cho header
+			header.setAlignment(Element.ALIGN_CENTER);
+
+			// Thêm header vào tài liệu
+			document.add(header);
+			
+			Paragraph order = new Paragraph("Mã order: " + orderId, font);
+
+			order.setAlignment(Element.ALIGN_CENTER);
+
+			document.add(order);
+
+			// Tạo bảng
+			PdfPTable table = new PdfPTable(3); // 3 cột: STT, Tên món, Số lượng
+			table.setWidthPercentage(100);
+			table.setSpacingBefore(10f);
+			table.setSpacingAfter(10f);
+
+			// Thiet lap kich thuoc cột
+			float[] columnWidths = { 1f, 4f, 1f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
+			table.setWidths(columnWidths);
+
+			// Thêm tiêu đề cột
+			addTableHeader(table, font);
+
+			// Thêm dữ liệu vào bảng
+			int i = 1;
+			for (OrderDetailDTO item : OrderDetailDTOs) {
+				addRows(i, table, item, font);
+				i++;
+			}
+			document.add(table);
+
+			document.close();
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
+		}
+
+		byte[] pdfBytes = out.toByteArray();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+		// headers.setContentDispositionFormData("attachment", "order" + orderId +
+		// ".pdf");
+
+		// Thay đổi phần headers.setContentDispositionFormData
+		headers.setContentDisposition(ContentDisposition.builder("attachment")
+				.filename("order " + orderId + ".pdf", StandardCharsets.UTF_8).build());
+
+		return ResponseEntity.ok().headers(headers).body(pdfBytes);
+	}
+
+	private void addTableHeader(PdfPTable table, Font font) {
+		PdfPCell cell;
+		cell = new PdfPCell(new Phrase("STT", font));
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("Tên món", font));
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cell);
+
+		cell = new PdfPCell(new Phrase("SL", font));
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		table.addCell(cell);
+	}
+
+	private void addRows(int stt, PdfPTable table, OrderDetailDTO item, Font font) {
+		PdfPCell cell;
+		cell = new PdfPCell(new Phrase(String.valueOf(stt), font));
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setFixedHeight(20f);
+		table.addCell(cell);
+
+		cell = new PdfPCell(new Phrase(item.getItemName(), font));
+		cell.setFixedHeight(20f);
+		table.addCell(cell);
+
+		cell = new PdfPCell(new Phrase(String.valueOf(item.getQuantity()), font));
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setFixedHeight(20f);
+		table.addCell(cell);
 	}
 
 }
