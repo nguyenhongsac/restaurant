@@ -263,8 +263,6 @@ public class OderController {
 		byte[] pdfBytes = out.toByteArray();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_PDF);
-		// headers.setContentDispositionFormData("attachment", "order" + orderId +
-		// ".pdf");
 
 		// Thay đổi phần headers.setContentDispositionFormData
 		headers.setContentDisposition(ContentDisposition.builder("attachment")
@@ -289,19 +287,39 @@ public class OderController {
 	}
 
 	private void addRows(int stt, PdfPTable table, OrderDetailDTO item, Font font) {
+		String fontPath = "timesi.ttf"; // Đường dẫn tương đối đến file font
+		BaseFont bfi = null;
+		try {
+			bfi = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Font fonti = new Font(bfi, 11);
 		PdfPCell cell;
 		cell = new PdfPCell(new Phrase(String.valueOf(stt), font));
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setFixedHeight(20f);
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		table.addCell(cell);
-
-		cell = new PdfPCell(new Phrase(item.getItemName(), font));
-		cell.setFixedHeight(20f);
+		
+		if(item.getNote() != null) {
+			cell = new PdfPCell();
+			cell.addElement(new Phrase(item.getItemName(), font));
+			cell.addElement(new Phrase(item.getNote(), fonti));
+			cell.setVerticalAlignment(Element.ALIGN_TOP);
+		}else {
+			cell = new PdfPCell(new Phrase(item.getItemName(), font));
+		}
+		//cell.setFixedHeight(20f);
 		table.addCell(cell);
 
 		cell = new PdfPCell(new Phrase(String.valueOf(item.getQuantity()), font));
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setFixedHeight(20f);
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+		//cell.setFixedHeight(20f);
 		table.addCell(cell);
 	}
 

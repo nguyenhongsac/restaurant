@@ -1,3 +1,4 @@
+//Cấu hình kích thước phần tử phù hợp với kích thước màn hình
 function adjustMainContentHeight() {
 	const topBarHeight = document.querySelector('.top-bar').offsetHeight;
 	const totalBarHeight = topBarHeight;
@@ -45,7 +46,7 @@ function updateQuantity(id, inputQuantity) {
 			item.quantity = parseInt(inputQuantity);
 		}
 	})
-	console.log(orderItems)
+	//console.log(orderItems)
 	updateBill();
 }
 
@@ -124,11 +125,13 @@ function updateBill() {
 	})
 }
 
-
+//Update cột bill ngay khi load xong trang
 document.addEventListener('DOMContentLoaded', function() {
 	updateBill();
 });
 
+
+//Xóa toàn bộ order 
 function deleteAllBill() {
 	const confirmed = confirm("Bạn có chắc chắn muốn xóa không?");
 	if (confirmed) {
@@ -140,8 +143,9 @@ function deleteAllBill() {
 	}
 }
 
+//Lưu order khi bấm nút back quay về home
 document.getElementById('back').onclick = function() {
-	console.log(orderItems)
+	//console.log(orderItems)
 	const orderId = document.getElementById('bill').className;
 	// Gửi thông tin đơn hàng về server
 	fetch('/order/' + orderId + '/save', {
@@ -153,6 +157,8 @@ document.getElementById('back').onclick = function() {
 	})
 };
 
+
+//Chuyển order sang bàn khác
 function tableClick(table) {
 	const tableId = table.id;
 
@@ -167,7 +173,19 @@ function tableClick(table) {
 	console.log('Chuyển bàn thành công!');
 }
 
+
+//Lưu danh sách order về server và in phiếu báo bếp
 function printOrder() {
+	// Gửi thông tin đơn hàng về server
+	fetch('/order/' + orderId + '/save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(orderItems)
+	})
+	console.log(orderItems);
+	//Gửi yêu cầu in phiếu
     fetch('/order/' + orderId + '/print-order', {
         method: 'POST',
         headers: {
@@ -179,7 +197,7 @@ function printOrder() {
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'order.pdf');
+        link.setAttribute('download', 'order ' + orderId + '.pdf');
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
