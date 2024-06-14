@@ -28,7 +28,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+<<<<<<< HEAD
 	public List<User> getUserByRole(int role) {
+=======
+	public List<User> getUserByRole(String role) {
+>>>>>>> main
 		return ur.findAllByRole(role);
 	}
 

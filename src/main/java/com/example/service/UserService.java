@@ -7,7 +7,11 @@ import com.example.entity.User;
 public interface UserService {
 	
 	public List<User> getAllUser();
+<<<<<<< HEAD
 	public List<User> getUserByRole(int role);
+=======
+	public List<User> getUserByRole(String role);
+>>>>>>> main
 	
 	// For login
 	public User authenticate(String name, String pass);

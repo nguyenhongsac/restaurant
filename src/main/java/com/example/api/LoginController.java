@@ -42,10 +42,17 @@ public class LoginController {
 	        if (loggedUser != null) {
 	        	if ("admin".equalsIgnoreCase(loggedUser.getRole())) {
 	        		session.setAttribute("loggedUser", loggedUser);
+<<<<<<< HEAD
 		            return "redirect:/index"; 
 	        	}
 	        	session.setAttribute("loggedUser", loggedUser);
 	            return "redirect:/home";  
+=======
+		            return "redirect:/admin"; 
+	        	}
+	        	session.setAttribute("loggedUser", loggedUser);
+	            return "redirect:/home";
+>>>>>>> main
 	        } else {
 	            model.addAttribute("error", "Invalid username or password");
 	            return "login";
