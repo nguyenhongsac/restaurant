@@ -16,7 +16,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.comcss2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
 
   <!-- CSS Files -->
   <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -32,13 +32,6 @@
   <link href="css/style.css" rel="stylesheet">
   <link href="css/custom.css" rel="stylesheet">
 
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Updated: Mar 17 2024 with Bootstrap v5.3.3
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -364,6 +357,7 @@
           </li>
         </ul>
       </li><!-- End Icons Nav -->
+      </ul>
 
   </aside><!-- End Sidebar-->
 
@@ -391,102 +385,10 @@
     </div><!-- End Page Title -->
 
     <section class="section">
-      <!-- Empty table 
-      <div class="set-empty d-none d-flex mx-auto align-items-center">
-        <div class="chair-top d-flex justify-content-center mt-1">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="chair-left d-flex flex-column justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="table d-flex z-1 flex-column align-items-center">
-          <div class="m-auto d-flex flex-column align-items-center">
-            <p class="fw-bold">A</p>
-          </div>
-        </div>
-        <div class="chair-right d-flex flex-column justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="chair-bottom d-flex justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-      </div>-->
-
-      <!-- Table With Bill 
-      <div class="set-bill d-none d-flex mx-auto align-items-center">
-        <div class="chair-top d-flex justify-content-center mt-1">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="chair-left d-flex flex-column justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="table d-flex z-1 flex-column align-items-center">
-          
-          <div class="m-auto d-flex flex-column align-items-center">
-            <p><i class="bi bi-clock-fill"></i> 20 mins</p>
-            <p class="fw-bold">A1</p>
-            <p><important>$</important>200</p>
-          </div>
-        </div>
-        <div class="chair-right d-flex flex-column justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="chair-bottom d-flex justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-      </div> -->
-
-      <!-- Table With Message 
-      <div class="set-message d-none d-flex mx-auto align-items-center">
-        <div class="chair-top d-flex justify-content-center mt-1">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="chair-left d-flex flex-column justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="table d-flex z-1 flex-column align-items-center">
-          <div class="m-auto d-flex flex-column align-items-center">
-              <i class="fs-2 bi bi-bookmark-check-fill"></i>
-              <i class="fs-2 ms-5 bi bi-chat-dots"></i>
-            <p class="fw-bold">A2</p>
-          </div>
-        </div>
-        <div class="chair-right d-flex flex-column justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-        <div class="chair-bottom d-flex justify-content-center">
-          <div class="chair p-2"></div>
-          <div class="p-2"></div>
-          <div class="chair p-2"></div>
-        </div>
-      </div> -->
-
       <!-- 1st Floor -->
       <div class="row d-flex justify-content-between tab-pane" id="1stfloor" role="tabpanel" data-aos="fade-up">
       		
-	      <div class="set set-bill d-flex mx-auto align-items-center" th:each="table : ${tableFloor1}">
+	      <div th:each="table : ${tableFloor1}" class="set d-flex mx-auto align-items-center" th:classappend="'set-' + ${table.people} + (${table.status == 'occupied'} ? ' set-bill' : '')">
 	        <div class="chair-top d-flex justify-content-center mt-1">
 	          <div class="chair p-2"></div>
 	          <div class="p-2"></div>
@@ -500,15 +402,15 @@
 	        <div class="table1 d-flex z-1 flex-column align-items-center" data-bs-toggle="modal" th:attr="data-bs-target='#table' + ${table.id}">
 	          
 	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'occupied'}" >
-	            <p><i class="bi bi-clock-fill"></i> 20 mins</p>
+	            <p><i class="bi bi-clock-fill"></i> <span th:text=" ${table.startTime}"></span> mins</p>
 	            <p class="fw-bold" th:text="${table.name}">A1</p>
-	            <p><important>$</important>200</p>
+	            <p><important>$</important><span th:text=" ${table.total}"></span></p>
 	          </div>
 	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'available'}">
 	            <p class="fw-bold" th:text="${table.name}">A</p>
 	          </div>
 	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'reserve'}">
-	              <i class="fs-2 bi bi-bookmark-check-fill"></i>
+				<i class="fs-2 bi bi-bookmark-check-fill"></i>
 	            <p class="fw-bold" th:text="${table.name}">A</p>
 	          </div>
 	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'waiting'}">
@@ -532,74 +434,205 @@
 			    <div class="modal-dialog modal-dialog-centered">
 			      <div class="modal-content">
 			        <div class="modal-header">
-			          <h5 class="modal-title">A1 - 1<sup>st</sup> Floor</h5>
+			          <h5 class="modal-title"><span th:text="${table.name}"></span> - 1<sup>st</sup> Floor</h5>
 			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			        </div>
 			        <div class="modal-body">
 			          <div class="d-flex flex-column align-items-center">
-			            <div class="fs-5"><i class="bi bi-clock-fill"></i> 20 mins</div>
-			            <div class="m-4 fs-5"><i class="bi bi-people-fill"></i> 4 People</div>
-			            <div class="fs-5"><strong>$</strong> 200</div>
+			            <div class="fs-5"><i class="bi bi-clock-fill"></i> <span th:text="${table.startTime}"></span> mins</div>
+			            <div class="m-4 fs-5"><i class="bi bi-people-fill"></i> <span th:text="${table.people}"></span> People</div>
+			            <div class="fs-5"><strong>$</strong> <span th:text="${table.total}"></span></div>
+			            <div class="text-primary-emphasis mt-1" th:text="${table.note}"></div>
+			          	<!-- For reserve -->
+			            <div th:if="${table.status == 'reserve'}" class="reserve active position-absolute top-50 end-0 me-5 translate-middle-y">
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
+			                <i id="reserveIcon" class="bi bi-bookmark-check-fill fs-1 gap-0"></i>
+			                <span>Reserve</span>
+			              </a>
+			            </div>
+			            <div th:if="${table.status == 'available'}" class="reserve position-absolute top-50 end-0 me-5 translate-middle-y">
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
+			                <i id="reserveIcon" class="bi bi-bookmark fs-1 gap-0"></i>
+			                <span>Reserve</span>
+			              </a>
+			            </div>
 			          </div>
 			        </div>
 			        <div class="modal-footer justify-content-between">
-<<<<<<< HEAD
-			          <a th:href="@{/order/{orderId}}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
-			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			          <a th:href="@{/order/{orderId}}"><button type="button" class="btn btn-primary">Payment</button></a>
-=======
 			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
 			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-primary">Payment</button></a>
->>>>>>> main
 			        </div>
 			      </div>
 			    </div> 
 			   </div> <!-- End modal of each table -->
+			   
+			   <div th:if="${table.status == 'reserve' or table.status == 'available'}" class="modal fade" th:attr="id='tableReserve' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
+			    <div class="modal-dialog modal-dialog-centered">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h5 class="modal-title">Confirm reserve <span th:text="${table.name}"></span> - 1<sup>st</sup> Floor</h5>
+			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        </div>
+			        <div class="modal-body">
+			          <div class="d-flex fs-5 my-3 justify-content-around">
+			            <!-- Reserve Info Form -->
+			            <form id="reserveForm">
+			              <div class="d-flex flex-row mb-2">
+			                <label for="inputDate" class="col-form-label me-2">Date</label>
+			                <input type="date" class="form-control">
+			              </div>
+			              <div class="d-flex flex-row mb-2">
+			                <label for="inputTime" class="col-form-label me-2">Time</label>
+			                <input type="time" class="form-control">
+			              </div>
+			              <div class="d-flex flex-row">
+			                <label for="inputNote" class="col-form-label">Note</label>
+			                <textarea class="form-control" style="height: 80px;"></textarea>
+			              </div>
+			            </form>
+			          </div>
+			        </div>
+			        <div class="modal-footer">
+			          <a><button type="button" onclick="reserveTable()" data-bs-dismiss="modal" class="btn btn-primary">Reserve</button></a>
+			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
 	     
 		    </div> <!-- End table in floor 1 -->
 		</div> <!-- End First Floor -->
 
       <!-- Second Floor -->
-      <div class="row d-flex justify-content-between tab-pane d-none" id="2ndfloor" role="tabpanel">
+      <div class="row d-flex justify-content-between tab-pane d-none" id="2ndfloor" role="tabpanel" data-aos="fade-up">
 
-        <div class="set set-bill d-flex mx-auto align-items-center" th:each="table : ${tableFloor2}" th:if="${table.status == 'occupied'}">
-          <div class="chair-top d-flex justify-content-center mt-1">
-            <div class="chair p-2"></div>
-            <div class="p-2"></div>
-            <div class="chair p-2"></div>
-          </div>
-          <div class="chair-left d-flex flex-column justify-content-center">
-            <div class="chair p-2"></div>
-            <div class="p-2"></div>
-            <div class="chair p-2"></div>
-          </div>
-
-          <div class="table1 d-flex z-1 flex-column align-items-center">
-            <!-- table content -->
-            <div class="m-auto d-flex flex-column align-items-center">
-              <p><i class="bi bi-clock-fill"></i> 20 mins</p>
-              <p class="fw-bold" th:text="${table.name}">B1</p>
-              <p><important>$</important>200</p>
-            </div>
-          </div>
-
-          <div class="chair-right d-flex flex-column justify-content-center">
-            <div class="chair p-2"></div>
-            <div class="p-2"></div>
-            <div class="chair p-2"></div>
-          </div>
-          <div class="chair-bottom d-flex justify-content-center">
-            <div class="chair p-2"></div>
-            <div class="p-2"></div>
-            <div class="chair p-2"></div>
-          </div>
-        </div>
-
+        <div th:each="table : ${tableFloor2}" class="set d-flex mx-auto align-items-center" th:classappend="'set-' + ${table.people} + (${table.status == 'occupied'} ? ' set-bill' : '')">
+	        <div class="chair-top d-flex justify-content-center mt-1">
+	          <div class="chair p-2"></div>
+	          <div class="p-2"></div>
+	          <div class="chair p-2"></div>
+	        </div>
+	        <div class="chair-left d-flex flex-column justify-content-center">
+	          <div class="chair p-2"></div>
+	          <div class="p-2"></div>
+	          <div class="chair p-2"></div>
+	        </div>
+	        <div class="table1 d-flex z-1 flex-column align-items-center" data-bs-toggle="modal" th:attr="data-bs-target='#table' + ${table.id}">
+	          
+	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'occupied'}" >
+	            <p><i class="bi bi-clock-fill"></i> <span th:text=" ${table.startTime}"></span> mins</p>
+	            <p class="fw-bold" th:text="${table.name}">A1</p>
+	            <p><important>$</important><span th:text=" ${table.total}"></span></p>
+	          </div>
+	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'available'}">
+	            <p class="fw-bold" th:text="${table.name}">A</p>
+	          </div>
+	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'reserve'}">
+				<i class="fs-2 bi bi-bookmark-check-fill"></i>
+	            <p class="fw-bold" th:text="${table.name}">A</p>
+	          </div>
+	          <div class="m-auto d-flex flex-column align-items-center" th:if="${table.status == 'waiting'}">
+	              <i class="fs-2 ms-5 bi bi-chat-dots"></i>
+	            <p class="fw-bold" th:text="${table.name}">A</p>
+	          </div>
+	        </div>
+	        <div class="chair-right d-flex flex-column justify-content-center">
+	          <div class="chair p-2"></div>
+	          <div class="p-2"></div>
+	          <div class="chair p-2"></div>
+	        </div>
+	        <div class="chair-bottom d-flex justify-content-center">
+	          <div class="chair p-2"></div>
+	          <div class="p-2"></div>
+	          <div class="chair p-2"></div>
+	        </div>
+	        
+	         <!-- Add modal for each table -->
+		      <div class="modal fade" th:attr="id='table' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
+			    <div class="modal-dialog modal-dialog-centered">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h5 class="modal-title"><span th:text="${table.name}"></span> - 2<sup>nd</sup> Floor</h5>
+			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        </div>
+			        <div class="modal-body">
+			          <div class="d-flex flex-column align-items-center">
+			            <div class="fs-5"><i class="bi bi-clock-fill"></i> <span th:text="${table.startTime}"></span> mins</div>
+			            <div class="m-4 fs-5"><i class="bi bi-people-fill"></i> <span th:text="${table.people}"></span> People</div>
+			            <div class="fs-5"><strong>$</strong> <span th:text="${table.total}"></span></div>
+			            <div class="text-primary-emphasis mt-1" th:text="${table.note}"></div>
+			          	<!-- For reserve -->
+			            <div th:if="${table.status == 'reserve'}" class="reserve active position-absolute top-50 end-0 me-5 translate-middle-y">
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
+			                <i id="reserveIcon" class="bi bi-bookmark-check-fill fs-1 gap-0"></i>
+			                <span>Reserve</span>
+			              </a>
+			            </div>
+			            <div th:if="${table.status == 'available'}" class="reserve position-absolute top-50 end-0 me-5 translate-middle-y">
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
+			                <i id="reserveIcon" class="bi bi-bookmark fs-1 gap-0"></i>
+			                <span>Reserve</span>
+			              </a>
+			            </div>
+			          </div>
+			        </div>
+			        <div class="modal-footer justify-content-between">
+			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
+			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-primary">Payment</button></a>
+			        </div>
+			      </div>
+			    </div> 
+			   </div> <!-- End modal of each table -->
+			   
+			   <div th:if="${table.status == 'reserve' or table.status == 'available'}" class="modal fade" th:attr="id='tableReserve' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
+			    <div class="modal-dialog modal-dialog-centered">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h5 class="modal-title">Confirm reserve <span th:text="${table.name}"></span> - 2<sup>nd</sup> Floor</h5>
+			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        </div>
+			        <div class="modal-body">
+			          <div class="d-flex fs-5 my-3 justify-content-around">
+			            <!-- Reserve Info Form -->
+			            <form id="reserveForm">
+			              <div class="d-flex flex-row mb-2">
+			                <label for="inputDate" class="col-form-label me-2">Date</label>
+			                <input type="date" class="form-control">
+			              </div>
+			              <div class="d-flex flex-row mb-2">
+			                <label for="inputTime" class="col-form-label me-2">Time</label>
+			                <input type="time" class="form-control">
+			              </div>
+			              <div class="d-flex flex-row">
+			                <label for="inputNote" class="col-form-label">Note</label>
+			                <textarea class="form-control" style="height: 80px;"></textarea>
+			              </div>
+			            </form>
+			          </div>
+			        </div>
+			        <div class="modal-footer">
+			          <a><button type="button" onclick="reserveTable()" data-bs-dismiss="modal" class="btn btn-primary">Reserve</button></a>
+			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			        </div>
+			      </div>
+			    </div>
+			  </div>
+	     
+		    </div> <!-- End table in floor 2 -->
        </div>
     </section>
 
   </main><!-- End #main -->
+  
+  <!-- Alert -->
+  <div class="position-fixed bottom-0 start-50 translate-middle-x z-2">
+    <div id="successAlert" class="alert alert-success bg-success text-light border-0 alert-dismissible fade" role="alert">
+      <i class="bi bi-check-circle me-1"></i>
+      <span id="alertContent"> Reserve table successfully! </span>
+    </div>
+  </div>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">

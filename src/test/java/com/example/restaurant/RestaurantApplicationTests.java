@@ -1,15 +1,14 @@
 package com.example.restaurant;
 
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.example.entity.Table;
-import com.example.repository.TableRepository;
 import com.example.service.TableService;
-import com.example.service.impl.TableServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @SpringBootTest
 @RequiredArgsConstructor
 class RestaurantApplicationTests {
-	
+
 	@Autowired
 	private TableService tableService;
 	@Test
@@ -25,10 +24,20 @@ class RestaurantApplicationTests {
 	}
 	@Test
 	void test() {
-		
-		ArrayList<Table> list1 = (ArrayList<Table>) tableService.getFloor("A");
-		ArrayList<Table> list2 = (ArrayList<Table>) tableService.getFloor("B");
-		
-		System.out.println(list1.size() + " -- " + list2.size());
+
+		String timestamp = "2024-06-08 23:38:56";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
+        LocalDateTime givenTime = LocalDateTime.parse(timestamp, formatter);
+
+        // Current time
+        LocalDateTime now = LocalDateTime.now();
+
+        // Calculate the difference
+        Duration duration = Duration.between(givenTime, now);
+
+        // Get the difference in minutes
+        long minutesDifference = duration.toMinutes();
+        String out = ""+minutesDifference+"";
+        System.out.println("Difference in minutes: " + out);
 	}
 }

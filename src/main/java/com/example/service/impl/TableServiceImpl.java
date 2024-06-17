@@ -1,5 +1,9 @@
 package com.example.service.impl;
 
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,18 +23,18 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TableServiceImpl implements TableService{
-	
+
 	TableRepository tr;
 
 	@Override
 	public List<Table> getAll() {
-		
+
 		return tr.findAll();
 	}
 
 	@Override
 	public List<Table> getByStatus(String status) {
-		
+
 		return tr.findByStatus(status);
 	}
 
@@ -47,21 +51,21 @@ public class TableServiceImpl implements TableService{
 	public boolean update(int id, Table table) {
 		// Get table for update
 		Optional<Table> opTable = tr.findById(id);
-		
+
 		if (!opTable.isPresent()) {
 			return false;
 		}
-		
+
 		Table t = opTable.get();
 		tr.save(t);
-		
+
 		// Check update
 		Optional<Table> upTable = tr.findById(id);
 		if (upTable.isPresent()) {
 			Table ut = upTable.get();
 			return t.equals(ut);
 		}
-		
+
 		return false;
 	}
 
@@ -95,21 +99,77 @@ public class TableServiceImpl implements TableService{
 	}
 
 	@Override
-	public List<TableDTO> mapToTableDTO() {
-		return null;
-	}
-
-	@Override
 	public List<Table> getFloor(String floor) {
 		List<Table> list = tr.findAll();
-		List<Table> rlist = new ArrayList<Table>();
-		
+		List<Table> rlist = new ArrayList<>();
+
 		list.forEach(item -> {
 			if (item.getName().contains(floor)) {
 				rlist.add(item);
 			}
 		});
-		
+
 		return rlist;
+	}
+
+	@Override
+	public List<TableDTO> getBasicInfo() {
+		List<Table> rawList = tr.findAll();
+		List<TableDTO> showList = new ArrayList<>();
+
+		// Map raw info
+		rawList.forEach(item -> {
+			TableDTO t = new TableDTO();
+			// For table reserve or occupied
+			if ("reserve".equals(item.getStatus()) || "occupied".equals(item.getStatus())) {
+				List<Object[]> raw = tr.getInfo(item.getId());
+				if (!raw.isEmpty()) {
+					Object[] info = raw.get(0);
+					try {
+					t = new TableDTO((Integer) info[0], (String) info[1], (String) info[2], (Integer) info[3], (String) info[4], (String) info[5], (BigDecimal) info[6]);
+
+					// Caculate time
+					String timestamp = (String) info[2];
+			        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
+			        LocalDateTime givenTime = LocalDateTime.parse(timestamp, formatter);
+
+			        LocalDateTime now = LocalDateTime.now();// Current time
+			        Duration duration = Duration.between(givenTime, now);// Calculate the difference
+
+			        // Get the difference in minutes
+			        long minutesDifference = duration.toMinutes();
+			        t.setStartTime(""+minutesDifference+"");
+
+					} catch (IndexOutOfBoundsException e) {
+						e.printStackTrace();
+					}
+				}
+			// For tables waiting or available
+			} else {
+				t.setId(item.getId());
+				t.setName(item.getName());
+				t.setNote(item.getNote());
+				t.setStatus(item.getStatus());
+				t.setStartTime("0");
+				t.setPeople(0);
+			}
+			showList.add(t);
+		});
+
+		return showList;
+	}
+
+	@Override
+	public List<TableDTO> divideFloor(String floor) {
+		List<TableDTO> rawList = this.getBasicInfo();
+		List<TableDTO> list = new ArrayList<>();
+
+		rawList.forEach(item -> {
+			if (item.getName().contains(floor)) {
+				list.add(item);
+			}
+		});
+
+		return list;
 	}
 }

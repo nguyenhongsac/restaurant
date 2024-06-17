@@ -94,3 +94,47 @@ secondlink.addEventListener('click', function(event) {
   const button = document.getElementById('2ndbutton');
   button.click();
 });
+
+function showAlert(message) {
+  var alertElement = document.getElementById('successAlert');
+  var alertContent = document.getElementById('alertContent');
+
+  alertElement.classList.remove('fade');
+  alertElement.classList.add('show');
+  alertContent.innerText = message;
+
+  // Automatically hide the alert after 3 seconds
+  setTimeout(function() {
+    alertElement.classList.remove('show');
+    alertElement.classList.add('fade');
+  }, 1500);
+}
+// Reserve bookmark
+const reserve = document.querySelector(".reserve");
+function reserveTable() {
+  reserve.classList.toggle('active');
+  let reserveIcon = document.getElementById("reserveIcon");
+  if(reserve.classList.contains('active')) {
+    reserveIcon.classList.remove('bi-bookmark');
+    reserveIcon.classList.add('bi-bookmark-check-fill');
+    showAlert(' Reserve table! ');
+  } else {
+    reserveIcon.classList.add('bi-bookmark');
+    reserveIcon.classList.remove('bi-bookmark-check-fill');
+    showAlert('Cancel reserving table! ');
+  }
+};
+// Modal handle
+function confirmReserve(id) {
+  let confirmReserveModal = new bootstrap.Modal('#tableReserve'+id, {
+    keyboard: false
+  });
+  let cancelReserveModal = new bootstrap.Modal('#tableReserve1'+id, {
+    keyboard: false
+  });
+  if (reserve.classList.contains('active')) {
+    cancelReserveModal.show();
+  } else {
+    confirmReserveModal.show();
+  }
+}

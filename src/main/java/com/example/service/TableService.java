@@ -9,15 +9,16 @@ public interface TableService {
 	public List<Table> getAll();
 	public List<Table> getFloor(String floor); // like A or B
 	public List<Table> getByStatus(String status);
-	
+
 	public boolean add(Table table);
 	public boolean update(int id, Table table);
 	public boolean delete(int id);
-	
+
 	public int countOccupiedTable1();
 	public int countOccupiedTable2();
 	public int countFloor1();
 	public int countFloor2();
-	
-	public List<TableDTO> mapToTableDTO();
+
+	public List<TableDTO> getBasicInfo();
+	public List<TableDTO> divideFloor(String floor);
 }
