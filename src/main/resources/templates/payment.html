@@ -1,0 +1,136 @@
+<!DOCTYPE>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<title th:text="'Thanh toán ' + ${orderId}"></title>
+<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+<script th:src="@{/js/payment.js}" defer></script>
+<style>
+body {
+	background-color: #f8f9fa;
+}
+
+.card {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+	font-size: 1.2rem;
+}
+
+.list-group-item {
+	font-size: 1rem;
+}
+
+#cashPaymentDetails {
+    margin-top: 15px;
+}
+
+</style>
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var OrderDetails = /*[[${OrderDetails}]]*/'[]';
+	var orderId = /*[[${orderId}]]*/'';
+	/*]]>*/
+	
+	// Tạo đối tượng để lưu trữ tổng số lượng và giá của từng món ăn
+        const aggregatedOrderDetails = {};
+
+        OrderDetails.forEach(item => {
+            if (aggregatedOrderDetails[item.foodId]) {
+                aggregatedOrderDetails[item.foodId].quantity += item.quantity;
+            } else {
+                aggregatedOrderDetails[item.foodId] = {
+                    foodId: item.foodId,
+                    itemName: item.itemName,
+                    quantity: item.quantity,
+                    price: item.price
+                };
+            }
+        });
+        
+    var totalPrice = 0;
+</script>
+</head>
+<body>
+	<div class="container mt-5">
+		<h2 class="text-center">Thanh Toán Hóa Đơn</h2>
+		<div class=" d-flex"></div>
+		<div class="card mt-4">
+			<div class="card-header bg-primary text-white">
+				<h4>Danh sách các món ăn</h4>
+			</div>
+			<div class="card-body">
+				<div class="row my-3 order">
+					<div
+						class="offset-sm-1 col-sm-6 p-0 fs-5 text-center border bg-secondary text-white"
+						th:text="${'Tên'}"></div>
+					<div
+						class="col-sm-1 p-0 fs-5 text-center border bg-secondary text-white"
+						th:text="${'SL'}"></div>
+					<div
+						class="col-sm-3 p-0 fs-5  text-center border bg-secondary text-white"
+						th:text="${'Giá'}"></div>
+				</div>
+				<div id="order-details">
+					<!-- 					<div th:id="${item.foodId}" class="row my-3"> -->
+					<!-- 						<div class="offset-sm-1 col-sm-6 p-0 fs-5" th:text="${item.itemName}"></div> -->
+					<!-- 						<div class="col-sm-1 p-0 fs-5 text-center" th:text="${item.quantity}"></div> -->
+					<!-- 						<div class="col-sm-3 p-0 fs-5  text-end" -->
+					<!-- 							th:text="${item.price + 'vnđ'}"></div> -->
+					<!-- 					</div> -->
+				</div>
+				<div class="mt-3 text-end">
+					<h5>
+						Tổng cộng: <span id="totalPrice"></span>
+					</h5>
+				</div>
+			</div>
+		</div>
+
+		<div class="card mt-4">
+			<div class="card-header bg-success text-white">
+				<h4>Chọn phương thức thanh toán</h4>
+			</div>
+			<div class="card-body">
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="paymentMethod"
+						id="cashPayment" value="cash"> <label
+						class="form-check-label" for="cashPayment"> Thanh toán
+						tiền mặt </label>
+				</div>
+
+				<div class="form-group mt-3" id="cashPaymentDetails"
+					style="display: none;">
+					<label for="amountGiven">Số tiền khách đưa:</label> <input
+						type="number" class="form-control" id="amountGiven"
+						placeholder="Nhập số tiền khách đưa">
+					<h5 class="mt-2">
+						Số tiền trả lại: <span id="changeDue">0 VND</span>
+					</h5>
+				</div>
+				<div class="form-check">
+					<input class="form-check-input" type="radio" name="paymentMethod"
+						id="bankTransfer" value="bank"> <label
+						class="form-check-label" for="bankTransfer"> Chuyển khoản
+						ngân hàng </label>
+				</div>
+
+				<div id="qrCode" class="mt-3" style="display: none;">
+					<h5>Mã QR thanh toán</h5>
+					<img src="path/to/your/qr-code.png" alt="QR Code" class="img-fluid">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="mt-4 text-center">
+		<button class="btn btn-primary" onclick="submitPayment()">Thanh
+			toán</button>
+	</div>
+	</div>
+
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

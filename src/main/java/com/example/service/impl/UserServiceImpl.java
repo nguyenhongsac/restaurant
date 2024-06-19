@@ -95,5 +95,11 @@ public class UserServiceImpl implements UserService{
 			return false;
 		}
 	}
+
+	@Override
+	public User findUserById(int id) {
+		// TODO Auto-generated method stub
+		return ur.getReferenceById(id);
+	}
 	
 }

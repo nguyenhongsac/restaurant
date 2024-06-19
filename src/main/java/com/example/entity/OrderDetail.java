@@ -37,6 +37,9 @@ public class OrderDetail {
     
     private String order_note;
     private int food_number;
+
+    private Timestamp order_detail_created_time;
+    private Timestamp order_detail_modified_time;
     private Timestamp order_created_time;
     private Timestamp order_modified_time;
 }

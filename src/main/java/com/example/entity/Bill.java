@@ -33,7 +33,7 @@ public class Bill {
     private Timestamp bill_created_time;
     private Timestamp bill_modified_time;
 
-    //@ManyToOne
-    // @JoinColumn(name = "user_id")
-    //private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

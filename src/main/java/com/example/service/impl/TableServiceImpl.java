@@ -112,4 +112,10 @@ public class TableServiceImpl implements TableService{
 		
 		return rlist;
 	}
+
+	@Override
+	public Table getById(int id) {
+		// TODO Auto-generated method stub
+		return tr.findById(id).get();
+	}
 }

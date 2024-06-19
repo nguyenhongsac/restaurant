@@ -30,12 +30,16 @@ public class OrderService {
 		orderRepository.save(order);
 	}
 	
-	public List<Order> getOrderByTable(Integer tableId) {
+	public Order getOrderByTable(Integer tableId) {
 		return orderRepository.findByTableId(tableId);
 		
 	}
     public Order getOrderByOrder(Integer orderId) {
         return orderRepository.findByOrderId(orderId);
+    }
+    
+    public Order getLatestOrderByTableId(Integer tableId) {
+        return orderRepository.findLatestOrderByTableId(tableId);
     }
 }
 

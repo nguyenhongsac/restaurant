@@ -33,6 +33,7 @@ public class Order {
 
     private Integer kin_id;
     private Integer table_id;
+    private String order_status;
     private String order_number;
     private Timestamp order_created_time;
     private Timestamp order_modified_time;

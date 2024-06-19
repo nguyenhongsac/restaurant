@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-<title th:text="'Bàn ' + ${orderId}"></title>
+<title th:text="'Bàn ' + ${thisTable.name}"></title>
 <meta content="" name="description">
 <meta content="" name="keywords">
 
@@ -45,7 +45,7 @@
 <script th:inline="javascript">
 	/*<![CDATA[*/
 	var orderDetails = /*[[${OrderDetailDTOs}]]*/'[]';
-	var orderId = /*[[${orderId}]]*/'';
+	var tableId = /*[[${tableId}]]*/'';
 	var tables = /*[[${tables}]]*/'[]';
 	/*]]>*/
 	var orderItems = [];
@@ -360,13 +360,13 @@
 				</div>
 
 				<!-- Bill -->
-				<div th:id="bill" th:class="${orderId}" style="overflow: auto;"
+				<div th:id="bill" th:class="${tableId}" style="overflow: auto;"
 					th:onload="updateBill()">
 					<!-- 					<div th:each="item : ${OrderDetailDTOs}"> -->
 					<!-- 						<div th:id="${item.foodId}" class="row my-3"> -->
 					<!-- 							<input min="0" th:id="${item.foodId}" type="number" -->
 					<!-- 								class="quantity col-sm-1 p-0 ms-3 fs-5" -->
-					<!-- 								th:value="${item.quantity}" th:data-note="${orderId}" -->
+					<!-- 								th:value="${item.quantity}" th:data-note="${tableId}" -->
 					<!-- 								onchange="updateQuantity(this.value, this.id, this.getAttribute('data-note'))" /> -->
 					<!-- 							<div class="col-sm-7 p-0 fs-5" th:text="${item.itemName}"></div> -->
 					<!-- 							<div class="col-sm-2 p-0 ms-2 fs-5" -->
@@ -378,7 +378,7 @@
 				<div class="row text-center mt-3 mb-5 bot-bill">
 					<div class="col-sm-12">
 						<button id="total" type="button"
-							class="btn btn-outline-primary fs-5">Thanh Toán</button>
+							class="btn btn-outline-primary fs-5" onclick="payment()">Thanh Toán</button>
 					</div>
 				</div>
 			</div>

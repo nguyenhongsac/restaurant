@@ -146,9 +146,9 @@ function deleteAllBill() {
 //Lưu order khi bấm nút back quay về home
 document.getElementById('back').onclick = function() {
 	//console.log(orderItems)
-	const orderId = document.getElementById('bill').className;
+	const tableId = document.getElementById('bill').className;
 	// Gửi thông tin đơn hàng về server
-	fetch('/order/' + orderId + '/save', {
+	fetch('/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -160,9 +160,9 @@ document.getElementById('back').onclick = function() {
 
 //Chuyển order sang bàn khác
 function tableClick(table) {
-	const tableId = table.id;
+	const newTableId = table.id;
 
-	fetch('/order/' + orderId + '/changeTable/' + tableId, {
+	fetch('/order/' + tableId + '/changeTable/' + newTableId, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -171,13 +171,16 @@ function tableClick(table) {
 	const button = document.getElementById('dropdownTableButton');
 	button.textContent = table.textContent;
 	console.log('Chuyển bàn thành công!');
+	setTimeout(function() {
+		window.location.href = '/order/' + newTableId
+	}, 1000)
 }
 
 
 //Lưu danh sách order về server và in phiếu báo bếp
 function printOrder() {
 	// Gửi thông tin đơn hàng về server
-	fetch('/order/' + orderId + '/save', {
+	fetch('/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -186,21 +189,38 @@ function printOrder() {
 	})
 	console.log(orderItems);
 	//Gửi yêu cầu in phiếu
-    fetch('/order/' + orderId + '/print-order', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.blob())
-    .then(blob => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'order ' + orderId + '.pdf');
-        document.body.appendChild(link);
-        link.click();
-        link.parentNode.removeChild(link);
-    })
-    .catch(error => console.error('Error:', error));
+	fetch('/order/' + tableId + '/print-order', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(response => response.blob())
+		.then(blob => {
+			const url = window.URL.createObjectURL(new Blob([blob]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'order ' + tableId + '.pdf');
+			document.body.appendChild(link);
+			link.click();
+			link.parentNode.removeChild(link);
+		})
+		.catch(error => console.error('Error:', error));
+}
+
+function payment() {
+	fetch('/order/' + tableId + '/save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(orderItems)
+	})
+	setTimeout(function() {
+		if (document.querySelector('.order-item') != null) {
+			window.location.href = '/payment/' + tableId;
+		} else {
+			window.alert("Không có mặt hàng nào để thanh toán!");
+		}
+	}, 200)
 }
