@@ -21,9 +21,10 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-@Service
-@AllArgsConstructor
+
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Service
 public class TableServiceImpl implements TableService{
 
 	TableRepository tr;
@@ -197,5 +198,8 @@ public class TableServiceImpl implements TableService{
 	public Table getAvailable() {
 		return tr.findAvailable();
 	}
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 }

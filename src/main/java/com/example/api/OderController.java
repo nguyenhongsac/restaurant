@@ -91,7 +91,7 @@ public class OderController {
 			bill.setBill_created_time(new Timestamp(System.currentTimeMillis()));
 			bill.setBill_modified_time(new Timestamp(System.currentTimeMillis()));
 			bill.setBill_status("null");
-
+			bill.setBill_people(1);
 			billService.saveBill(bill);
 
 			// Tạo order theo bill vừa tạo
@@ -116,12 +116,16 @@ public class OderController {
 		for (OrderDetail item : orderDetails) {
 			OrderDetailDTOs.add(
 					new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(), item.getFood_number(),
-							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_note()));
+							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_foodnotes()));
 		}
 
 		// Table
 		Table thisTable = tableService.getById(tableId);
+<<<<<<< Updated upstream
 		thisTable.setStatus("occupied");
+=======
+		thisTable.setStatus("busy");
+>>>>>>> Stashed changes
 		tableService.update(thisTable);
 		// Bàn hiện tại
 		List<Table> tables = new ArrayList<>();
@@ -198,7 +202,7 @@ public class OderController {
 					newOrderDetail.setFood_number(dto.getQuantity());
 					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 					newOrderDetail.setOrder_detail_created_time(timestamp);
-					newOrderDetail.setOrder_note(dto.getNote());
+					newOrderDetail.setOrder_foodnotes(dto.getNote());
 					// Lưu OrderDetail vào cơ sở dữ liệu
 					orderDetailService.saveOrderDetail(newOrderDetail);
 				}
@@ -238,7 +242,11 @@ public class OderController {
 
 		// Đổi trạng thái bàn chuyển sang busy
 		Table NewTable = tableService.getById(tableId);
+<<<<<<< Updated upstream
 		NewTable.setStatus("occupied");
+=======
+		NewTable.setStatus("busy");
+>>>>>>> Stashed changes
 		tableService.update(NewTable);
 
 		orderService.updateOrder(orderEntity);

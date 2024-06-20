@@ -33,7 +33,7 @@ public class OrderDetail {
     @JoinColumn(name = "food_id")
     private FoodEntity food;
 
-    private String order_note;
+    private String order_foodnotes;
     private int food_number;
 
     private Timestamp order_detail_created_time;

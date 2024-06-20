@@ -44,7 +44,7 @@ public class PaymentController {
 		// Bill
 		for (OrderDetail item : orderDetails) {
 			OrderDetailDTOs.add(new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(), item.getFood_number(),
-					item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_note()));
+					item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_foodnotes()));
 		}
 		
 		System.out.println(OrderDetailDTOs.size());

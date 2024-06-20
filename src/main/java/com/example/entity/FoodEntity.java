@@ -43,8 +43,11 @@ public class FoodEntity {
 	public Date foodCreatedTime;
 	@Column
 	public Date foodModifiedTime;
+<<<<<<< Updated upstream
+=======
+	
+>>>>>>> Stashed changes
 	@ManyToOne
     @JoinColumn(name="cat_id")
 	public CategoryEntity category;
-
 }
