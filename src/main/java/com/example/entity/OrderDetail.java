@@ -38,6 +38,4 @@ public class OrderDetail {
 
     private Timestamp order_detail_created_time;
     private Timestamp order_detail_modified_time;
-    private Timestamp order_created_time;
-    private Timestamp order_modified_time;
 }

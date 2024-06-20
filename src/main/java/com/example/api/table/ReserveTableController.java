@@ -42,6 +42,7 @@ public class ReserveTableController {
 		
 		// Update status of a reserve table
 		Table table = tableService.getAvailable();
+		table.setNote("");
 		table.setStatus("reserve");
 		table.setNote(reserveTable.getNote());
 		if (tableService.update(table)) {
@@ -53,7 +54,7 @@ public class ReserveTableController {
 			user = userService.addUser(user); // add and update current variable
 			
 			Bill bill = new Bill();
-			bill.setUser_id(user.getId());
+			bill.setUser(user);
 			bill.setBill_start_time(reserveTable.getDate() + " " +reserveTable.getTime());
 			bill.setBill_people(reserveTable.getPeople());
 			bill = billService.saveBill(bill);
@@ -81,6 +82,7 @@ public class ReserveTableController {
 		// Update status of a reserve table
 		Table table = tableService.getById(reserveTable.getTableId());
 		table.setStatus("reserve");
+		table.setNote("");
 		table.setNote(reserveTable.getNote());
 		if (tableService.update(table)) {
 			// Set user, bill data for reserve
@@ -90,7 +92,7 @@ public class ReserveTableController {
 			user = userService.addUser(user); // add and update current variable
 			
 			Bill bill = new Bill();
-			bill.setUser_id(user.getId());
+			bill.setUser(user);
 			bill.setBill_start_time(reserveTable.getDate() + " " +reserveTable.getTime()+":00");
 			bill.setBill_people(reserveTable.getPeople());
 			bill = billService.saveBill(bill);

@@ -2,6 +2,7 @@ package com.example.entity;
 
 import java.sql.Timestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,6 +34,7 @@ public class Order {
     private Integer table_id;
     private String order_status;
     private String order_number;
+    @Column(name="order_created_time")
     private Timestamp order_created_time;
     private Timestamp order_modified_time;
 

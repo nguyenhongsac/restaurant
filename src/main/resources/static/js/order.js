@@ -218,7 +218,7 @@ function payment() {
 	})
 	setTimeout(function() {
 		if (document.querySelector('.order-item') != null) {
-			window.location.href = '/payment/' + tableId;
+			window.location.href = '/restaurant/payment/' + tableId;
 		} else {
 			window.alert("Không có mặt hàng nào để thanh toán!");
 		}

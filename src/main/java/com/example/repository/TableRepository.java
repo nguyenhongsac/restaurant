@@ -13,9 +13,9 @@ public interface TableRepository extends JpaRepository<Table, Integer>{
 
 	public boolean existsByName(String name);
 
-	@Query(value = "SELECT count(*) FROM tbltable WHERE table_name LIKE '%A%' AND table_status = 'occupied'", nativeQuery = true)
+	@Query(value = "SELECT count(*) FROM tbltable WHERE table_name LIKE '%A%' AND (table_status = 'occupied' OR table_status = 'reserve')", nativeQuery = true)
 	public int countOccupiedFloor1();
-	@Query(value = "SELECT count(*) FROM tbltable WHERE table_name LIKE '%B%' AND table_status = 'occupied'", nativeQuery = true)
+	@Query(value = "SELECT count(*) FROM tbltable WHERE table_name LIKE '%B%' AND (table_status = 'occupied' OR table_status = 'reserve')", nativeQuery = true)
 	public int countOccupiedFloor2();
 	@Query(value = "SELECT count(*) FROM tbltable WHERE table_name LIKE '%A%'", nativeQuery = true)
 	public int countFloor1();

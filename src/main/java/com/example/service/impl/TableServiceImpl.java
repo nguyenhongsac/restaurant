@@ -129,6 +129,7 @@ public class TableServiceImpl implements TableService{
 		List<TableDTO> showList = new ArrayList<>();
 
 		// Map raw info
+		try {
 		rawList.forEach(item -> {
 			TableDTO t = new TableDTO();
 			// For table reserve or occupied
@@ -171,6 +172,9 @@ public class TableServiceImpl implements TableService{
 			}
 			showList.add(t);
 		});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return showList;
 	}
@@ -192,5 +196,6 @@ public class TableServiceImpl implements TableService{
 	@Override
 	public Table getAvailable() {
 		return tr.findAvailable();
+	}
 
 }

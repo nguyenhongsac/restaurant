@@ -28,8 +28,11 @@ class RestaurantApplicationTests {
 
 		LocalDateTime currentTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        String formattedCurrentTime = currentTime.format(formatter);
-        System.out.println("Current Time: " + formattedCurrentTime);
+        
+        LocalDateTime givenTime = LocalDateTime.of(2024, 06, 20, 14, 30, 00);
+        LocalDateTime now = LocalDateTime.now();// Current time
+        Duration duration = Duration.between(givenTime, now);
+        long minutesDifference = duration.toMinutes();
+        System.out.println(minutesDifference);
 	}
 }

@@ -30,6 +30,7 @@ import com.example.service.impl.CategoryServiceImpl;
 import com.example.service.impl.FoodServiceImpl;
 import com.example.service.impl.TableServiceImpl;
 import com.example.service.impl.UserServiceImpl;
+import com.example.util.TimeManage;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -41,6 +42,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import lombok.AllArgsConstructor;
 
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -51,6 +53,7 @@ import java.nio.charset.StandardCharsets;
 
 
 @Controller
+@AllArgsConstructor
 @RequestMapping("/order")
 public class OderController {
 	@Autowired
@@ -68,6 +71,8 @@ public class OderController {
 
 	@Autowired
 	private UserServiceImpl userService;
+	
+	private TimeManage timeManage;
 
 	List<OrderDetailDTO> OrderDetailDTOs = new ArrayList<>();
 
@@ -116,8 +121,8 @@ public class OderController {
 
 		// Table
 		Table thisTable = tableService.getById(tableId);
-		thisTable.setStatus("busy");
-		tableService.update(tableId, thisTable);
+		thisTable.setStatus("occupied");
+		tableService.update(thisTable);
 		// Bàn hiện tại
 		List<Table> tables = new ArrayList<>();
 		tableService.getByStatus("available").forEach(item -> { // Lấy danh sách bàn trống
@@ -213,7 +218,7 @@ public class OderController {
 			billService.deleteBill(bill.getBill_id());
 			Table table = tableService.getById(tableId);
 			table.setStatus("available");
-			tableService.update(tableId, table);
+			tableService.update(table);
 		}
 		return "redirect:/order/" + tableId;
 	}
@@ -229,12 +234,12 @@ public class OderController {
 		// Đổi trạng thái bàn gốc sang available
 		Table OldTable = tableService.getById(OldTableId);
 		OldTable.setStatus("available");
-		tableService.update(OldTableId, OldTable);
+		tableService.update(OldTable);
 
 		// Đổi trạng thái bàn chuyển sang busy
 		Table NewTable = tableService.getById(tableId);
-		NewTable.setStatus("busy");
-		tableService.update(tableId, NewTable);
+		NewTable.setStatus("occupied");
+		tableService.update(NewTable);
 
 		orderService.updateOrder(orderEntity);
 		return "redirect:/order/" + tableId;

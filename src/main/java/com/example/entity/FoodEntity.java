@@ -34,15 +34,15 @@ public class FoodEntity {
 	@Column
 	public String foodNote;
 	@Column
-	public byte foodAvaiable;
+	public byte foodAvailable;
 	@Column
 	public String foodAllergenInfo;
 	@Column
 	public String foodIngredients;
 	@Column
-	public Date foodCreateTime;
+	public Date foodCreatedTime;
 	@Column
-	public Date foodModifieTime;
+	public Date foodModifiedTime;
 	@ManyToOne
     @JoinColumn(name="cat_id")
 	public CategoryEntity category;

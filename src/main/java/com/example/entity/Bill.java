@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -34,7 +35,6 @@ public class Bill {
     private int bill_people;
     private String bill_start_time;
     private String bill_end_time;
-    private int user_id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
