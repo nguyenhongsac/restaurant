@@ -21,7 +21,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryEntity findById(Integer catId) {
 		// TODO Auto-generated method stub
-		
+
 		return this.categoryRepository.findById(catId).get();
 	}
 

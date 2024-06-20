@@ -1,4 +1,4 @@
-package com.example.api;
+package com.example.api.table;
 
 import java.util.List;
 
@@ -23,32 +23,32 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("/api/table")
 public class TableController {
-	
+
 	TableService tableService;
-	
+
 	@GetMapping("/getall")
 	public List<Table> getAll() {
 
 		return tableService.getAll();
 	}
-	
+
 	@PostMapping("/add") // missing password encoder
 	public ResponseEntity<String> add(@RequestBody Table tableDTO) {
 		if (tableService.add(tableDTO)) {
 			return ResponseEntity.ok().body("Add table successful!");
 		}
-		
+
 		return ResponseEntity.ok().body("Add table failed!");
 	}
-	
+
 	@PostMapping("/update")
 	public ResponseEntity<String> update(@RequestParam int id, @RequestBody Table tableDTO) {
-		if (tableService.update(id, tableDTO)) {
+		if (tableService.update(tableDTO)) {
 			return ResponseEntity.ok().body("Update table "+id+" successful!");
 		}
 		return ResponseEntity.ok().body("Update table "+id+" failed!");
 	}
-	
+
 	@DeleteMapping("/del")
 	public ResponseEntity<String> del(@RequestParam int id) {
 		if (tableService.delete(id)) {

@@ -1,10 +1,6 @@
 package com.example.api;
 
-import java.util.ArrayList;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,37 +21,37 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal=true)
 @RequestMapping("/api/user")
 public class UserController {
-	
+
 	UserService userService;
-	
+
 	@GetMapping("/get")
 	public User login(@RequestParam String username, @RequestParam String password) {
 		User u = userService.authenticate(username, password);
-		
+
 		if (u.getPassword().equals(password)) {
 			return u;
 		}
-		
+
 		return null;
 	}
-	
+
 	@PostMapping("/add") // missing password encoder
 	public ResponseEntity<String> add(@RequestBody User userDTO) {
 		if (userService.addUser(userDTO)!=null) {
 			return ResponseEntity.ok().body("Add user successful!");
 		}
-		
+
 		return ResponseEntity.ok().body("Add user failed!");
 	}
-	
+
 	@PostMapping("/update")
 	public ResponseEntity<String> update(@RequestParam int id, @RequestBody User userDTO) {
-		if (userService.updateUser(id, userDTO)!=null) {
+		if (userService.updateUser(userDTO)!=null) {
 			return ResponseEntity.ok().body("Update user "+id+" successful!");
 		}
 		return ResponseEntity.ok().body("Update user "+id+" failed!");
 	}
-	
+
 	@DeleteMapping("/del")
 	public ResponseEntity<String> del(@RequestParam int id) {
 		if (userService.deleteUser(id)) {

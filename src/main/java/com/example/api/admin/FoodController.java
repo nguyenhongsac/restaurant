@@ -12,12 +12,12 @@ import com.example.service.FoodService;
 
 @Controller
 public class FoodController {
-	
+
 	@Autowired
 	private FoodService foodService;
 	@RequestMapping("/food")
 	public String food(Model model) {
-		List<FoodEntity> list = this.foodService.getAll(); 
+		List<FoodEntity> list = this.foodService.getAll();
 		model.addAttribute("list", list);
 		return "food-data";
 	}

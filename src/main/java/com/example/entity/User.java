@@ -9,8 +9,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
 @Getter
@@ -26,7 +30,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="user_id")
-	int id;
+	Integer id;
 	@Column(name="user_name")
 	String name;
 	@Column(name="user_password")
@@ -41,6 +45,8 @@ public class User {
 	String gender;
 	@Column(name="user_phone")
 	String phone;
+	@Column(name="user_email")
+	String email;
 	@Column(name="user_address")
 	String address;
 	@Column(name="user_role")
@@ -59,5 +65,5 @@ public class User {
 	Integer applyyear;
 	@Column(name="user_deleted")
 	Boolean deleted;
-	
+
 }
