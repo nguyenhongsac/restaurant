@@ -22,46 +22,64 @@
 //	}
 //}
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.getElementById('bankTransfer').addEventListener('change', function () {
-        if (this.checked) {
-            document.getElementById('qrCode').style.display = 'block';
-            document.getElementById('cashPaymentDetails').style.display = 'none';
-        }
-    });
+document.addEventListener('DOMContentLoaded', function() {
+	document.getElementById('bankTransfer').addEventListener('change', function() {
+		if (this.checked) {
+			document.getElementById('qrCode').style.display = 'block';
+			document.getElementById('cashPaymentDetails').style.display = 'none';
+		}
+	});
 
-    document.getElementById('cashPayment').addEventListener('change', function () {
-        if (this.checked) {
-            document.getElementById('qrCode').style.display = 'none';
-            document.getElementById('cashPaymentDetails').style.display = 'block';
-        }
-    });
+	document.getElementById('cashPayment').addEventListener('change', function() {
+		if (this.checked) {
+			document.getElementById('qrCode').style.display = 'none';
+			document.getElementById('cashPaymentDetails').style.display = 'block';
+		}
+	});
 
-    document.getElementById('amountGiven').addEventListener('input', function () {
-        const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' VND', '').replace(',', ''));
-        const amountGiven = parseFloat(this.value);
-        const changeDue = amountGiven - totalAmount;
-        document.getElementById('changeDue').textContent = changeDue > 0 ? changeDue + ' VND' : '0 VND';
-    });
+	document.getElementById('amountGiven').addEventListener('input', function() {
+		const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' VND', '').replace(',', ''));
+		const amountGiven = parseFloat(this.value);
+		const changeDue = amountGiven - totalAmount;
+		document.getElementById('changeDue').textContent = changeDue > 0 ? changeDue + ' VND' : '0 VND';
+	});
 });
 
 function submitPayment() {
-    const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-    if (paymentMethod === 'cash') {
-        const amountGiven = parseFloat(document.getElementById('amountGiven').value);
-        const totalAmount = parseFloat(document.querySelector('[th\\:text="${total}"]').textContent.replace(' VND', '').replace(',', ''));
-        if (amountGiven >= totalAmount) {
-            alert(`Thanh toán thành công. Số tiền trả lại: ${amountGiven - totalAmount} VND`);
-            // Add logic to handle payment submission
-        } else {
-            alert('Số tiền khách đưa không đủ để thanh toán');
-        }
-    } else if (paymentMethod === 'bank') {
-        alert('Bạn đã chọn thanh toán bằng chuyển khoản ngân hàng');
-        // Add logic to handle payment submission
-    } else {
-        alert('Vui lòng chọn phương thức thanh toán');
-    }
+	const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+	if (paymentMethod === 'cash') {
+		const amountGiven = parseFloat(document.getElementById('amountGiven').value);
+		const totalAmount = parseFloat(document.querySelector('[th\\:text="${total}"]').textContent.replace(' VND', '').replace(',', ''));
+		if (amountGiven >= totalAmount) {
+			alert(`Thanh toán thành công. Số tiền trả lại: ${amountGiven - totalAmount} VND`);
+			// Add logic to handle payment submission
+		} else {
+			alert('Số tiền khách đưa không đủ để thanh toán');
+		}
+	} else if (paymentMethod === 'bank') {
+		alert('Bạn đã chọn thanh toán bằng chuyển khoản ngân hàng');
+		// Add logic to handle payment submission
+	} else {
+		alert('Vui lòng chọn phương thức thanh toán');
+	}
+
+	fetch('/payemnt/' + tableId + '/print', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(response => response.blob())
+		.then(blob => {
+			const url = window.URL.createObjectURL(new Blob([blob]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'Bill ' + tableId + '.pdf');
+			document.body.appendChild(link);
+			link.click();
+			link.parentNode.removeChild(link);
+		})
+		.catch(error => console.error('Error:', error));
 }
 
 
