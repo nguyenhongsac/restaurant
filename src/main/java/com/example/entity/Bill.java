@@ -36,7 +36,7 @@ public class Bill {
     private String bill_end_time;
     private int user_id;
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import com.example.entity.OrderDetail;
 import com.example.entity.Table;
 
 public interface TableRepository extends JpaRepository<Table, Integer>{
@@ -33,3 +34,4 @@ public interface TableRepository extends JpaRepository<Table, Integer>{
 	@Query(value = "SELECT * FROM tbltable WHERE table_status = 'available' LIMIT 1", nativeQuery = true)
 	public Table findAvailable();
 }
+

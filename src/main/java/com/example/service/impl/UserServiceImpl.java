@@ -109,4 +109,9 @@ public class UserServiceImpl implements UserService{
 		}
 	}
 
+	@Override
+	public User findUserById(int id) {
+		// TODO Auto-generated method stub
+		return ur.getReferenceById(id);
+	}
 }

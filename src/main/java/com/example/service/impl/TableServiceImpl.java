@@ -192,5 +192,5 @@ public class TableServiceImpl implements TableService{
 	@Override
 	public Table getAvailable() {
 		return tr.findAvailable();
-	}
+
 }
