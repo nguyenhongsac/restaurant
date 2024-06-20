@@ -29,9 +29,9 @@ public class Order {
     @JoinColumn(name = "bill_id")
     private Bill bill;
 
-    private Integer kin_id;
+//    private Integer kin_id;
     private Integer table_id;
-    private String order_number;
+    private Integer order_number;
     private Timestamp order_created_time;
     private Timestamp order_modified_time;
 

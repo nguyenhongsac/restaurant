@@ -14,18 +14,26 @@ import com.example.dto.TableDTO;
 import com.example.entity.Table;
 import com.example.repository.TableRepository;
 import com.example.service.TableService;
+import com.example.util.TimeManage;
 
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TableServiceImpl implements TableService{
 
 	TableRepository tr;
-
+	TimeManage time;
+	
+	@Override
+	public Table getById(int id) {
+		return tr.findById(id).get();
+	}
+	
 	@Override
 	public List<Table> getAll() {
 
@@ -43,24 +51,27 @@ public class TableServiceImpl implements TableService{
 		if (tr.existsByName(t.getName())) {
 			return false;
 		}
+		t.setCreatedTime(time.getCurrentDateTime());
+		t.setModifiedTime(time.getCurrentDateTime());
 		tr.save(t);
 		return true;
 	}
 
 	@Override
-	public boolean update(int id, Table table) {
+	public boolean update(Table table) {
 		// Get table for update
-		Optional<Table> opTable = tr.findById(id);
+		Optional<Table> opTable = tr.findById(table.getId());
 
 		if (!opTable.isPresent()) {
 			return false;
 		}
 
 		Table t = opTable.get();
+		t.setModifiedTime(time.getCurrentDateTime());
 		tr.save(t);
 
 		// Check update
-		Optional<Table> upTable = tr.findById(id);
+		Optional<Table> upTable = tr.findById(table.getId());
 		if (upTable.isPresent()) {
 			Table ut = upTable.get();
 			return t.equals(ut);
@@ -130,7 +141,12 @@ public class TableServiceImpl implements TableService{
 
 					// Caculate time
 					String timestamp = (String) info[2];
-			        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
+					DateTimeFormatter formatter;
+					if (timestamp.length() < 19) { // CHECK IF HAVE SECONDS ATTRIBUTES
+						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+					} else {
+						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
+					}
 			        LocalDateTime givenTime = LocalDateTime.parse(timestamp, formatter);
 
 			        LocalDateTime now = LocalDateTime.now();// Current time
@@ -171,5 +187,10 @@ public class TableServiceImpl implements TableService{
 		});
 
 		return list;
+	}
+	
+	@Override
+	public Table getAvailable() {
+		return tr.findAvailable();
 	}
 }

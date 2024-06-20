@@ -45,6 +45,8 @@ public class User {
 	String gender;
 	@Column(name="user_phone")
 	String phone;
+	@Column(name="user_email")
+	String email;
 	@Column(name="user_address")
 	String address;
 	@Column(name="user_role")

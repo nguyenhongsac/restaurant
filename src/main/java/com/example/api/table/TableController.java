@@ -43,7 +43,7 @@ public class TableController {
 
 	@PostMapping("/update")
 	public ResponseEntity<String> update(@RequestParam int id, @RequestBody Table tableDTO) {
-		if (tableService.update(id, tableDTO)) {
+		if (tableService.update(tableDTO)) {
 			return ResponseEntity.ok().body("Update table "+id+" successful!");
 		}
 		return ResponseEntity.ok().body("Update table "+id+" failed!");

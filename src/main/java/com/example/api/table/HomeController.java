@@ -1,4 +1,4 @@
-package com.example.api;
+package com.example.api.table;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,17 +55,12 @@ public class HomeController {
         model.addAttribute("floor1", (total1-occupiedFloor1) + "/" + total1);
         model.addAttribute("floor2", (total2-occupiedFloor2) + "/" + total2);
 
-        // Set table -- change to DTO later
+        // Set table
         model.addAttribute("tableFloor1", tableList1);
         model.addAttribute("tableFloor2", tableList2);
 
         return "home";
     }
-
-	@PostMapping("/home/update")
-	public String update(Model model) {
-		return "redirect:/login";
-	}
 
 	@GetMapping("/home/test")
 	public List<TableDTO> haha() {

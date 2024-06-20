@@ -139,7 +139,6 @@ function deleteAllBill() {
 		updateBill;
 	}
 }
-
 document.getElementById('back').onclick = function() {
 	console.log(orderItems)
 	const orderId = document.getElementById('bill').className;

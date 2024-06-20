@@ -445,30 +445,31 @@
 			            <div class="text-primary-emphasis mt-1" th:text="${table.note}"></div>
 			          	<!-- For reserve -->
 			            <div th:if="${table.status == 'reserve'}" class="reserve active position-absolute top-50 end-0 me-5 translate-middle-y">
-			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
-			                <i id="reserveIcon" class="bi bi-bookmark-check-fill fs-1 gap-0"></i>
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ', false)'">
+			                <i th:attr="id='reserveIcon' + ${table.id}" class="bi bi-bookmark-check-fill fs-1 gap-0"></i>
 			                <span>Reserve</span>
 			              </a>
 			            </div>
 			            <div th:if="${table.status == 'available'}" class="reserve position-absolute top-50 end-0 me-5 translate-middle-y">
-			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
-			                <i id="reserveIcon" class="bi bi-bookmark fs-1 gap-0"></i>
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ', true)'">
+			                <i th:attr="id='reserveIcon' + ${table.id}" class="bi bi-bookmark fs-1 gap-0"></i>
 			                <span>Reserve</span>
 			              </a>
 			            </div>
 			          </div>
 			        </div>
 			        <div class="modal-footer justify-content-between">
-			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
+			          <a th:href="@{'/order/'+${table.id}}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
 			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-primary">Payment</button></a>
+			          <a th:href="@{'/payment/'+${table.id}}"><button type="button" class="btn btn-primary">Payment</button></a>
 			        </div>
 			      </div>
 			    </div> 
-			   </div> <!-- End modal of each table -->
+			   </div> 
 			   
-			   <div th:if="${table.status == 'reserve' or table.status == 'available'}" class="modal fade" th:attr="id='tableReserve' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
-			    <div class="modal-dialog modal-dialog-centered">
+			   <!-- Confirm reserve -->
+			   <div th:if="${table.status == 'available'}" class="modal fade" th:attr="id='tableReserve' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
+			    <div class="modal-dialog modal-dialog-centered modal-lg">
 			      <div class="modal-content">
 			        <div class="modal-header">
 			          <h5 class="modal-title">Confirm reserve <span th:text="${table.name}"></span> - 1<sup>st</sup> Floor</h5>
@@ -477,29 +478,64 @@
 			        <div class="modal-body">
 			          <div class="d-flex fs-5 my-3 justify-content-around">
 			            <!-- Reserve Info Form -->
-			            <form id="reserveForm">
+			            <form th:attr="id='reserveForm'+${table.id}" class="w-100 mx-2 needs-validation" novalidate>
 			              <div class="d-flex flex-row mb-2">
-			                <label for="inputDate" class="col-form-label me-2">Date</label>
-			                <input type="date" class="form-control">
+			                <label for="inputName" class="col-form-label me-2">Name</label>
+			                <input type="text" name="userName" class="form-control" required="">
 			              </div>
 			              <div class="d-flex flex-row mb-2">
-			                <label for="inputTime" class="col-form-label me-2">Time</label>
-			                <input type="time" class="form-control">
+			                <div class="col-8 d-flex flex-row">
+			                  <label for="inputPhone" class="col-form-label me-2">Phone</label>
+			                  <input type="text" name="userPhone" class="form-control" required="">
+			                </div>
+			                <div class="col-4 d-flex flex-row">
+			                  <label for="inputPeople" class="col-form-label ms-2 me-2">People</label>
+			                  <input type="number" name="people" class="form-control" required="">
+			                </div>
+			              </div>
+			              <div class="d-flex flex-row mb-2">
+			                <label for="inputDate" class="col-form-label me-4">Date</label>
+			                <input type="date" name="date" class="form-control" required="">
+			              </div>
+			              <div class="d-flex flex-row mb-2"> 
+			                <label for="inputTime" class="col-form-label me-4" >Time</label>
+			                <input type="time" name="time" class="form-control" required="">
 			              </div>
 			              <div class="d-flex flex-row">
-			                <label for="inputNote" class="col-form-label">Note</label>
-			                <textarea class="form-control" style="height: 80px;"></textarea>
+			                <label for="inputNote" class="col-form-label me-4">Note</label>
+			                <textarea class="form-control" name="note" style="height: 80px;"></textarea>
 			              </div>
 			            </form>
 			          </div>
 			        </div>
 			        <div class="modal-footer">
-			          <a><button type="button" onclick="reserveTable()" data-bs-dismiss="modal" class="btn btn-primary">Reserve</button></a>
+				        <a><button type="button" th:onclick="'reserveTable('+${table.id}+',true)'" class="btn btn-primary">Reserve</button></a>
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				    </div>
+			      </div>
+			    </div>
+			  </div>
+			  
+			  <!-- Cancel reserve -->
+			  <div th:if="${table.status == 'reserve'}" class="modal fade" th:attr="id='tableReserveC' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
+			    <div class="modal-dialog modal-dialog-centered">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h5 class="modal-title">Cancel reserve <span>A1</span> - 1<sup>st</sup> Floor</h5>
+			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        </div>
+			        <div class="modal-body">
+			          <div class="d-flex fs-5 my-3">
+			            Are you sure to cancel reserving this table?
+			          </div>
+			        </div>
+			        <div class="modal-footer">
+			          <a><button type="button" th:onclick="'reserveTable(' + ${table.id} + ',false)'"  data-bs-dismiss="modal" class="btn btn-primary">Cancel</button></a>
 			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 			        </div>
 			      </div>
 			    </div>
-			  </div>
+			  </div> <!-- End modal of each table -->
 	     
 		    </div> <!-- End table in floor 1 -->
 		</div> <!-- End First Floor -->
@@ -564,61 +600,97 @@
 			            <div class="text-primary-emphasis mt-1" th:text="${table.note}"></div>
 			          	<!-- For reserve -->
 			            <div th:if="${table.status == 'reserve'}" class="reserve active position-absolute top-50 end-0 me-5 translate-middle-y">
-			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
-			                <i id="reserveIcon" class="bi bi-bookmark-check-fill fs-1 gap-0"></i>
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ',false)'">
+			                <i th:attr="id='reserveIcon' + ${table.id}" class="bi bi-bookmark-check-fill fs-1 gap-0"></i>
 			                <span>Reserve</span>
 			              </a>
 			            </div>
 			            <div th:if="${table.status == 'available'}" class="reserve position-absolute top-50 end-0 me-5 translate-middle-y">
-			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ')'">
-			                <i id="reserveIcon" class="bi bi-bookmark fs-1 gap-0"></i>
+			              <a class="d-flex flex-column align-items-center" data-bs-dismiss="modal" th:onclick="'confirmReserve(' + ${table.id} + ',true)'">
+			                <i th:attr="id='reserveIcon' + ${table.id}" class="bi bi-bookmark fs-1 gap-0"></i>
 			                <span>Reserve</span>
 			              </a>
 			            </div>
 			          </div>
 			        </div>
 			        <div class="modal-footer justify-content-between">
-			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
+			          <a th:href="@{'/order/'+${table.id}}"><button type="button" class="btn btn-outline-primary" >Order</button></a>
 			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-			          <a th:href="@{'/order/1'}"><button type="button" class="btn btn-primary">Payment</button></a>
+			          <a th:href="@{'/payment/'+${table.id}}"><button type="button" class="btn btn-primary">Payment</button></a>
 			        </div>
 			      </div>
 			    </div> 
-			   </div> <!-- End modal of each table -->
-			   
-			   <div th:if="${table.status == 'reserve' or table.status == 'available'}" class="modal fade" th:attr="id='tableReserve' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
-			    <div class="modal-dialog modal-dialog-centered">
+			   </div>
+			   			   
+			   <!-- Confirm reserve -->
+			   <div th:if="${table.status == 'available'}" class="modal fade" th:attr="id='tableReserve' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
+			    <div class="modal-dialog modal-dialog-centered modal-lg">
 			      <div class="modal-content">
 			        <div class="modal-header">
-			          <h5 class="modal-title">Confirm reserve <span th:text="${table.name}"></span> - 2<sup>nd</sup> Floor</h5>
+			          <h5 class="modal-title">Confirm reserve <span th:text="${table.name}"></span> - 1<sup>st</sup> Floor</h5>
 			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			        </div>
 			        <div class="modal-body">
 			          <div class="d-flex fs-5 my-3 justify-content-around">
 			            <!-- Reserve Info Form -->
-			            <form id="reserveForm">
+			            <form th:attr="id='reserveForm'+${table.id}" class="w-100 mx-2">
 			              <div class="d-flex flex-row mb-2">
-			                <label for="inputDate" class="col-form-label me-2">Date</label>
-			                <input type="date" class="form-control">
+			                <label for="inputName" class="col-form-label me-2">Name</label>
+			                <input type="text" class="form-control" required>
 			              </div>
 			              <div class="d-flex flex-row mb-2">
-			                <label for="inputTime" class="col-form-label me-2">Time</label>
-			                <input type="time" class="form-control">
+			                <div class="col-8 d-flex flex-row">
+			                  <label for="inputPhone" class="col-form-label me-2">Phone</label>
+			                  <input type="text" class="form-control" required>
+			                </div>
+			                <div class="col-4 d-flex flex-row">
+			                  <label for="inputPeople" class="col-form-label ms-2 me-2">People</label>
+			                  <input type="number" class="form-control" required>
+			                </div>
+			              </div>
+			              <div class="d-flex flex-row mb-2">
+			                <label for="inputDate" class="col-form-label me-4">Date</label>
+			                <input type="date" class="form-control" required>
+			              </div>
+			              <div class="d-flex flex-row mb-2">
+			                <label for="inputTime" class="col-form-label me-4" >Time</label>
+			                <input type="time" class="form-control" required>
 			              </div>
 			              <div class="d-flex flex-row">
-			                <label for="inputNote" class="col-form-label">Note</label>
+			                <label for="inputNote" class="col-form-label me-4">Note</label>
 			                <textarea class="form-control" style="height: 80px;"></textarea>
 			              </div>
 			            </form>
 			          </div>
 			        </div>
 			        <div class="modal-footer">
-			          <a><button type="button" onclick="reserveTable()" data-bs-dismiss="modal" class="btn btn-primary">Reserve</button></a>
+				        <a><button type="button" th:onclick="'reserveTable('+${table.id}+',true)'" data-bs-dismiss="modal" class="btn btn-primary">Reserve</button></a>
+				        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				    </div>
+			      </div>
+			    </div>
+			  </div>
+			  
+			  <!-- Cancel reserve -->
+			  <div th:if="${table.status == 'reserve'}" class="modal fade" th:attr="id='tableReserveC' + ${table.id}" data-bs-backdrop="static" tabindex="-1">
+			    <div class="modal-dialog modal-dialog-centered">
+			      <div class="modal-content">
+			        <div class="modal-header">
+			          <h5 class="modal-title">Cancel reserve <span>A1</span> - 1<sup>st</sup> Floor</h5>
+			          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			        </div>
+			        <div class="modal-body">
+			          <div class="d-flex fs-5 my-3">
+			            Are you sure to cancel reserving this table?
+			          </div>
+			        </div>
+			        <div class="modal-footer">
+			          <a><button type="button" th:onclick="'reserveTable(' + ${table.id} + ',false)'"  data-bs-dismiss="modal" class="btn btn-primary">Cancel</button></a>
 			          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 			        </div>
 			      </div>
 			    </div>
-			  </div>
+			  </div> <!-- End modal of each table -->
 	     
 		    </div> <!-- End table in floor 2 -->
        </div>
@@ -628,7 +700,7 @@
   
   <!-- Alert -->
   <div class="position-fixed bottom-0 start-50 translate-middle-x z-2">
-    <div id="successAlert" class="alert alert-success bg-success text-light border-0 alert-dismissible fade" role="alert">
+    <div id="noticeAlert" class="alert alert-success bg-success text-light border-0 alert-dismissible fade" role="alert">
       <i class="bi bi-check-circle me-1"></i>
       <span id="alertContent"> Reserve table successfully! </span>
     </div>

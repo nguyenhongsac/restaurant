@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,10 +32,11 @@ public class Bill {
     private Timestamp bill_created_time;
     private Timestamp bill_modified_time;
     private int bill_people;
-    private int bill_start_time;
-    private int bill_end_time;
+    private String bill_start_time;
+    private String bill_end_time;
+    private int user_id;
 
-    //@ManyToOne
-    //@JoinColumn(name = "user_id")
-    //private User user;
+//    @OneToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
 }

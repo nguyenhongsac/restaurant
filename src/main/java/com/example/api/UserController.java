@@ -46,7 +46,7 @@ public class UserController {
 
 	@PostMapping("/update")
 	public ResponseEntity<String> update(@RequestParam int id, @RequestBody User userDTO) {
-		if (userService.updateUser(id, userDTO)!=null) {
+		if (userService.updateUser(userDTO)!=null) {
 			return ResponseEntity.ok().body("Update user "+id+" successful!");
 		}
 		return ResponseEntity.ok().body("Update user "+id+" failed!");

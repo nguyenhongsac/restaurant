@@ -42,16 +42,12 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User addUser(User user) {
-		if (ur.existsByName(user.getName())) {
-			return null;
-		}
-
 		return ur.save(user);
 	}
 
 	@Override
-	public User updateUser(int id, User u) {
-		User um = ur.getReferenceById(id);
+	public User updateUser(User u) {
+		User um = ur.getReferenceById(u.getId());
 
 		if (u.getName()!=null) {
 			um.setName(u.getName());

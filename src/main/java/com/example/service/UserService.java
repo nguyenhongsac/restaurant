@@ -12,7 +12,7 @@ public interface UserService {
 	// For login
 	public User authenticate(String name, String pass);
 
-	public User addUser(User userDTO);
-	public User updateUser(int id, User userDTO);
+	public User addUser(User user);
+	public User updateUser(User user);
 	public boolean deleteUser(int id);
 }

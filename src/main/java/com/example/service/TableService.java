@@ -6,12 +6,13 @@ import com.example.dto.TableDTO;
 import com.example.entity.Table;
 
 public interface TableService {
+	public Table getById(int id);
 	public List<Table> getAll();
 	public List<Table> getFloor(String floor); // like A or B
 	public List<Table> getByStatus(String status);
 
 	public boolean add(Table table);
-	public boolean update(int id, Table table);
+	public boolean update(Table table);
 	public boolean delete(int id);
 
 	public int countOccupiedTable1();
@@ -21,4 +22,6 @@ public interface TableService {
 
 	public List<TableDTO> getBasicInfo();
 	public List<TableDTO> divideFloor(String floor);
+	
+	public Table getAvailable();
 }

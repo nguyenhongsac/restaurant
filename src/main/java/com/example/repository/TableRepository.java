@@ -29,4 +29,7 @@ public interface TableRepository extends JpaRepository<Table, Integer>{
             "ORDER BY b.bill_start_time DESC " +
             "LIMIT 1", nativeQuery = true)
 	public List<Object[]> getInfo(int tableId);
+	
+	@Query(value = "SELECT * FROM tbltable WHERE table_status = 'available' LIMIT 1", nativeQuery = true)
+	public Table findAvailable();
 }
