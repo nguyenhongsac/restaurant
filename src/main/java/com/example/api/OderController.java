@@ -53,7 +53,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-
 @Controller
 @AllArgsConstructor
 @RequestMapping("/order")
@@ -73,7 +72,7 @@ public class OderController {
 
 	@Autowired
 	private UserServiceImpl userService;
-	
+
 	private TimeManage timeManage;
 
 	List<OrderDetailDTO> OrderDetailDTOs = new ArrayList<>();
@@ -144,35 +143,36 @@ public class OderController {
 	}
 
 	@PostMapping("/{tableId}/save")
-	public String saveOrder(@PathVariable Integer tableId, @RequestBody List<OrderDetailDTO> orders) {
+	public ResponseEntity<String> saveOrder(@PathVariable Integer tableId, @RequestBody List<OrderDetailDTO> orders) {
 		Order order = orderService.getLatestOrderByTableId(tableId);
 		Integer orderId = order.getOrder_id();
 		// Cập nhật danh sách order detail theo orderId
 		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(orderId);
 		boolean exist;
-		
-		//Chọn vòng lặp phù hợp theo kích thước của 2 list 
+
+		// Chọn vòng lặp phù hợp theo kích thước của 2 list
 		if (orderDetails.size() >= orders.size()) {
 			for (OrderDetail item : orderDetails) {
 				exist = false;
 				for (OrderDetailDTO dto : orders) {
-					//Tìm các cặp có cùng id 2 mảng để sửa dữ liệu, nếu số lượng giống nhau thì bỏ qua
+					// Tìm các cặp có cùng id 2 mảng để sửa dữ liệu, nếu số lượng giống nhau thì bỏ
+					// qua
 					if (item.getOrder_detail_id().equals(dto.getId()) && dto.getQuantity() != item.getFood_number()) {
-						
-						//Thay đổi số lượng theo dữ liệu mới nhận được
+
+						// Thay đổi số lượng theo dữ liệu mới nhận được
 						item.setFood_number(dto.getQuantity());
 						if (item.getFood_number() == 0) {
-							//Nếu số lượng bằng 0 thì xóa đối tượng
+							// Nếu số lượng bằng 0 thì xóa đối tượng
 							orderDetailService.deleteOrderDetail(item);
 						} else {
-							//Số lượng khác 0 thì lưu thay đổi, lưu thời gian thay đổi
+							// Số lượng khác 0 thì lưu thay đổi, lưu thời gian thay đổi
 							Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 							item.setOrder_detail_modified_time(timestamp);
 							orderDetailService.updateOrderDetail(item);
 						}
 						exist = true;
 						break;
-					} 
+					}
 				}
 			}
 		} else {
@@ -184,7 +184,7 @@ public class OderController {
 						if (item.getFood_number() == 0) {
 							orderDetailService.deleteOrderDetail(item);
 						} else {
-							
+
 							item.setOrder_detail_modified_time(new Timestamp(System.currentTimeMillis()));
 							orderDetailService.updateOrderDetail(item);
 						}
@@ -209,34 +209,35 @@ public class OderController {
 		}
 		order.setOrder_modified_time(new Timestamp(System.currentTimeMillis()));
 		orderService.updateOrder(order);
-		
+
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		if(timestamp.compareTo(order.getOrder_created_time()) > 0) {
+		if (timestamp.compareTo(order.getOrder_created_time()) > 0) {
 			order.setOrder_created_time(timestamp);
 		}
-		
+
 		List<OrderDetail> ODL = orderDetailService.getOrderDetailsByOrder(orderId);
-		
+
 		if (ODL.size() == 0) {
 			Bill bill = billService.getBillById(order.getBill().getBill_id());
 			orderService.deleteOrder(orderId);
 			billService.deleteBill(bill.getBill_id());
-			
+
 			Table table = tableService.getById(tableId);
 			table.setStatus("available");
 			tableService.update(table);
-			
-			System.out.println("ODL.size() == 0 true " + order.getBill().getBill_id() +" -- "+orderId +" -- "+tableId);
-			
+
+			System.out.println(
+					"ODL.size() == 0 true " + order.getBill().getBill_id() + " -- " + orderId + " -- " + tableId);
+
 		} else {
 			System.out.println("ODL.size() == 0 false " + ODL.size());
 			System.out.println("deleted order table id: " + tableId);
 		}
-		return "saveOrder";
+		return ResponseEntity.ok("save success");
 	}
 
 	@PostMapping("/{OldTableId}/changeTable/{tableId}")
-	public String changeTable(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
+	public ResponseEntity<String> changeTable(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
 		// Tìm đối tượng order theo orderId
 		Order orderEntity = orderService.getLatestOrderByTableId(OldTableId);
 
@@ -254,15 +255,24 @@ public class OderController {
 		tableService.update(NewTable);
 
 		orderService.updateOrder(orderEntity);
-		return "changeTable";
+		return ResponseEntity.ok("change success");
 	}
 
-	@PostMapping("{tableId}/print-order")
+	@PostMapping("{tableId}/print-food")
 	public ResponseEntity<byte[]> printOrder(@PathVariable Integer tableId) {
 		Order orderEntity = orderService.getLatestOrderByTableId(tableId);
 		Integer orderId = orderEntity.getOrder_id();
 		Table tableEntity = tableService.getById(tableId);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		OrderDetailDTOs.clear();
+
+		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(orderEntity.getOrder_id());
+		for (OrderDetail item : orderDetails) {
+			OrderDetailDTOs.add(
+					new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(), item.getFood_number(),
+							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_foodnotes()));
+		}
 
 		// Thiết lập khổ giấy
 		com.itextpdf.text.Rectangle pageSize = new com.itextpdf.text.Rectangle(200f, 1000f); // 80mm x 200mm
@@ -277,7 +287,7 @@ public class OderController {
 			Font font = new Font(bf, 12);
 
 			// Tạo header
-			Paragraph header = new Paragraph("Phiếu báo bếp",  new Font(bf, 12, Font.BOLD));
+			Paragraph header = new Paragraph("Phiếu báo bếp", new Font(bf, 12, Font.BOLD));
 
 			header.setAlignment(Element.ALIGN_CENTER);
 
@@ -311,11 +321,18 @@ public class OderController {
 			// Thêm dữ liệu vào bảng
 			int i = 1;
 			for (OrderDetailDTO item : OrderDetailDTOs) {
-				addRows(i, table, item, font);
-				i++;
-
+				FoodEntity foodEntity = foodService.findById(item.getFoodId());
+				if (foodEntity.getCategory().getCatId() != 10) {
+					addRows(i, table, item, font);
+					i++;
+				}
 			}
 			document.add(table);
+			if (i == 1) {
+				Paragraph noData = new Paragraph("Không có đồ ăn nào!", font);
+				noData.setAlignment(Element.ALIGN_CENTER);
+				document.add(noData);
+			}
 
 			document.close();
 		} catch (DocumentException | IOException e) {
@@ -328,7 +345,99 @@ public class OderController {
 
 		// Thay đổi phần headers.setContentDispositionFormData
 		headers.setContentDisposition(ContentDisposition.builder("attachment")
-				.filename("order " + orderId + ".pdf", StandardCharsets.UTF_8).build());
+				.filename("Phiếu báo bếp " + tableId + ".pdf", StandardCharsets.UTF_8).build());
+
+		return ResponseEntity.ok().headers(headers).body(pdfBytes);
+	}
+
+	@PostMapping("{tableId}/print-drink")
+	public ResponseEntity<byte[]> printDrink(@PathVariable Integer tableId) {
+		Order orderEntity = orderService.getLatestOrderByTableId(tableId);
+		Integer orderId = orderEntity.getOrder_id();
+		Table tableEntity = tableService.getById(tableId);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		OrderDetailDTOs.clear();
+
+		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(orderEntity.getOrder_id());
+		for (OrderDetail item : orderDetails) {
+			OrderDetailDTOs.add(
+					new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(), item.getFood_number(),
+							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_foodnotes()));
+		}
+
+		// Thiết lập khổ giấy
+		com.itextpdf.text.Rectangle pageSize = new com.itextpdf.text.Rectangle(200f, 1000f); // 80mm x 200mm
+		Document document = new Document(pageSize, 5f, 5f, 5f, 5f); // margins: left, right, top, bottom
+		try {
+			PdfWriter.getInstance(document, out);
+			document.open();
+
+			// Load font hỗ trợ tiếng Việt
+			String fontPath = "times.ttf"; // Đường dẫn tương đối đến file font
+			BaseFont bf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			Font font = new Font(bf, 12);
+
+			// Tạo header
+			Paragraph header = new Paragraph("Phiếu báo bar", new Font(bf, 12, Font.BOLD));
+
+			header.setAlignment(Element.ALIGN_CENTER);
+
+			document.add(header);
+
+			Paragraph tableLine = new Paragraph("Bàn: " + tableEntity.getName(), font);
+			Paragraph orderLine = new Paragraph("Mã order: " + orderId, font);
+			Paragraph timeLine = new Paragraph("Thời gian: " + timeManage.getCurrentDateTime(), font);
+
+			orderLine.setAlignment(Element.ALIGN_CENTER);
+			tableLine.setAlignment(Element.ALIGN_CENTER);
+			timeLine.setAlignment(Element.ALIGN_LEFT);
+
+			document.add(tableLine);
+			document.add(orderLine);
+			document.add(timeLine);
+
+			// Tạo bảng
+			PdfPTable table = new PdfPTable(3); // 3 cột: STT, Tên món, Số lượng
+			table.setWidthPercentage(100);
+			table.setSpacingBefore(10f);
+			table.setSpacingAfter(10f);
+
+			// Thiet lap kich thuoc cột
+			float[] columnWidths = { 1f, 4f, 1f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
+			table.setWidths(columnWidths);
+
+			// Thêm tiêu đề cột
+			addTableHeader(table, new Font(bf, 12, Font.BOLD));
+
+			// Thêm dữ liệu vào bảng
+			int i = 1;
+			for (OrderDetailDTO item : OrderDetailDTOs) {
+				FoodEntity foodEntity = foodService.findById(item.getFoodId());
+				if (foodEntity.getCategory().getCatId() == 10) {
+					addRows(i, table, item, font);
+					i++;
+				}
+			}
+			document.add(table);
+			if (i == 1) {
+				Paragraph noData = new Paragraph("Không có đồ uống nào!", font);
+				noData.setAlignment(Element.ALIGN_CENTER);
+				document.add(noData);
+			}
+
+			document.close();
+		} catch (DocumentException | IOException e) {
+			e.printStackTrace();
+		}
+
+		byte[] pdfBytes = out.toByteArray();
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_PDF);
+
+		// Thay đổi phần headers.setContentDispositionFormData
+		headers.setContentDisposition(ContentDisposition.builder("attachment")
+				.filename("Phiếu báo bar " + tableId + ".pdf", StandardCharsets.UTF_8).build());
 
 		return ResponseEntity.ok().headers(headers).body(pdfBytes);
 	}

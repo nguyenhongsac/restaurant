@@ -9,14 +9,14 @@
 <meta content="" name="keywords">
 
 <!-- Favicons -->
-<link th:href="@{/img/logo.svg}" href="assets/img/favicon.png"
+<link th:href="@{/assets/img/favicon.png}" href="assets/img/favicon.png"
 	rel="icon">
 <link th:href="@{/img/apple-touch-icon.png}"
 	href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://fonts.gstatic.com">
 <link
 	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
 	rel="stylesheet">
@@ -74,7 +74,7 @@
 
 				<div class="d-flex align-items-center justify-content-between">
 					<a href="index.html" class="logo d-flex align-items-center"> <img
-						src="/img/logo.svg" alt="Logo"> <span
+						th:src="@{/img/logo.svg}" alt="Logo"> <span
 						class="d-none d-lg-block">Nice Restaurant</span>
 					</a> <i class="bi bi-list toggle-sidebar-btn"></i>
 				</div>
@@ -341,12 +341,11 @@
 						</button>
 						<ul class="dropdown-menu dropdown-menu-end"
 							aria-labelledby="dropdownPrintButton">
-							<li><a class="dropdown-item" href="#">Phiếu đồ uống</a></li>
-							<li><a class="dropdown-item" href="#">Phiếu đồ ăn</a></li>
-							<li><button id="print" class="dropdown-item" type="button" onclick="printOrder()">Phiếu báo bếp</button></li>
+							<li><button id="printFood" class="dropdown-item" type="button" onclick="printFood()">Phiếu báo bếp</button></li>
+							<li><button id="printDrink" class="dropdown-item" type="button" onclick="printDrink()">Phiếu báo bar</button></li>
 						</ul>
 
-						&nbsp;&nbsp; Phiếu báo bếp &nbsp;&nbsp; 
+						&nbsp;&nbsp; Phiếu báo order &nbsp;&nbsp; 
 
 						<button class="btn btn-outline-primary" type="button"
 							onclick="deleteAllBill()">
