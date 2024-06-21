@@ -198,8 +198,4 @@ public class TableServiceImpl implements TableService{
 	public Table getAvailable() {
 		return tr.findAvailable();
 	}
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 }

@@ -121,11 +121,7 @@ public class OderController {
 
 		// Table
 		Table thisTable = tableService.getById(tableId);
-<<<<<<< Updated upstream
 		thisTable.setStatus("occupied");
-=======
-		thisTable.setStatus("busy");
->>>>>>> Stashed changes
 		tableService.update(thisTable);
 		// Bàn hiện tại
 		List<Table> tables = new ArrayList<>();
@@ -185,8 +181,8 @@ public class OderController {
 						if (item.getFood_number() == 0) {
 							orderDetailService.deleteOrderDetail(item);
 						} else {
-							Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-							item.setOrder_detail_modified_time(timestamp);
+							
+							item.setOrder_detail_modified_time(new Timestamp(System.currentTimeMillis()));
 							orderDetailService.updateOrderDetail(item);
 						}
 						exist = true;
@@ -208,6 +204,8 @@ public class OderController {
 				}
 			}
 		}
+		order.setOrder_modified_time(new Timestamp(System.currentTimeMillis()));
+		orderService.updateOrder(order);
 		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		if(timestamp.compareTo(order.getOrder_created_time()) > 0) {
@@ -242,11 +240,7 @@ public class OderController {
 
 		// Đổi trạng thái bàn chuyển sang busy
 		Table NewTable = tableService.getById(tableId);
-<<<<<<< Updated upstream
 		NewTable.setStatus("occupied");
-=======
-		NewTable.setStatus("busy");
->>>>>>> Stashed changes
 		tableService.update(NewTable);
 
 		orderService.updateOrder(orderEntity);
@@ -273,7 +267,7 @@ public class OderController {
 			Font font = new Font(bf, 12);
 
 			// Tạo header
-			Paragraph header = new Paragraph("Phiếu báo bếp", font);
+			Paragraph header = new Paragraph("Phiếu báo bếp",  new Font(bf, 12, Font.BOLD));
 
 			header.setAlignment(Element.ALIGN_CENTER);
 
@@ -281,12 +275,15 @@ public class OderController {
 
 			Paragraph tableLine = new Paragraph("Bàn: " + tableEntity.getName(), font);
 			Paragraph orderLine = new Paragraph("Mã order: " + orderId, font);
+			Paragraph timeLine = new Paragraph("Thời gian: " + timeManage.getCurrentDateTime(), font);
 
 			orderLine.setAlignment(Element.ALIGN_CENTER);
 			tableLine.setAlignment(Element.ALIGN_CENTER);
+			timeLine.setAlignment(Element.ALIGN_LEFT);
 
 			document.add(tableLine);
 			document.add(orderLine);
+			document.add(timeLine);
 
 			// Tạo bảng
 			PdfPTable table = new PdfPTable(3); // 3 cột: STT, Tên món, Số lượng
@@ -299,7 +296,7 @@ public class OderController {
 			table.setWidths(columnWidths);
 
 			// Thêm tiêu đề cột
-			addTableHeader(table, font);
+			addTableHeader(table, new Font(bf, 12, Font.BOLD));
 
 			// Thêm dữ liệu vào bảng
 			int i = 1;

@@ -38,11 +38,7 @@ public class Order {
     private String order_status;
 	@Column(name = "order_number")
     private String order_number;
-<<<<<<< Updated upstream
-    @Column(name="order_created_time")
-=======
     @Column(name = "order_created_time")
->>>>>>> Stashed changes
     private Timestamp order_created_time;
     @Column(name = "order_modified_time")
     private Timestamp order_modified_time;

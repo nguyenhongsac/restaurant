@@ -148,7 +148,7 @@ document.getElementById('back').onclick = function() {
 	//console.log(orderItems)
 	const tableId = document.getElementById('bill').className;
 	// Gửi thông tin đơn hàng về server
-	fetch('/order/' + tableId + '/save', {
+	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -162,7 +162,7 @@ document.getElementById('back').onclick = function() {
 function tableClick(table) {
 	const newTableId = table.id;
 
-	fetch('/order/' + tableId + '/changeTable/' + newTableId, {
+	fetch('/restaurant/order/' + tableId + '/changeTable/' + newTableId, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -180,7 +180,7 @@ function tableClick(table) {
 //Lưu danh sách order về server và in phiếu báo bếp
 function printOrder() {
 	// Gửi thông tin đơn hàng về server
-	fetch('/order/' + tableId + '/save', {
+	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -189,7 +189,7 @@ function printOrder() {
 	})
 	console.log(orderItems);
 	//Gửi yêu cầu in phiếu
-	fetch('/order/' + tableId + '/print-order', {
+	fetch('/restaurant/order/' + tableId + '/print-order', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -209,7 +209,7 @@ function printOrder() {
 }
 
 function payment() {
-	fetch('/order/' + tableId + '/save', {
+	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
