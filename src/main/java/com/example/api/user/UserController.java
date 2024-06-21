@@ -1,4 +1,4 @@
-package com.example.api;
+package com.example.api.user;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;

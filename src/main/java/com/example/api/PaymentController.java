@@ -207,6 +207,10 @@ public class PaymentController {
 		bill.setBill_status("paid");
 		TimeManage time = new TimeManage();
 		bill.setBill_end_time(time.getCurrentDateTime().toString());
+		
+		Table table = tableService.getById(tableId);
+		table.setStatus("available");
+		tableService.update(table);
 
 		billService.saveBill(bill);
 		return ResponseEntity.ok(("Success").getBytes(StandardCharsets.UTF_8));

@@ -147,6 +147,7 @@ function deleteAllBill() {
 document.getElementById('back').onclick = function() {
 	//console.log(orderItems)
 	const tableId = document.getElementById('bill').className;
+
 	// Gửi thông tin đơn hàng về server
 	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',

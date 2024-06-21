@@ -140,23 +140,27 @@ public class TableServiceImpl implements TableService{
 					Object[] info = raw.get(0);
 					try {
 					t = new TableDTO((Integer) info[0], (String) info[1], (String) info[2], (Integer) info[3], (String) info[4], (String) info[5], (BigDecimal) info[6]);
-
-					// Caculate time
-					String timestamp = (String) info[2];
-					DateTimeFormatter formatter;
-					if (timestamp.length() < 19) { // CHECK IF HAVE SECONDS ATTRIBUTES
-						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+					
+					if ("occupied".equals(item.getStatus())) { 
+						// Caculate time for occupied
+						String timestamp = (String) info[2];
+						DateTimeFormatter formatter;
+						if (timestamp.length() < 19) { // CHECK IF HAVE SECONDS ATTRIBUTES
+							formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm");
+						} else {
+							formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
+						}
+				        LocalDateTime givenTime = LocalDateTime.parse(timestamp, formatter);
+	
+				        LocalDateTime now = LocalDateTime.now();// Current time
+				        Duration duration = Duration.between(givenTime, now);// Calculate the difference now - given
+				        
+				        // Get the difference in minutes
+				        long minutesDifference = duration.toMinutes();
+				        t.setStartTime(""+minutesDifference+"");
 					} else {
-						formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd' 'HH:mm:ss");
+						t.setStartTime("0");
 					}
-			        LocalDateTime givenTime = LocalDateTime.parse(timestamp, formatter);
-
-			        LocalDateTime now = LocalDateTime.now();// Current time
-			        Duration duration = Duration.between(givenTime, now);// Calculate the difference
-
-			        // Get the difference in minutes
-			        long minutesDifference = duration.toMinutes();
-			        t.setStartTime(""+minutesDifference+"");
 
 					} catch (IndexOutOfBoundsException e) {
 						e.printStackTrace();
