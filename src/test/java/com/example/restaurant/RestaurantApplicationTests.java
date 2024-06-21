@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.service.TableService;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 

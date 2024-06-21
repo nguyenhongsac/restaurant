@@ -94,6 +94,7 @@ secondlink.addEventListener('click', function(event) {
   const button = document.getElementById('2ndbutton');
   button.click();
 });
+<<<<<<< HEAD
 
 function showAlert(message) {
   var alertElement = document.getElementById('noticeAlert');
@@ -198,3 +199,5 @@ async function reserveTable(id, status) {
     	reserve.classList.remove('active');
 	}
 };
+=======
+>>>>>>> 2470e8bc554e826127a28c4f6dc38ddc22b662ff

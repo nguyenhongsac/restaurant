@@ -10,4 +10,5 @@ public interface FoodService {
 	Boolean create (FoodEntity food);
 	Boolean edit (FoodEntity food);
 	Boolean delete(Integer foodId);
+	void save(FoodEntity food);
 }

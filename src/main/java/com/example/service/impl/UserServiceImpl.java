@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService{
 
 
 	@Override
-	public boolean deleteUser(int id) {
+	public boolean deleteUser(Integer id) {
 		if (ur.existsById(id)) {
 			ur.deleteById(id);
 			return true;
@@ -114,4 +114,9 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return ur.getReferenceById(id);
 	}
+	public User findById(Integer id) {
+		// TODO Auto-generated method stub
+		return ur.findById(id).get();
+	}
+	
 }
