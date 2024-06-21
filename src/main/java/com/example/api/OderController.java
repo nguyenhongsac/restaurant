@@ -230,12 +230,13 @@ public class OderController {
 			
 		} else {
 			System.out.println("ODL.size() == 0 false " + ODL.size());
+			System.out.println("deleted order table id: " + tableId);
 		}
-		return "redirect:/order/" + tableId;
+		return "saveOrder";
 	}
 
 	@PostMapping("/{OldTableId}/changeTable/{tableId}")
-	public String addOrder(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
+	public String changeTable(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
 		// Tìm đối tượng order theo orderId
 		Order orderEntity = orderService.getLatestOrderByTableId(OldTableId);
 
@@ -253,7 +254,7 @@ public class OderController {
 		tableService.update(NewTable);
 
 		orderService.updateOrder(orderEntity);
-		return "redirect:/order/" + tableId;
+		return "changeTable";
 	}
 
 	@PostMapping("{tableId}/print-order")

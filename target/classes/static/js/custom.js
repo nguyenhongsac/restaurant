@@ -94,3 +94,107 @@ secondlink.addEventListener('click', function(event) {
   const button = document.getElementById('2ndbutton');
   button.click();
 });
+
+function showAlert(message) {
+  var alertElement = document.getElementById('noticeAlert');
+  var alertContent = document.getElementById('alertContent');
+
+  alertElement.classList.remove('fade');
+  alertElement.classList.add('show');
+  alertContent.innerHTML = message;
+
+  // Automatically hide the alert after .. seconds
+  setTimeout(function() {
+    alertElement.classList.remove('show');
+    alertElement.classList.add('fade');
+  }, 2000);
+}
+
+// === When available, call comfirmReserve, then call reserveTable ===
+
+const reserve = document.querySelector(".reserve");
+let confirmReserveModal;
+let cancelReserveModal;
+let form;
+function confirmReserve(id, status) { // status = true mean table available, call confirm
+	if (status) {
+		confirmReserveModal = new bootstrap.Modal('#tableReserve'+id, {
+			keyboard: false
+		});
+		confirmReserveModal.show();
+	} else {
+		cancelReserveModal = new bootstrap.Modal('#tableReserveC'+id, {
+    		keyboard: false
+  		});
+  		cancelReserveModal.show();
+	}
+	form = document.getElementById('reserveForm'+id);
+	form.classList.remove('was-validated');
+}
+async function reserveTable(id, status) {
+	/* active ? 'resever' : 'available', status(true or false) ?'available':'resever'
+	Nếu đặt bàn, thêm active và đổi bookmark và ngược lại
+	Chỉ thực hiện sau khi post thành công
+	*/
+	let reserveIcon = document.getElementById("reserveIcon"+id);
+	if (status) { // Tạo post request đặt bàn
+	    if (form.checkValidity()) {
+			form.classList.add('was-validated');
+			
+			const formData = new FormData(form);
+			
+			const data = {};
+			data['tableId'] = id;
+		    formData.forEach((value, key) => {
+		      data[key] = value;
+		    });
+		    
+	        await fetch('/restaurant/reserve/admin', {
+	            method: 'POST',
+	            headers: {
+	                'Content-Type': 'application/json'
+	            },
+	            body: JSON.stringify(data)
+	        }).then(response => response.text())
+				.then(result => {
+					setTimeout(() => {
+			            location.reload();
+			        }, 2000);
+					showAlert(result);
+				})
+				.catch((error) => {
+					console.error('Error:', error);
+					setTimeout(() => {
+			            location.reload();
+			        }, 2000);
+					showAlert('Reserve table failed!');
+				});
+
+			reserveIcon.classList.remove('bi-bookmark');
+	    	reserveIcon.classList.add('bi-bookmark-check-fill');
+	    	reserve.classList.add('active');
+	    	
+	    	confirmReserveModal.hide();
+    	} else {
+			form.classList.add('was-validated');
+		}
+    	
+	} else {	// Tạo post request hủy bàn
+		await fetch('/restaurant/reserve/cancel?id='+id, {
+		   	method: 'POST'
+		}).then(response => {
+			if (response.ok) {
+				setTimeout(() => {
+		            location.reload();
+		        }, 2000);
+				showAlert('Cancel reserving table successfully!');
+	    	} else {
+	        	showAlert('Cancel reserving table failed!');
+	    	}
+		});
+		
+		reserveIcon.classList.add('bi-bookmark');
+    	reserveIcon.classList.remove('bi-bookmark-check-fill');
+    	reserve.classList.remove('active');
+	}
+};

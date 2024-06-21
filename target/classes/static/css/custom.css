@@ -51,6 +51,7 @@
     border-radius: 50%;
     background-color: #ababab;
     border: 1px solid #2e2e2e;
+    opacity: 0.8;
 }
 
 .table1 {
@@ -88,6 +89,39 @@
 .chair-right {
     right: 45px;
 }
+.set-8 .chair {
+    background-color: #A04317;
+}
+.set-7 .chair-top .chair,
+.set-7 .chair-right .chair,
+.set-7 .chair-left .chair,
+.set-7 .chair-bottom .chair:first-child {
+    background-color: #A04317;
+}
+.set-6 .chair-top .chair,
+.set-6 .chair-right .chair,
+.set-6 .chair-left .chair{
+    background-color: #A04317;
+}
+.set-5 .chair-top .chair,
+.set-5 .chair-left .chair,
+.set-5 .chair-right .chair:first-child {
+    background-color: #A04317;
+}
+.set-4 .chair-top .chair,
+.set-4 .chair-bottom .chair{
+    background-color: #A04317;
+}
+.set-3 .chair-top .chair,
+.set-3 .chair-bottom .chair:first-child {
+    background-color: #A04317;
+}
+.set-2 .chair-top .chair{
+    background-color: #A04317;
+}
+.set-1 .chair-top .chair:first-child {
+    background-color: #A04317;
+}
 
 /*--------------------------------------------------------------
 # Disable aos animation delay on mobile devices
@@ -97,3 +131,13 @@
       transition-delay: 0 !important;
     }
   }
+
+.reserve span {
+    margin-top: -10px;
+}
+.reserve a {
+    text-decoration: none;
+}
+.reserve.active a{
+    color: #1355b8;
+}

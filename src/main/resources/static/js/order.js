@@ -173,7 +173,7 @@ function tableClick(table) {
 	button.textContent = table.textContent;
 	console.log('Chuyển bàn thành công!');
 	setTimeout(function() {
-		window.location.href = '/order/' + newTableId
+		window.location.href = '/restaurant/order/' + newTableId
 	}, 1000)
 }
 
