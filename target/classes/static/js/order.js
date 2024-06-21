@@ -1,3 +1,4 @@
+//Cấu hình kích thước phần tử phù hợp với kích thước màn hình
 function adjustMainContentHeight() {
 	const topBarHeight = document.querySelector('.top-bar').offsetHeight;
 	const totalBarHeight = topBarHeight;
@@ -45,7 +46,7 @@ function updateQuantity(id, inputQuantity) {
 			item.quantity = parseInt(inputQuantity);
 		}
 	})
-	console.log(orderItems)
+	//console.log(orderItems)
 	updateBill();
 }
 
@@ -112,7 +113,7 @@ function updateBill() {
 			const itemPrice = document.createElement('span');
 			itemPrice.classList.add('p-0', 'fs-5');
 			itemPrice.textContent = `${item.price}vnđ`;
-			
+
 			priceDiv.appendChild(itemPrice)
 			orderItemDiv.appendChild(quantityInput);
 			orderItemDiv.appendChild(itemName);
@@ -124,40 +125,102 @@ function updateBill() {
 	})
 }
 
-
+//Update cột bill ngay khi load xong trang
 document.addEventListener('DOMContentLoaded', function() {
 	updateBill();
 });
 
+
+//Xóa toàn bộ order 
 function deleteAllBill() {
 	const confirmed = confirm("Bạn có chắc chắn muốn xóa không?");
 	if (confirmed) {
 		orderItems.forEach(item => {
 			item.quantiy = 0;
 		})
-		
+
 		updateBill;
 	}
 }
 
+//Lưu order khi bấm nút back quay về home
 document.getElementById('back').onclick = function() {
-	console.log(orderItems)
-	const orderId = document.getElementById('bill').className;
+	//console.log(orderItems)
+	const tableId = document.getElementById('bill').className;
 	// Gửi thông tin đơn hàng về server
-	fetch('/order/' + orderId + '/save', {
+	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify(orderItems)
 	})
-		.then(response => response.json())
-		.then(data => {
-			console.log('Success:', data);
-			alert('Order has been completed successfully!');
-		})
-		.catch((error) => {
-			console.error('Error:', error);
-			alert('There was an error completing the order.');
-		});
 };
+
+
+//Chuyển order sang bàn khác
+function tableClick(table) {
+	const newTableId = table.id;
+
+	fetch('/restaurant/order/' + tableId + '/changeTable/' + newTableId, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+	const button = document.getElementById('dropdownTableButton');
+	button.textContent = table.textContent;
+	console.log('Chuyển bàn thành công!');
+	setTimeout(function() {
+		window.location.href = '/restaurant/order/' + newTableId
+	}, 1000)
+}
+
+
+//Lưu danh sách order về server và in phiếu báo bếp
+function printOrder() {
+	// Gửi thông tin đơn hàng về server
+	fetch('/restaurant/order/' + tableId + '/save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(orderItems)
+	})
+	console.log(orderItems);
+	//Gửi yêu cầu in phiếu
+	fetch('/restaurant/order/' + tableId + '/print-order', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(response => response.blob())
+		.then(blob => {
+			const url = window.URL.createObjectURL(new Blob([blob]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'order ' + tableId + '.pdf');
+			document.body.appendChild(link);
+			link.click();
+			link.parentNode.removeChild(link);
+		})
+		.catch(error => console.error('Error:', error));
+}
+
+function payment() {
+	fetch('/restaurant/order/' + tableId + '/save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(orderItems)
+	})
+	setTimeout(function() {
+		if (document.querySelector('.order-item') != null) {
+			window.location.href = '/restaurant/payment/' + tableId;
+		} else {
+			window.alert("Không có mặt hàng nào để thanh toán!");
+		}
+	}, 200)
+}

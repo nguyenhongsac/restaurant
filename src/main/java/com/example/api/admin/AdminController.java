@@ -1,4 +1,4 @@
-package com.example.api;
+package com.example.api.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

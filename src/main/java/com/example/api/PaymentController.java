@@ -1,7 +1,6 @@
 package com.example.api;
 
 import java.io.ByteArrayOutputStream;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
@@ -28,6 +27,7 @@ import com.example.service.CategoryService;
 import com.example.service.OrderDetailService;
 import com.example.service.OrderService;
 import com.example.service.impl.TableServiceImpl;
+import com.example.entity.Table;	
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -55,7 +55,6 @@ public class PaymentController {
 
 	@Autowired
 	BillService billService;
-
 	List<OrderDetailDTO> OrderDetailDTOs = new ArrayList<>();
 
 	@GetMapping("/{tableId}")
@@ -98,6 +97,8 @@ public class PaymentController {
 
 		OrderDetailDTOs.clear();
 
+		Table thisTable = tableService.getById(tableId);
+
 		for (OrderDetail item : orderDetails) {
 			boolean exist = false;
 			for (OrderDetailDTO dto : OrderDetailDTOs) {
@@ -131,6 +132,10 @@ public class PaymentController {
 
 			// Tạo header
 			Paragraph header = new Paragraph("Hóa đơn", new Font(bf, 16, Font.BOLD));
+			Font font = new Font(bf, 11);
+
+			// Tạo header
+			Paragraph header = new Paragraph("Hóa đơn", font);
 
 			header.setAlignment(Element.ALIGN_CENTER);
 
@@ -160,6 +165,8 @@ public class PaymentController {
 
 			// Thêm tiêu đề cột
 			addTableHeader(table, new Font(bf, 12, Font.BOLD));
+			float[] columnWidths = { 1f, 4f, 1f, 1f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
+			table.setWidths(columnWidths);
 
 			// Thêm dữ liệu vào bảng
 			int i = 1;
@@ -181,6 +188,8 @@ public class PaymentController {
 			e.printStackTrace();
 		}
 		pdfBytes = out.toByteArray();
+
+		byte[] pdfBytes = out.toByteArray();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_PDF);
 
@@ -207,10 +216,14 @@ public class PaymentController {
 		bill.setBill_status("paid");
 		TimeManage time = new TimeManage();
 		bill.setBill_end_time(time.getCurrentDateTime().toString());
+		
+		Table table = tableService.getById(tableId);
+		table.setStatus("available");
+		tableService.update(table);
 
 		billService.saveBill(bill);
 		return ResponseEntity.ok(("Success").getBytes(StandardCharsets.UTF_8));
-	}
+  }
 
 	private void addTableHeader(PdfPTable table, Font font) {
 		PdfPCell cell;

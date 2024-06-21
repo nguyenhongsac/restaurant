@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById('bankTransfer').addEventListener('change', function() {
 		if (this.checked) {
@@ -89,51 +90,6 @@ async function submitPayment() {
 			}, 3000)
 		})
 		.catch(error => console.error('Error:', error));
-	
-//    const cacheName = 'restaurant-cache';
-//    const url = `/restaurant/payment/${tableId}/print`;
-//    const successUrl = `/restaurant/payment/${tableId}/success`;
-//
-//    try {
-//        const response = await fetch('/restaurant/payment/' + tableId + '/print', {
-//            method: 'POST',
-//            headers: {
-//                'Content-Type': 'application/json'
-//            }
-//        });
-//
-//        const blob = await response.blob();
-//
-//        const cache = await caches.open(cacheName);
-//        await cache.put(url, new Response(blob, { headers: { 'Content-Type': 'application/pdf' } }));
-//
-//        const cachedResponse = await cache.match(url);
-//
-//        if (cachedResponse) {
-//            const cachedBlob = await cachedResponse.blob();
-//            const downloadUrl = window.URL.createObjectURL(cachedBlob);
-//            const link = document.createElement('a');
-//            link.href = downloadUrl;
-//            link.setAttribute('download', `Bill ${tableId}.pdf`);
-//            document.body.appendChild(link);
-//            link.click();
-//            link.parentNode.removeChild(link);
-//
-//            // Chỉ gửi yêu cầu thành công sau khi tải xong
-//            await fetch(successUrl, {
-//                method: 'POST',
-//                headers: {
-//                    'Content-Type': 'application/json'
-//                }
-//            });
-//
-//            console.log('Success request sent successfully.');
-//        } else {
-//            console.error('Failed to cache the PDF.');
-//        }
-//    } catch (error) {
-//        console.error('Error:', error);
-//    }
 }
 
 

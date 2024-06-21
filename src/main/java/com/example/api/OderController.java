@@ -25,6 +25,7 @@ import com.example.entity.User;
 import com.example.service.BillService;
 import com.example.service.OrderDetailService;
 import com.example.service.OrderService;
+import com.example.service.TableService;
 import com.example.service.UserService;
 import com.example.service.impl.CategoryServiceImpl;
 import com.example.service.impl.FoodServiceImpl;
@@ -42,6 +43,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.ContentDisposition;
@@ -66,8 +68,8 @@ public class OderController {
 	private OrderDetailService orderDetailService;
 	@Autowired
 	private FoodServiceImpl foodService;
-	@Autowired
-	private TableServiceImpl tableService;
+
+	private TableService tableService;
 
 	@Autowired
 	private UserServiceImpl userService;
@@ -77,11 +79,11 @@ public class OderController {
 	List<OrderDetailDTO> OrderDetailDTOs = new ArrayList<>();
 
 	@GetMapping("/{tableId}")
-	public String OrderView(Model model, @PathVariable Integer tableId) {
+	public String OrderView(Model model, @PathVariable Integer tableId, HttpSession session) {
 		Order order = orderService.getLatestOrderByTableId(tableId);
 		if (order == null) {
 			// Lấy User theo id
-			User user = userService.findUserById(1);
+			User user = (User) session.getAttribute("loggedUser");
 
 			// Tạo bill mới theo user_id
 			Bill bill = new Bill();
@@ -90,6 +92,7 @@ public class OderController {
 			bill.setUser(user);
 			bill.setBill_created_time(new Timestamp(System.currentTimeMillis()));
 			bill.setBill_modified_time(new Timestamp(System.currentTimeMillis()));
+			bill.setBill_start_time(timeManage.getCurrentDateTime());
 			bill.setBill_status("null");
 			bill.setBill_people(1);
 			billService.saveBill(bill);
@@ -213,20 +216,27 @@ public class OderController {
 		}
 		
 		List<OrderDetail> ODL = orderDetailService.getOrderDetailsByOrder(orderId);
-		System.out.println(ODL.size());
+		
 		if (ODL.size() == 0) {
 			Bill bill = billService.getBillById(order.getBill().getBill_id());
 			orderService.deleteOrder(orderId);
 			billService.deleteBill(bill.getBill_id());
+			
 			Table table = tableService.getById(tableId);
 			table.setStatus("available");
 			tableService.update(table);
+			
+			System.out.println("ODL.size() == 0 true " + order.getBill().getBill_id() +" -- "+orderId +" -- "+tableId);
+			
+		} else {
+			System.out.println("ODL.size() == 0 false " + ODL.size());
+			System.out.println("deleted order table id: " + tableId);
 		}
-		return "redirect:/order/" + tableId;
+		return "saveOrder";
 	}
 
 	@PostMapping("/{OldTableId}/changeTable/{tableId}")
-	public String addOrder(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
+	public String changeTable(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
 		// Tìm đối tượng order theo orderId
 		Order orderEntity = orderService.getLatestOrderByTableId(OldTableId);
 
@@ -244,7 +254,7 @@ public class OderController {
 		tableService.update(NewTable);
 
 		orderService.updateOrder(orderEntity);
-		return "redirect:/order/" + tableId;
+		return "changeTable";
 	}
 
 	@PostMapping("{tableId}/print-order")
