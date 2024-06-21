@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,7 +39,7 @@ public class Table {
 	@Column(name="table_note")
 	String note;
 	@Column(name="table_created_time")
-	String createdTime;
+	LocalDateTime createdTime;
 	@Column(name="table_modified_time")
-	String modifiedTime;
+	LocalDateTime modifiedTime;
 }

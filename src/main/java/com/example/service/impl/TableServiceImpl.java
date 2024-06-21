@@ -44,24 +44,32 @@ public class TableServiceImpl implements TableService{
 	}
 
 	@Override
-	public boolean update(int id, Table table) {
-		// Get table for update
-		Optional<Table> opTable = tr.findById(id);
-		
-		if (!opTable.isPresent()) {
-			return false;
+	public boolean update(Table table) {
+//		// Get table for update
+//		Optional<Table> opTable = tr.findById(id);
+//		
+//		if (!opTable.isPresent()) {
+//			return false;
+//		}
+//		
+//		Table t = opTable.get();
+//		tr.save(t);
+//		
+//		// Check update
+//		Optional<Table> upTable = tr.findById(id);
+//		if (upTable.isPresent()) {
+//			Table ut = upTable.get();
+//			return t.equals(ut);
+//		}
+//		
+//		return false;
+		try {
+			this.tr.save(table);
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
-		
-		Table t = opTable.get();
-		tr.save(t);
-		
-		// Check update
-		Optional<Table> upTable = tr.findById(id);
-		if (upTable.isPresent()) {
-			Table ut = upTable.get();
-			return t.equals(ut);
-		}
-		
 		return false;
 	}
 
@@ -111,5 +119,11 @@ public class TableServiceImpl implements TableService{
 		});
 		
 		return rlist;
+	}
+
+	@Override
+	public Table findById(Integer Id) {
+		// TODO Auto-generated method stub
+		return tr.findById(Id).get();
 	}
 }

@@ -52,13 +52,26 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public Boolean delete(Integer catId) {
 		// TODO Auto-generated method stub
-		return null;
+		try {
+			this.categoryRepository.delete(findById(catId));
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
 	public void save(CategoryEntity category) {
 		// TODO Auto-generated method stub
 		 categoryRepository.save(category);
+	}
+
+	@Override
+	public CategoryEntity findByName(String catName) {
+		// TODO Auto-generated method stub
+		return this.categoryRepository.findByCatName(catName);
 	}
 
 }

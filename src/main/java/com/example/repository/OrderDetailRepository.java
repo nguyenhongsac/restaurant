@@ -13,7 +13,7 @@ import com.example.entity.OrderDetail;
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
 
 	@Query("SELECT od FROM OrderDetail od WHERE od.order.order_id = :orderId")
-    List<OrderDetail> findByOrderId(Integer orderId);
+	List<OrderDetail> findByOrderId(Integer orderId);
+
 	
 }
-

@@ -20,4 +20,6 @@ public interface TableRepository extends JpaRepository<Table, Integer>{
 	public int countFloor1();
 	@Query(value = "SELECT count(*) FROM tbltable WHERE table_name LIKE '%B%'", nativeQuery = true)
 	public int countFloor2();
+	
+
 }

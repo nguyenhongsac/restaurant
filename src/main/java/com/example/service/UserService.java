@@ -8,11 +8,11 @@ public interface UserService {
 	
 	public List<User> getAllUser();
 	public List<User> getUserByRole(String role);
-	
+	public User findById(Integer id);
 	// For login
 	public User authenticate(String name, String pass);
 	
 	public User addUser(User userDTO);
-	public User updateUser(int id, User userDTO);
-	public boolean deleteUser(int id);
+	public User updateUser(User userDTO);
+	public boolean deleteUser(Integer id);
 }

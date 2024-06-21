@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +34,7 @@ public class CategoryEntity {
 	@Column(name="cat_description")
 	public String catDescription;
 	@Column
-	public Date catCreatedTime;
+	public LocalDateTime catCreatedTime;
 	@Column
-	public Date catModifiedTime;
+	public LocalDateTime catModifiedTime;
 }

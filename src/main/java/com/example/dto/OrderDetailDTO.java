@@ -21,4 +21,5 @@ public class OrderDetailDTO {
 	private String itemName;
 	private float price;
 	private String note;
+	
 }

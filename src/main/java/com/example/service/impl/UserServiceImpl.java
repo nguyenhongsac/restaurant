@@ -48,52 +48,25 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User updateUser(int id, User u) {
-		User um = ur.getReferenceById(id);
-		
-		if (u.getName()!=null) 
-			um.setName(u.getName());
-		if (u.getPassword()!=null)
-			um.setPassword(u.getPassword());
-		if (u.getFullname()!=null)
-			um.setFullname(u.getFullname());
-		if (u.getAvatar()!=null)
-			um.setAvatar(u.getAvatar());
-		if (u.getDob()!=null)
-			um.setDob(u.getDob());
-		if (u.getGender()!=null)
-			um.setGender(u.getGender());
-		if (u.getPhone()!=null)
-			um.setPhone(u.getPhone());
-		if (u.getAddress()!=null)
-			um.setAddress(u.getAddress());
-		if (u.getRole()!=null)
-			um.setRole(u.getRole());
-		if (u.getCreatedTime()!=null)
-			um.setCreatedTime(u.getCreatedTime());
-		if (u.getModifiedTime()!=null)
-			um.setModifiedTime(u.getModifiedTime());
-		if (u.getLastLogined()!=null)
-			um.setLastLogined(u.getLastLogined());
-		if (u.getPermission()!=null)
-			um.setPermission(u.getPermission());
-		if (u.getApplyyear()!=null)
-			um.setApplyyear(u.getApplyyear());
-		if (u.getDeleted()!=null)
-			um.setDeleted(u.getDeleted());
-		
-		return ur.save(um);
+	public User updateUser(User u) {
+		return ur.save(u);
 	}
 
 
 	@Override
-	public boolean deleteUser(int id) {
+	public boolean deleteUser(Integer id) {
 		if (ur.existsById(id)) {
 			ur.deleteById(id);
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	@Override
+	public User findById(Integer id) {
+		// TODO Auto-generated method stub
+		return ur.findById(id).get();
 	}
 	
 }

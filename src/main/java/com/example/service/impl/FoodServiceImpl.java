@@ -38,7 +38,20 @@ public class FoodServiceImpl implements FoodService {
 	@Override
 	public Boolean delete(Integer foodId) {
 		// TODO Auto-generated method stub
-		return null;
+		try {
+			this.foodRepository.delete(findById(foodId));
+			return true;
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public void save(FoodEntity food) {
+		// TODO Auto-generated method stub
+		foodRepository.save(food);
 	}
 
 }

@@ -9,9 +9,8 @@ import java.util.List;
 
 @Service
 public class OrderDetailService {
-
-    @Autowired
-    private OrderDetailRepository orderDetailRepository;
+	@Autowired
+	private OrderDetailRepository orderDetailRepository;
 
     public List<OrderDetail> getOrderDetailsByOrder(Integer orderId) {
         return orderDetailRepository.findByOrderId(orderId);
