@@ -20,7 +20,7 @@
 // Change active view-button
 const viewBtn = document.querySelectorAll('.view-button');
 const content = document.querySelectorAll('.tab-pane');
-const tables = document.querySelectorAll('.set');
+const tableset = document.querySelectorAll('.set');
 let billStatus = false;
 
 const billToggleButton = document.getElementById("custom-toggle-button");
@@ -33,7 +33,7 @@ viewBtn.forEach(button => {
 
     // Change lobby content
     content.forEach(content => content.classList.add('d-none'));
-    tables.forEach(table => table.classList.remove('d-none'));
+    tableset.forEach(table => table.classList.remove('d-none'));
     const targetId = this.getAttribute('data-bs-target');
     
     if (targetId != '#bill') {
@@ -51,7 +51,7 @@ viewBtn.forEach(button => {
       billToggleButton.classList.add('active');
 
       content.forEach(content => content.classList.remove('d-none'));
-      tables.forEach(table => table.classList.add('d-none'));
+      tableset.forEach(table => table.classList.add('d-none'));
       let billTable = document.querySelectorAll('.set-bill');
       billTable.forEach(table => table.classList.remove('d-none'));
     }
@@ -64,11 +64,11 @@ billToggleButton.addEventListener("click", function() {
   // Check bill status before filter
   if (!billStatus) {
     if (this.classList.contains('active')) {
-      tables.forEach(table => table.classList.add('d-none'));
+      tableset.forEach(table => table.classList.add('d-none'));
       let billTable = document.querySelectorAll('.set-bill');
       billTable.forEach(table => table.classList.remove('d-none'));
     } else {
-      tables.forEach(table => table.classList.remove('d-none'));
+      tableset.forEach(table => table.classList.remove('d-none'));
     }
   }
 });

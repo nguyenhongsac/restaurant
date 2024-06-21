@@ -132,10 +132,6 @@ public class PaymentController {
 
 			// Tạo header
 			Paragraph header = new Paragraph("Hóa đơn", new Font(bf, 16, Font.BOLD));
-			Font font = new Font(bf, 11);
-
-			// Tạo header
-			Paragraph header = new Paragraph("Hóa đơn", font);
 
 			header.setAlignment(Element.ALIGN_CENTER);
 
@@ -165,8 +161,6 @@ public class PaymentController {
 
 			// Thêm tiêu đề cột
 			addTableHeader(table, new Font(bf, 12, Font.BOLD));
-			float[] columnWidths = { 1f, 4f, 1f, 1f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
-			table.setWidths(columnWidths);
 
 			// Thêm dữ liệu vào bảng
 			int i = 1;
@@ -189,7 +183,6 @@ public class PaymentController {
 		}
 		pdfBytes = out.toByteArray();
 
-		byte[] pdfBytes = out.toByteArray();
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_PDF);
 

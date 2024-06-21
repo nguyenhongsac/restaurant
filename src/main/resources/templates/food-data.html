@@ -440,7 +440,7 @@
 									<tr th:each="food : ${food}">
 										<td th:text="${food.category.catName}"></td>
 										<td th:text="${food.foodName}"></td>
-										<td><img th:src="${'/img/'+food.foodImg}"
+										<td><img th:src="${'/restaurant/img/food/'+food.foodImg}"
 											style="width: 80px; height: 80px"></td>
 										<td th:text="${food.foodPrice}"></td>
 										<td th:text="${food.foodNote}"></td>

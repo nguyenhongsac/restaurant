@@ -21,8 +21,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-@jakarta.persistence.Table(name = "tbltable")
+@Entity(name = "tbltable")
 public class Table {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,7 +38,7 @@ public class Table {
 	@Column(name="table_note")
 	String note;
 	@Column(name="table_created_time")
-	LocalDateTime createdTime;
+	String createdTime;
 	@Column(name="table_modified_time")
-	LocalDateTime modifiedTime;
+	String modifiedTime;
 }

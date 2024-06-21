@@ -1,36 +1,38 @@
 ﻿<!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Data</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+<title>Data</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
 
-  <!-- Favicons -->
-  <link href="img/logo.svg" rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+<!-- Favicons -->
+<link href="img/logo.svg" rel="icon">
+<link href="img/apple-touch-icon.png" rel="apple-touch-icon">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+	rel="stylesheet">
 
-  <!-- CSS Files -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="css/bootstrap-icons.css" rel="stylesheet">
-  <link href="css/boxicons.min.css" rel="stylesheet">
-  <link href="css/quill.snow.css" rel="stylesheet">
-  <link href="css/quill.bubble.css" rel="stylesheet">
-  <link href="css/remixicon.css" rel="stylesheet">
-  <link href="css/simple-datatables/style.css" rel="stylesheet">
+<!-- CSS Files -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap-icons.css" rel="stylesheet">
+<link href="css/boxicons.min.css" rel="stylesheet">
+<link href="css/quill.snow.css" rel="stylesheet">
+<link href="css/quill.bubble.css" rel="stylesheet">
+<link href="css/remixicon.css" rel="stylesheet">
+<link href="css/simple-datatables/style.css" rel="stylesheet">
 
-  <!-- Template Main CSS File -->
-  <link href="css/style.css" rel="stylesheet">
-  <link href="css/custom.css" rel="stylesheet">
+<!-- Template Main CSS File -->
+<link href="css/style.css" rel="stylesheet">
+<link href="css/custom.css" rel="stylesheet">
 
-  <!-- =======================================================
+<!-- =======================================================
   * Template Name: NiceAdmin
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
   * Updated: Mar 17 2024 with Bootstrap v5.3.3
@@ -39,11 +41,11 @@
   ======================================================== -->
 </head>
 <body>
- <!-- ======= Header ======= -->
-  <header id="header" class="header fixed-top d-flex align-items-center">
+	<!-- ======= Header ======= -->
+	<header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="home.html" class="logo d-flex align-items-center">
+      <a th:href="@{/admin}" class="logo d-flex align-items-center">
         <img src="img/logo.svg" alt="Logo">
         <span class="d-none d-lg-block">Nice Restaurant</span>
       </a>
@@ -157,16 +159,16 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-4" href="#" data-bs-toggle="dropdown">
             <img src="img/avatar.png" alt="Profile" class="rounded-circle">
-            <div class="ps-2">
-              <span class="d-none d-md-block dropdown-toggle fw-semibold">Nguyễn Hồng Sắc</span>
-              <span class="d-none d-md-block fw-normal">Nhân viên bạc <i class="fa-solid fa-medal"></i></span>
+            <div class="ps-2" th:if="${loggedUser}">
+              <span class="d-none d-md-block dropdown-toggle fw-semibold" >Nguyễn Hồng Sắc</span>
+              <span class="d-none d-md-block fw-normal" >Nhân viên bạc <i class="fa-solid fa-medal"></i></span>
             </div>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
-              <h6>Nguyễn Hồng Sắc</h6>
-              <span>Nhân viên</span>
+              <h6 >Nguyễn Hồng Sắc</h6>
+              <span >Nhân viên</span>
             </li>
             <li>
               <hr class="dropdown-divider">
@@ -222,7 +224,7 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 		<li class="nav-item">
-			<a class="nav-link" href="dashboard.html">
+			<a class="nav-link" th:href="@{/admin}">
 			<i class="bi bi-bar-chart"></i>
 			<span>Dashboard</span>
 			</a>
@@ -365,139 +367,344 @@
           </li>
         </ul>
       </li><!-- End Icons Nav -->
-	  	  <li class="nav-item">
+	  <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#datas-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-layout-text-window-reverse"></i><span>Data</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="datas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="user-data.html">
+            <a th:href="@{/user}">
               <i class="bi bi-circle"></i><span>Users</span>
             </a>
           </li>
           <li>
-            <a href="table-data.html">
+            <a th:href="@{/table}">
               <i class="bi bi-circle"></i><span>Tables</span>
             </a>
           </li>
 		  <li>
-            <a href="food-data.html">
+            <a th:href="@{/Food}">
               <i class="bi bi-circle"></i><span>Foods</span>
             </a>
           </li>
 		  <li>
-            <a href="categories-data.html">
+            <a th:href="@{/cate}">
               <i class="bi bi-circle"></i><span>Categories</span>
             </a>
           </li>
 
-  </aside><!-- End Sidebar-->
-  <main id="main" class="main">
+  </aside>
+	<!-- End Sidebar-->
+	<main id="main" class="main">
 
-    <div class="pagetitle">
-      <h1>Data Tables</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Tables</li>
-          <li class="breadcrumb-item active">Data</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+		<div class="pagetitle">
+			<h1>Data Tables</h1>
+			<nav>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+					<li class="breadcrumb-item">Tables</li>
+					<li class="breadcrumb-item active">Data</li>
+				</ol>
+			</nav>
+		</div>
+		<!-- End Page Title -->
 
-    <section class="section">
-      <div class="row">
-        <div class="col-lg-12">
+		<section class="section">
+			<div class="row">
+				<div class="col-lg-12">
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Users</h5>
-              <!-- Table with stripped rows -->
-              <table class="table datatable">
-                <thead>
-                  <tr>
-                    <th>
-                      User name
-                    </th>
-                    <th>Password</th>
-                    <th data-type="date" data-format="YYYY/DD/MM">Dob</th>
-                    <th>Full name</th>
-					<th>Gender</th>
-					<th>Phone</th>
-					<th>Address</th>
-					<th>Role</th>
-					<th>Permission</th>
-					<th>Edit</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Quy123</td>
-					<td>123456</td>
-                    <td>26/08/2003</td>
-                    <td>Le Minh Quy</td>
-                    <td>Nam</td>
-                    <td>0378932206</td>
-					<td>Hai Phong</td>
-					<td>Staff</td>
-					<td>Modified</td>
-					<td>
-						<button type="button" class="me-1 border-0"><i class="bi bi-trash-fill"></i></button>
-						<button type="button" class="border-0"><i class="bi bi-gear"></i></button>
-					</td>
-                  </tr>
-                  <tr>
-                    <td>Quang123</td>
-					<td>123456</td>
-                    <td>11/11/2003</td>
-                    <td>Nguyen Minh Quang</td>
-                    <td>Nam</td>
-                    <td>012345678</td>
-					<td>Hai Duong</td>
-					<td>Staff</td>
-					<td>Modified</td>
-					<td>
-						<button type="button" class="me-1 border-0"><i class="bi bi-trash-fill"></i></button>
-						<button type="button" class="border-0"><i class="bi bi-gear"></i></button>
-					</td>
-                  </tr>
-				  <tr>
-                    <td>Sac123</td>
-					<td>123456</td>
-                    <td>11/11/2003</td>
-                    <td>Nguyen Hong Sac</td>
-                    <td>Nam</td>
-                    <td>012345678</td>
-					<td>Ha Noi</td>
-					<td>Admin</td>
-					<td>Full control	</td>
-					<td>
-						<button type="button" class="me-1 border-0"><i class="bi bi-trash-fill"></i></button>
-						<button type="button" class="border-0"><i class="bi bi-gear"></i></button>
-					</td>
-                  </tr>
-                </tbody>
-              </table>
-              <!-- End Table with stripped rows -->
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Users</h5>
+							<!-- Table with stripped rows -->
+							<table class="table datatable">
+								<button type="button"
+									class=" btn addbutton fs-5 fw-medium text-secondary-emphasis end-0 mt-2 ms-5 me-5 border-0"
+									style="float: right" data-bs-toggle="modal"
+									data-bs-target="#addModal">
+									<i class="bi-plus-square"></i> <span class="fs-6">Add</span>
+								<thead>
+									<tr>
+										<th>User name</th>
+										<th>Password</th>
+										<th>Full name</th>
+										<th>Avatar</th>
+										<th data-type="date" data-format="YYYY/DD/MM">Dob</th>
+										<th>Gender</th>
+										<th>Phone</th>
+										<th>Address</th>
+										<th>Role</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="user: ${user}">
+										<td th:text="${user.name}"></td>
+										<td th:text="${user.password}"></td>
+										<td th:text="${user.fullname}"></td>
+										<td><img th:src="${user.avatar}" style="width: 80px; height: 80px"></td>
+										<td th:text="${user.dob}"></td>
+										<td th:text="${user.gender}"></td>
+										<td th:text="${user.phone}"></td>
+										<td th:text="${user.address}"></td>
+										<td th:text="${user.role}"></td>
+										<td>
+											<script type="text/javascript">
+											const showPreview=(fn)=>{
+												if(event.target.files.length > 0){
+													var src = URL.createObjectURL(event.target.files[0]);
+													var preview = document.getElementById('preview');
+													preview.src = src;
+													preview.style.display='block';
+												}
+											}
+											</script>
+											<button type="button" class="btn btn-primary border-0"
+												data-bs-toggle="modal" th:data-bs-target="${'#' + user.id}">
+												<i class="bi bi-gear"></i>
+											</button>
+											<div class="modal fade" th:id="${user.id}" tabindex="-1"
+												aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-center">
+															<button type="button" class="btn-close"
+																data-bs-dismiss="modal" aria-label="Close"
+																style="float: right"></button>
+														</div>
+														<div class="modal-body">
+															<form th:action="@{/update-user/{id}(id=${user.id})}"
+																method="post">
+																<input type="hidden" class="form-control" id="user-id"
+																	name="id" th:value="@{{id}(id=${user.id})}">
 
-            </div>
-          </div>
+																<div class="mb-3">
+																	<label for="user-name" class="col-form-label">User
+																		Name:</label> <input type="text" class="form-control"
+																		id="user-name" name="name" th:value="${user.name}">
+																</div>
+																<div class="mb-3">
+																	<label for="user-pass" class="col-form-label">Password:</label>
+																	<input type="text" class="form-control" id="user-pass"
+																		name="pass" th:value="${user.password}">
+																</div>
+																<div class="mb-3">
+																	<label for="user-fullname" class="col-form-label">Full
+																		Name:</label> <input type="text" class="form-control"
+																		id="user-fullname" name="fullname"
+																		th:value="${user.fullname}">
+																</div>
+																<div class="mb-3">
+																	<label for="user-avatar" class="col-form-label">Avatar:</label>
+																	<div style="display: block">
+																		<input type="file" class="form-control mb-2"
+																			name="avatar"
+																			id="user-avatar"> <img	th:src="${user.avatar}" class="rounded img-fluid" style="width: 100px; height: 100px">
+																	</div>
 
-        </div>
-      </div>
-    </section>
+																</div>
+																<div class="mb-3">
+																	<label for="user-dob" class="col-form-label">Date
+																		of Birth:</label> <input type="date" class="form-control"
+																		id="user-dob" name="dob" th:value="${user.dob}">
+																</div>
+																<div class="mb-3">
+																	<div class="form-check form-check-inline">
+																		<input type="radio" class="form-check-input"
+																			id="gender1" name="gender"
+																			th:checked="${user.gender}" value="nam">
+																		<lable class="form-check-lable" for="gender1">Nam
+																		</lable>
+																	</div>
+																	<div class="form-check form-check-inline">
+																		<input type="radio" class="form-check-input"
+																			id="gender2" name="gender"
+																			th:checked="!${user.gender}" value="nữ">
+																		<lable class="form-check-lable" for="gender2">
+																		Nữ</lable>
+																	</div>
 
-  </main><!-- End #main -->
-  <script src="js/apexcharts.min.js"></script>
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/chart.umd.js"></script>
-  <script src="js/echarts.min.js"></script>
-  <script src="js/quill.min.js"></script>
-  <script src="js/simple-datatables.js"></script>
-  <script src="js/tinymce.min.js"></script>
-  <script src="js/validate.js"></script>
+																</div>
+																<div class="mb-3">
+																	<label for="phone" class="col-form-label">Phone:</label>
+																	<input type="number" step="any" class="form-control" id="phone"
+																		name="phone" th:value="${user.phone}">
+																</div>
 
-  <!-- Template Main JS File -->
-  <script src="js/main.js"></script>
+																<div class="mb-3">
+																	<label for="address" class="col-form-label">Address:</label>
+																	<input type="text" class="form-control" id="address"
+																		name="address" th:value="${user.address}">
+																</div>
+
+																<div class="mb-3">
+																	<label for="user-role" class="col-form-label">Role:</label>
+																	<select class="form-control" id="user-role" name="role"
+																		th:selected="${user.role}">
+																		<option>Nhân viên bạc</option>
+																		<option>Nhân viên vàng</option>
+																		<option>admin</option>
+																	</select>
+																</div>
+																<div class="text-end">
+																	<button type="button" class="btn btn-secondary"
+																		data-bs-dismiss="modal">Close</button>
+																	<button type="submit" class="btn btn-primary">Save</button>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="modal fade" id="addModal" tabindex="-1"
+												aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-center">
+															<button type="button" class="btn-close"
+																data-bs-dismiss="modal" aria-label="Close"
+																style="float: right"></button>
+														</div>
+														<div class="modal-body">
+															<form th:action="@{/add-user}" method="post">
+																<div class="mb-3">
+																	<label for="user-name" class="col-form-label">User
+																		Name:</label> <input type="text" class="form-control"
+																		id="user-name" name="name">
+																</div>
+																<div class="mb-3">
+																	<label for="user-pass" class="col-form-label">Password:</label>
+																	<input type="text" class="form-control" id="user-pass"
+																		name="pass">
+																</div>
+																<div class="mb-3">
+																	<label for="user-fullname" class="col-form-label">Full
+																		Name:</label> <input type="text" class="form-control"
+																		id="user-fullname" name="fullname"
+																		>
+																</div>
+																<div class="mb-3">
+																	<label for="user-avatar" class="col-form-label">Avatar:</label>
+																	<div style="display: block">
+																		<input type="file" class="form-control mb-2"
+																			name="avatar" onchange="showPreview(event)"
+																			id="user-avatar"> <img
+																			style="width: 100px; height: 100px" th:id="preview"
+																			class="rounded img-fluid">
+																	</div>
+
+																</div>
+																<div class="mb-3">
+																	<label for="user-dob" class="col-form-label">Date
+																		of Birth:</label> <input type="date" class="form-control"
+																		id="user-dob" name="dob" >
+																</div>
+																<div class="mb-3">
+																	<div class="form-check form-check-inline">
+																		<input type="radio" class="form-check-input"
+																			id="gender1" name="gender"
+																			value="nam">
+																		<lable class="form-check-lable" for="gender1">Nam
+																		</lable>
+																	</div>
+																	<div class="form-check form-check-inline">
+																		<input type="radio" class="form-check-input"
+																			id="gender2" name="gender"
+																			value="nữ">
+																		<lable class="form-check-lable" for="gender2">
+																		Nữ</lable>
+																	</div>
+
+																</div>
+																<div class="mb-3">
+																	<label for="phone" class="col-form-label">Phone:</label>
+																	<input type="number" step="any" class="form-control" id="phone"
+																		name="phone">
+																</div>
+
+																<div class="mb-3">
+																	<label for="address" class="col-form-label">Address:</label>
+																	<input type="text" class="form-control" id="address"
+																		name="address">
+																</div>
+
+																<div class="mb-3">
+																	<label for="user-role" class="col-form-label">Role:</label>
+																	<select class="form-control" id="user-role" name="role"
+																		>
+																		<option>Nhân viên bạc</option>
+																		<option>Nhân viên vàng</option>
+																		<option>admin</option>
+																	</select>
+																</div>
+																<div class="text-end">
+																	<button type="button" class="btn btn-secondary"
+																		data-bs-dismiss="modal">Close</button>
+																	<button type="submit" class="btn btn-primary">Add</button>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<button type="button" data-bs-toggle="modal"
+												th:data-bs-target="${'#delete' + user.id}"
+												class=" btn btn-danger me-1 border-0">
+												<i class="bi bi-trash-fill"></i>
+											</button>
+											<div class="modal fade" th:id="${'delete'+ user.id}"
+												tabindex="-1" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-center">
+															<button type="button" class="btn-close"
+																data-bs-dismiss="modal" aria-label="Close"
+																style="float: right"></button>
+														</div>
+														<div class="modal-body">
+															<form
+																th:action="@{/delete-user/{id}(id=${user.id})}"
+																method="post">
+																<div class="text-center">
+																	<span>Xác nhận xóa!</span>
+																</div>
+																<div class="text-end">
+
+																	<button type="button" class="btn btn-secondary"
+																		data-bs-dismiss="modal">Close</button>
+																	<button type="submit" class="btn btn-danger">Delete</button>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- End Table with stripped rows -->
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+	</main>
+	<!-- End #main -->
+	<script src="js/apexcharts.min.js"></script>
+	<script src="js/bootstrap.bundle.min.js"></script>
+	<script src="js/chart.umd.js"></script>
+	<script src="js/echarts.min.js"></script>
+	<script src="js/quill.min.js"></script>
+	<script src="js/simple-datatables.js"></script>
+	<script src="js/tinymce.min.js"></script>
+	<script src="js/validate.js"></script>
+	<script src="js/user.js"></script>
+
+	<!-- Template Main JS File -->
+	<script src="js/main.js"></script>
 </body>
 </html>

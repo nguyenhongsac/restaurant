@@ -39,8 +39,6 @@ public class Statistic {
 	@Column
 	public float statRevenue;
 	@Column
-	public String statNote;
-	@Column
 	public String statNotes;
 	@Column
 	public LocalDateTime statCreatedTime;

@@ -34,21 +34,21 @@ public class TableController {
 		table.setFullName(fullname);
 		table.setSeat(seat);
 		table.setNote(note);
-		table.setCreatedTime(LocalDateTime.now());
-		table.setModifiedTime(LocalDateTime.now());
+		table.setCreatedTime(LocalDateTime.now().toString());
+		table.setModifiedTime(LocalDateTime.now().toString());
 		tableService.add(table);
 		return "redirect:/table";
 	}
 	
 	@PostMapping("/update-table/{id}")
 	public String update(@PathVariable Integer id,@RequestParam String name,@RequestParam String fullname,@RequestParam Integer seat,@RequestParam String note) {
-		Table table = this.tableService.findById(id);
+		Table table = this.tableService.getById(id);
 		table.setName(name);
 		table.setFullName(fullname);
 		table.setSeat(seat);
 		table.setNote(note);
-		table.setCreatedTime(LocalDateTime.now());
-		table.setModifiedTime(LocalDateTime.now());
+		table.setCreatedTime(LocalDateTime.now().toString());
+		table.setModifiedTime(LocalDateTime.now().toString());
 		tableService.update(table);
 		return "redirect:/table";
 	}

@@ -29,11 +29,10 @@ public class FoodController {
 	public String food(Model model) {
 
 		List<FoodEntity> list = this.foodService.getAll();
-		model.addAttribute("list", list);
+		model.addAttribute("food", list);
 
 		List<CategoryEntity> category = this.categoryService.getAll();
 		model.addAttribute("category", category);
-		List<FoodEntity> food = this.foodService.getAll(); 
 
 		return "food-data";
 	}

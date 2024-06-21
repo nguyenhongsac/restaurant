@@ -45,7 +45,7 @@ public class UserController {
 	}
 	@PostMapping("/update-user/{id}")
 	public String postMethodName(@PathVariable Integer id, @RequestParam String name,@RequestParam String pass,@RequestParam String fullname,@RequestParam String avatar,@RequestParam String dob,@RequestParam String gender,@RequestParam String role,@RequestParam String address,@RequestParam String phone) {
-		User user = this.userService.findById(id);
+		User user = this.userService.findUserById(id);
 		user.setName(name);
 		user.setPassword(pass);
 		user.setFullname(fullname);
@@ -57,11 +57,6 @@ public class UserController {
 		user.setGender(gender);
 		user.setModifiedTime(LocalDateTime.now());
 		userService.updateUser(user);
-		return "redirect:/user";
-	}
-	@PostMapping("/delete-user/{id}")
-	public String delete(@PathVariable Integer id) {
-		userService.deleteUser(id);
 		return "redirect:/user";
 	}
 	

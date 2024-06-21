@@ -10,7 +10,6 @@ public interface TableService {
 	public List<Table> getAll();
 	public List<Table> getFloor(String floor); // like A or B
 	public List<Table> getByStatus(String status);
-	public Table findById(Integer Id);
 
 	
 	public boolean add(Table table);

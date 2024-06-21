@@ -63,7 +63,7 @@ public class AdminController {
 		List<Object[]> getMonthlyReport = this.rp.findMonthlyReport();
 		Object[] monthlyReport = getMonthlyReport.get(0);
 		BigDecimal totalCustomers = (BigDecimal) monthlyReport[0];
-		Double totalRevenue = (Double) monthlyReport[1];
+		BigDecimal totalRevenue = (BigDecimal) monthlyReport[1];
 		DecimalFormat df = new DecimalFormat("#.##");
 		BigDecimal totalFoodSold = (BigDecimal) monthlyReport[2];
 
@@ -81,9 +81,13 @@ public class AdminController {
 			FoodDTO f1 = new FoodDTO();
 			f1.setFoodNumber((BigDecimal) objects[1]);
 			f1.setFoodName((String) objects[0]);
-			f1.setRevenue(Math.round((Double) objects[2] * Math.pow(10, 2)) / Math.pow(10, 2));
+			BigDecimal value = (BigDecimal) objects[2];
+			Double value1 = value.doubleValue();
+			f1.setRevenue(Math.round((Double) value1 * Math.pow(10, 2)) / Math.pow(10, 2));
 			f1.setFoodImg((String) objects[3]);
-			f1.setFoodPrice((Float) objects[4]);
+			value = (BigDecimal) objects[4];
+			float value2 = value.floatValue();
+			f1.setFoodPrice((Float) value2);
 			food.add(f1);
 		}
 		model.addAttribute("f", food);
@@ -96,7 +100,9 @@ public class AdminController {
 			f3.setId((Integer) objects[0]);
 			f3.setCatName((String) objects[1]);
 			f3.setFoodName((String) objects[2]);
-			f3.setFoodPrice((Float) objects[3]);
+			BigDecimal value = (BigDecimal) objects[3];
+			float value2 = value.floatValue();
+			f3.setFoodPrice(value2);
 			f3.setStatus((String) objects[4]);
 			food1.add(f3);
 		}
