@@ -9,10 +9,8 @@
 <meta content="" name="keywords">
 
 <!-- Favicons -->
-<link th:href="@{/img/logo.svg}" href="assets/img/favicon.png"
-	rel="icon">
-<link th:href="@{/img/apple-touch-icon.png}"
-	href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+<link th:href="@{/img/logo.svg}" rel="icon">
+<link th:href="@{/img/apple-touch-icon.png}" rel="apple-touch-icon">
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -91,29 +89,6 @@
 					</form>
 				</div>
 				<!-- End Search Bar -->
-
-				<div class="view-bar d-flex flex-nowrap flex-md-row">
-					<button type="button"
-						class="btn btn-outline-primary view-button d-none d-md-block shadow"
-						data-bs-toggle="bill-show" title="Bill">
-						<span>Bill</span>
-					</button>
-					<button type="button"
-						class="btn btn-outline-primary view-button active shadow"
-						data-bs-toggle="" title="1st Floor">
-						<span>1<sup>st</sup> Floor
-						</span>
-					</button>
-					<button type="button"
-						class="btn btn-outline-primary view-button d-none d-md-block shadow"
-						data-bs-toggle="" title="2nd Floor">
-						<span>2<sup>nd</sup> Floor
-						</span>
-					</button>
-					<i
-						class="view-button-down bi bi-caret-down-fill mt-2 ms-1 d-block d-md-none"></i>
-				</div>
-				<!-- End View Button -->
 
 				<nav class="header-nav ms-auto">
 					<ul class="d-flex align-items-center">
@@ -195,7 +170,7 @@
 						<li class="nav-item dropdown pe-3"><a
 							class="nav-link nav-profile d-flex align-items-center pe-0"
 							href="#" data-bs-toggle="dropdown"> <img
-								src="/img/avatar.png" alt="Profile" class="rounded-circle">
+								th:src="@{/img/avatar.png}" alt="Profile" class="rounded-circle">
 								<div class="ps-2">
 									<span class="d-none d-md-block dropdown-toggle fw-semibold">Nguyễn
 										Hồng Sắc</span> <span class="d-none d-md-block fw-normal">Nhân
@@ -327,8 +302,8 @@
 			<!-- Bill -->
 			<div class="bill col-lg-4 col-sm-5 border" style="height: inherit;">
 				<div class="row top-bill">
-					<div class="col-sm-12 text-center pt-4 fs-5">
-						<button class="btn btn-outline-primary" type="button"
+					<div class="col-sm-12 text-center pt-4 fs-5 d-flex justify-content-between">
+						<button class="btn btn-outline-primary fs-6" type="button"
 							id="dropdownPrintButton" data-bs-toggle="dropdown"
 							aria-expanded="false">
 							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
@@ -348,7 +323,7 @@
 
 						&nbsp;&nbsp; Phiếu báo bếp &nbsp;&nbsp; 
 
-						<button class="btn btn-outline-primary" type="button"
+						<button class="btn btn-danger fs-6" type="button"
 							onclick="deleteAllBill()">
 							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
 								fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -390,8 +365,7 @@
 
 	<!-- Vendor JS Files -->
 	<script th:src="@{/js/apexcharts.min.js}" src="js/apexcharts.min.js"></script>
-	<script th:src="@{/js/bootstrap.bundle.min.js}"
-		src="js/bootstrap.bundle.min.js"></script>
+	<script th:src="@{/js/bootstrap.bundle.min.js}" src="js/bootstrap.bundle.min.js"></script>
 	<script th:src="@{/js/chart.js}" src="js/chart.umd.js"></script>
 	<script th:src="@{/js/echarts.min.js}" src="js/echarts.min.js"></script>
 	<script th:src="@{/js/quill.min.js}" src="js/quill.min.js"></script>
