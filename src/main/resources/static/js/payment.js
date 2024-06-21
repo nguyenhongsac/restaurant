@@ -82,9 +82,6 @@ async function submitPayment() {
 				'Content-Type': 'application/json'
 			}
 		})
-<<<<<<< Updated upstream
-		.catch(error => console.error('Error:', error));
-=======
 			.then(response => response.blob())
 			.then(blob => {
 				const url = window.URL.createObjectURL(new Blob([blob]));
@@ -105,7 +102,6 @@ async function submitPayment() {
 			})
 			.catch(error => console.error('Error:', error));
 	}
->>>>>>> Stashed changes
 }
 
 
