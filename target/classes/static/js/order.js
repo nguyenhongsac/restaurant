@@ -147,6 +147,7 @@ function deleteAllBill() {
 document.getElementById('back').onclick = function() {
 	//console.log(orderItems)
 	const tableId = document.getElementById('bill').className;
+
 	// Gửi thông tin đơn hàng về server
 	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
@@ -173,12 +174,12 @@ function tableClick(table) {
 	console.log('Chuyển bàn thành công!');
 	setTimeout(function() {
 		window.location.href = '/restaurant/order/' + newTableId
-	}, 1000)
+	}, 1500)
 }
 
 
 //Lưu danh sách order về server và in phiếu báo bếp
-function printOrder() {
+function printFood() {
 	// Gửi thông tin đơn hàng về server
 	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
@@ -189,7 +190,8 @@ function printOrder() {
 	})
 	console.log(orderItems);
 	//Gửi yêu cầu in phiếu
-	fetch('/restaurant/order/' + tableId + '/print-order', {
+	setTimeout(function() {
+		fetch('/restaurant/order/' + tableId + '/print-food', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -200,12 +202,45 @@ function printOrder() {
 			const url = window.URL.createObjectURL(new Blob([blob]));
 			const link = document.createElement('a');
 			link.href = url;
-			link.setAttribute('download', 'order ' + tableId + '.pdf');
+			link.setAttribute('download', 'Phiếu báo bếp ' + tableId + '.pdf');
 			document.body.appendChild(link);
 			link.click();
 			link.parentNode.removeChild(link);
 		})
 		.catch(error => console.error('Error:', error));
+	}, 500)
+}
+
+function printDrink() {
+	// Gửi thông tin đơn hàng về server
+	fetch('/restaurant/order/' + tableId + '/save', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(orderItems)
+	})
+	console.log(orderItems);
+	//Gửi yêu cầu in phiếu
+	setTimeout(function() {
+		fetch('/restaurant/order/' + tableId + '/print-drink', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	})
+		.then(response => response.blob())
+		.then(blob => {
+			const url = window.URL.createObjectURL(new Blob([blob]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'Phiếu báo bar ' + tableId + '.pdf');
+			document.body.appendChild(link);
+			link.click();
+			link.parentNode.removeChild(link);
+		})
+		.catch(error => console.error('Error:', error));
+	}, 500)
 }
 
 function payment() {
