@@ -1,0 +1,381 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<title th:text="'Bàn ' + ${orderId}"></title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+
+<!-- Favicons -->
+<link th:href="@{/img/logo.svg}" href="assets/img/favicon.png"
+	rel="icon">
+<link th:href="@{/img/apple-touch-icon.png}"
+	href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+	rel="stylesheet">
+
+<!-- CSS Files -->
+<link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css"
+	rel="stylesheet">
+<link th:href="@{/css/bootstrap-icons.css}"
+	href="/css/bootstrap-icons.css" rel="stylesheet">
+<link th:href="@{/css/boxicons.min.css}" href="/css/boxicons.min.css"
+	rel="stylesheet">
+<link th:href="@{/css/aos.css}" href="/css/quill.snow.css"
+	rel="stylesheet">
+<link th:href="@{/css/quill.bubble.css}" href="/css/quill.bubble.css"
+	rel="stylesheet">
+<link th:href="@{/css/remixicon.css}" href="/css/remixicon.css"
+	rel="stylesheet">
+<link th:href="@{/css/simple-datatables/style.css}"
+	href="/css/simple-datatables/style.css" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link th:href="@{/css/style.css}" href="/css/style.css" rel="stylesheet">
+<link th:href="@{/css/custom_coang.css}" href="/css/custom_coang.css"
+	rel="stylesheet">
+
+<script th:inline="javascript">
+	/*<![CDATA[*/
+	var orderDetails = /*[[${OrderDetailDTOs}]]*/'[]';
+	/*]]>*/
+	var orderItems = [];
+
+	// Chuyển đổi OrderDetailDTOs thành orderItems
+	for (var i = 0; i < orderDetails.length; i++) {
+		orderItems.push({
+			id : orderDetails[i].id,
+			foodId : orderDetails[i].foodId,
+			quantity : orderDetails[i].quantity,
+			itemName : orderDetails[i].itemName,
+			price : orderDetails[i].price,
+			note : orderDetails[i].note
+		});
+	}
+	var i = orderItems.length;
+	console.log("orderItems: " + orderItems);
+</script>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row top-bar">
+			<!-- ======= Header ======= -->
+			<header id="header"
+				class="header fixed-top d-flex align-items-center">
+
+				<div class="d-flex align-items-center justify-content-between">
+					<a href="index.html" class="logo d-flex align-items-center"> <img
+						src="/img/logo.svg" alt="Logo"> <span
+						class="d-none d-lg-block">Nice Restaurant</span>
+					</a> <i class="bi bi-list toggle-sidebar-btn"></i>
+				</div>
+				<!-- End Logo -->
+
+				<div class="search-bar">
+					<form class="search-form d-flex align-items-center" method="POST"
+						action="#">
+						<input type="text" name="query" placeholder="Search"
+							title="Enter search keyword">
+						<button type="submit" title="Search">
+							<i class="bi bi-search"></i>
+						</button>
+					</form>
+				</div>
+				<!-- End Search Bar -->
+
+				<div class="view-bar d-flex flex-nowrap flex-md-row">
+					<button type="button"
+						class="btn btn-outline-primary view-button d-none d-md-block shadow"
+						data-bs-toggle="bill-show" title="Bill">
+						<span>Bill</span>
+					</button>
+					<button type="button"
+						class="btn btn-outline-primary view-button active shadow"
+						data-bs-toggle="" title="1st Floor">
+						<span>1<sup>st</sup> Floor
+						</span>
+					</button>
+					<button type="button"
+						class="btn btn-outline-primary view-button d-none d-md-block shadow"
+						data-bs-toggle="" title="2nd Floor">
+						<span>2<sup>nd</sup> Floor
+						</span>
+					</button>
+					<i
+						class="view-button-down bi bi-caret-down-fill mt-2 ms-1 d-block d-md-none"></i>
+				</div>
+				<!-- End View Button -->
+
+				<nav class="header-nav ms-auto">
+					<ul class="d-flex align-items-center">
+
+						<li class="nav-item d-block d-lg-none"><a
+							class="nav-link nav-icon search-bar-toggle " href="#"> <i
+								class="bi bi-search"></i>
+						</a></li>
+						<!-- End Search Icon-->
+
+						<li class="nav-item dropdown"><a class="nav-link nav-icon"
+							href="#" data-bs-toggle="dropdown"> <i class="bi bi-bell"></i>
+								<span class="badge bg-primary badge-number">4</span>
+						</a> <!-- End Notification Icon -->
+
+							<ul
+								class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+								<li class="dropdown-header">You have 4 new notifications <a
+									href="#"><span
+										class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+								</li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li class="notification-item"><i
+									class="bi bi-exclamation-circle text-warning"></i>
+									<div>
+										<h4>Lorem Ipsum</h4>
+										<p>Quae dolorem earum veritatis oditseno</p>
+										<p>30 min. ago</p>
+									</div></li>
+
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li class="notification-item"><i
+									class="bi bi-x-circle text-danger"></i>
+									<div>
+										<h4>Atque rerum nesciunt</h4>
+										<p>Quae dolorem earum veritatis oditseno</p>
+										<p>1 hr. ago</p>
+									</div></li>
+
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li class="notification-item"><i
+									class="bi bi-check-circle text-success"></i>
+									<div>
+										<h4>Sit rerum fuga</h4>
+										<p>Quae dolorem earum veritatis oditseno</p>
+										<p>2 hrs. ago</p>
+									</div></li>
+
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li class="notification-item"><i
+									class="bi bi-info-circle text-primary"></i>
+									<div>
+										<h4>Dicta reprehenderit</h4>
+										<p>Quae dolorem earum veritatis oditseno</p>
+										<p>4 hrs. ago</p>
+									</div></li>
+
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+								<li class="dropdown-footer"><a href="#">Show all
+										notifications</a></li>
+
+							</ul> <!-- End Notification Dropdown Items --></li>
+						<!-- End Notification Nav -->
+
+						<li class="nav-item dropdown pe-3"><a
+							class="nav-link nav-profile d-flex align-items-center pe-0"
+							href="#" data-bs-toggle="dropdown"> <img
+								src="/img/avatar.png" alt="Profile" class="rounded-circle">
+								<div class="ps-2">
+									<span class="d-none d-md-block dropdown-toggle fw-semibold">Nguyễn
+										Hồng Sắc</span> <span class="d-none d-md-block fw-normal">Nhân
+										viên bạc <i class="fa-solid fa-medal"></i>
+									</span>
+								</div>
+						</a> <!-- End Profile Iamge Icon -->
+
+							<ul
+								class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+								<li class="dropdown-header">
+									<h6>Nguyễn Hồng Sắc</h6> <span>Nhân viên</span>
+								</li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li><a class="dropdown-item d-flex align-items-center"
+									href="users-profile.html"> <i class="bi bi-person"></i> <span>My
+											Profile</span>
+								</a></li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li><a class="dropdown-item d-flex align-items-center"
+									href="users-profile.html"> <i class="bi bi-gear"></i> <span>Account
+											Settings</span>
+								</a></li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li><a class="dropdown-item d-flex align-items-center"
+									href="pages-faq.html"> <i class="bi bi-question-circle"></i>
+										<span>Need Help?</span>
+								</a></li>
+								<li>
+									<hr class="dropdown-divider">
+								</li>
+
+								<li><a class="dropdown-item d-flex align-items-center"
+									href="#"> <i class="bi bi-box-arrow-right"></i> <span>Sign
+											Out</span>
+								</a></li>
+
+							</ul> <!-- End Profile Dropdown Items --></li>
+						<!-- End Profile Nav -->
+
+					</ul>
+				</nav>
+				<!-- End Icons Navigation -->
+
+			</header>
+			<!-- End Header -->
+
+			<!-- Nav_2 -->
+			<div class="row nav_2">
+				<div class="col-xl-5 col-md-12 my-1 ">
+					<div class="row">
+						<div class="col-sm-5 d-flex">
+							<a th:href="@{'/home'}">
+								<button th:id="back" type="button"
+									class="btn btn-primary rounded-2 mb-2 me-2">
+									<i class="bi bi-arrow-left-short"></i>
+								</button>
+							</a>
+							<button type="button" class="btn btn-primary rounded-2 mb-2 me-2">Nhập
+								mã booking</button>
+						</div>
+						<div class="col-sm-3 my-2 text-center">Giờ vào: 20h30</div>
+					</div>
+				</div>
+
+				<div class="col-xl-2 col-md-12 text-center my-2">A1 - Tầng 1</div>
+			</div>
+			<!--End nav_2-->
+		</div>
+
+
+
+		<div id="mainContent" class="row">
+			<div class="category col-lg-2 d-none d-lg-block border"
+				style="overflow-x: auto; height: inherit; scroll-behavior: smooth;">
+				<!-- ======= Sidebar ======= -->
+				<ul class="sidebar-nav" id="sidebar-nav">
+					<li class="nav-item p-2 pt-4" th:each="category : ${categories}"><a
+						class="nav-link" th:href="${'#' + category.catName}"> <span
+							class="ps-4 text-primary" th:text="${category.catName}"></span>
+					</a></li>
+				</ul>
+
+			</div>
+
+			<!-- Menu -->
+			<div class="menu col-lg-6 col-sm-7 border"
+				style="overflow-x: auto; height: inherit; scroll-behavior: smooth;">
+				<div th:each="category : ${categories}" class="row mb-4 border"
+					th:id="${category.catName}">
+					<div class="col-sm-12 fs-5" th:text="${category.catName}"></div>
+					<div th:each="food : ${foods}"
+						th:if="${food.category.catId} == ${category.catId}"
+						class="col-sm-3 border m-0 p-0 text-center">
+						<button th:id="${food.foodId}" th:data-name="${food.foodName}"
+							th:data-price="${food.foodPrice}" class="btn-outline-primary p-0"
+							onclick="addToBill(this)" style="width: 100%;">
+							<img class="img_item img-fluid" th:src="${food.foodImg}"> <span
+								th:text="${food.foodName}"></span> <br> <span
+								th:text="${food.foodPrice}"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Bill -->
+			<div class="bill col-lg-4 col-sm-5 border" style="height: inherit;">
+				<div class="row top-bill">
+					<div class="col-sm-12 text-center pt-4 fs-5">
+						<button type="button" class="btn">
+							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+								fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+                                <path
+									d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1" />
+                                <path
+									d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1" />
+                            </svg>
+						</button>
+
+						&nbsp; Phiếu báo bếp &nbsp;
+
+						<button type="button" class="btn" onclick="deleteAllBill()">
+							<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28"
+								fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                <path
+									d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5" />
+                            </svg>
+						</button>
+					</div>
+				</div>
+
+				<!-- Bill -->
+				<div th:id="bill" th:class="${orderId}" style="overflow: auto;"
+					th:onload="updateBill()">
+					<!-- 					<div th:each="item : ${OrderDetailDTOs}"> -->
+					<!-- 						<div th:id="${item.foodId}" class="row my-3"> -->
+					<!-- 							<input min="0" th:id="${item.foodId}" type="number" -->
+					<!-- 								class="quantity col-sm-1 p-0 ms-3 fs-5" -->
+					<!-- 								th:value="${item.quantity}" th:data-note="${orderId}" -->
+					<!-- 								onchange="updateQuantity(this.value, this.id, this.getAttribute('data-note'))" /> -->
+					<!-- 							<div class="col-sm-7 p-0 fs-5" th:text="${item.itemName}"></div> -->
+					<!-- 							<div class="col-sm-2 p-0 ms-2 fs-5" -->
+					<!-- 								th:text="${item.price + 'vnđ'}"></div> -->
+					<!-- 						</div> -->
+					<!-- 					</div> -->
+				</div>
+
+				<div class="row text-center mt-3 mb-5 bot-bill">
+					<div class="col-sm-12">
+						<button id="total" type="button"
+							class="btn btn-outline-primary fs-5">Thanh Toán</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<a href="#"
+		class="back-to-top d-flex align-items-center justify-content-center"><i
+		class="bi bi-arrow-up-short"></i></a>
+
+	<!-- Vendor JS Files -->
+	<script th:src="@{/js/apexcharts.min.js}" src="js/apexcharts.min.js"></script>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"
+		src="js/bootstrap.bundle.min.js"></script>
+	<script th:src="@{/js/chart.js}" src="js/chart.umd.js"></script>
+	<script th:src="@{/js/echarts.min.js}" src="js/echarts.min.js"></script>
+	<script th:src="@{/js/quill.min.js}" src="js/quill.min.js"></script>
+	<script th:src="@{/js/aos.js}" src="js/simple-datatables.js"></script>
+	<script th:src="@{/js/tinymce.min.js}" src="js/tinymce.min.js"></script>
+
+	<!-- Template Main JS File -->
+	<script th:src="@{/js/main.js}" src="js/main.js"></script>
+	<script th:src="@{/js/custom.js}" src="js/custom.js"></script>
+	<script th:src="@{/js/order.js}" src="js/order.js"></script>
+</body>
+</html>

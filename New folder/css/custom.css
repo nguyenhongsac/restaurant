@@ -1,0 +1,91 @@
+#custom-toggle-button {
+    position: relative;
+    width: 45px;
+    height: 20px;
+    border-radius: 15px;
+    margin: 0 8px;
+    border: 1px solid #0d6efd;
+    background-color: #fff;
+    transition: 0.7s;
+    overflow: hidden;
+}
+.toggle-circle {
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
+    background-color: #0d6efd;
+    border-radius: 50%;
+}
+#custom-toggle-button.active {
+    background-color: #0d6efd;
+}
+#custom-toggle-button.active .toggle-circle{
+    background-color: #fff;
+    right: 3px;
+    left: auto;
+    animation: moveCircle 0.5s ease-in-out;
+}
+@keyframes moveCircle {
+    0% {
+        left: 3px; /* Starting position */
+    }
+    100% {
+        left: 26px; /* Final position */
+    }
+}
+
+/* Custom table and chair set */
+.set {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 350px; 
+    height: 250px; 
+}
+
+.chair {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ababab;
+    border: 1px solid #2e2e2e;
+}
+
+.table1 {
+    width: 250px;
+    height: 175px;
+    border-radius: 35px;
+    background-color: #fff;
+    border: 1px solid #2e2e2e;
+    margin: 50px;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.chair-top, .chair-bottom {
+    position: absolute;
+    width: 100%;
+}
+  
+.chair-left, .chair-right {
+    position: absolute;
+    height: 100%;
+}
+  
+.chair-top {
+    top: 18px;
+}
+  
+.chair-bottom {
+    bottom: 18px;
+}
+  
+.chair-left {
+    left: 45px;
+}
+  
+.chair-right {
+    right: 45px;
+}

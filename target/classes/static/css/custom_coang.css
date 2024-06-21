@@ -1,0 +1,17 @@
+
+.nav_2 {
+	position: relative;
+	margin: 0;
+	margin-top: 60px;
+}
+
+.nav-item span {
+	color: black !important;
+}
+
+.nav-item span:hover {
+	color: #555555 !important;
+}
+
+.quantity {
+}

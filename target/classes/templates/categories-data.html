@@ -1,0 +1,572 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+<title>Data</title>
+<meta content="" name="description">
+<meta content="" name="keywords">
+
+<!-- Favicons -->
+<link th:href="@{/img/logo.svg}" rel="icon">
+<link th:href="@{/img/apple-touch-icon.png}" rel="apple-touch-icon">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="@{https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap"
+	rel="stylesheet">
+
+<!-- CSS Files -->
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link th:href="@{/css/bootstrap-icons.css}" rel="stylesheet">
+<link th:href="@{/css/boxicons.min.css}" rel="stylesheet">
+<link th:href="@{/css/quill.snow.css}" rel="stylesheet">
+<link th:href="@{/css/quill.bubble.css}" rel="stylesheet">
+<link th:href="@{/css/remixicon.css}" rel="stylesheet">
+<link th:href="@{/css/simple-datatables/style.css}" rel="stylesheet">
+
+<!-- Template Main CSS File -->
+<link th:href="@{/css/style.css}" rel="stylesheet">
+<link th:href="@{/css/custom.css}" rel="stylesheet">
+
+<!-- =======================================================
+  * Template Name: NiceAdmin
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Updated: Mar 17 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+<body>
+	<!-- ======= Header ======= -->
+	<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a th:href="@{/admin}" class="logo d-flex align-items-center">
+        <img src="img/logo.svg" alt="Logo">
+        <span class="d-none d-lg-block">Nice Restaurant</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn ms-lg-0 ms-3"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <div class="view-bar d-flex" id="view-bar" role="tablist">
+      <button type="button" role="tab" class="btn btn-outline-primary view-button shadow" data-bs-toggle="#bill" data-bs-target="lobby" title="Bill"><span>Bill</span></button>
+      <button type="button" role="tab" class="btn btn-outline-primary view-button shadow active" data-bs-toggle="#1stfloor" data-bs-target="lobby" title="1st Floor"><span>1<sup>st</sup> Floor</span></button>
+      <button type="button" role="tab" class="btn btn-outline-primary view-button shadow" data-bs-toggle="#2ndfloor" data-bs-target="lobby" title="2nd Floor"><span>2<sup>nd</sup> Floor</span></button>
+    </div><!-- End View Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+        <li class="nav-item d-block d-md-none">
+          <a class="nav-link nav-icon view-bar-toggle" href="#">
+            <i class="bi bi-caret-down-fill"></i>
+          </a>
+        </li><!-- End View Show Icon -->
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+        
+
+        <li class="nav-item dropdown">
+
+          <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
+            <i class="bi bi-bell"></i>
+            <span class="badge bg-primary badge-number">4</span>
+          </a><!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+            <li class="dropdown-header">
+              You have 4 new notifications
+              <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-exclamation-circle text-warning"></i>
+              <div>
+                <h4>Lorem Ipsum</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>30 min. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-x-circle text-danger"></i>
+              <div>
+                <h4>Atque rerum nesciunt</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>1 hr. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-check-circle text-success"></i>
+              <div>
+                <h4>Sit rerum fuga</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>2 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li class="notification-item">
+              <i class="bi bi-info-circle text-primary"></i>
+              <div>
+                <h4>Dicta reprehenderit</h4>
+                <p>Quae dolorem earum veritatis oditseno</p>
+                <p>4 hrs. ago</p>
+              </div>
+            </li>
+
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li class="dropdown-footer">
+              <a href="#">Show all notifications</a>
+            </li>
+
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-4" href="#" data-bs-toggle="dropdown">
+            <img src="img/avatar.png" alt="Profile" class="rounded-circle">
+            <div class="ps-2" th:if="${loggedUser}">
+              <span class="d-none d-md-block dropdown-toggle fw-semibold" >Nguyễn Hồng Sắc</span>
+              <span class="d-none d-md-block fw-normal" >Nhân viên bạc <i class="fa-solid fa-medal"></i></span>
+            </div>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6 >Nguyễn Hồng Sắc</h6>
+              <span >Nhân viên</span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>My Profile</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="users-profile.html">
+                <i class="bi bi-gear"></i>
+                <span>Account Settings</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>Need Help?</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown Items -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+		<li class="nav-item">
+			<a class="nav-link"  th:href="@{/admin}">
+			<i class="bi bi-bar-chart"></i>
+			<span>Dashboard</span>
+			</a>
+	
+		<li class="nav-item">
+        <a class="nav-link " href="home.html">
+          <i class="bi bi-grid"></i>
+          <span>Lobby</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Area</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>1<sup>st</sup> Floor</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>2<sup>nd</sup> Floor</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Outside</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Customer</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Form Elements</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Form Layouts</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Form Editors</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Form Validation</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Forms Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Waiting Tables</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Completed Tables</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Tables Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Food</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Common food</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Appetizers</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Soups</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Salads</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Entrees</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Side Dishes</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Sandwiches/Burgers</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Pizza</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Ethnic Cuisines</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Desserts</span>
+            </a>
+          </li>
+          <li>
+            <a href="">
+              <i class="bi bi-circle"></i><span>Beverages</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Icons Nav -->
+	  <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#datas-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Data</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="datas-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a th:href="@{/user}">
+              <i class="bi bi-circle"></i><span>Users</span>
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/table}">
+              <i class="bi bi-circle"></i><span>Tables</span>
+            </a>
+          </li>
+		  <li>
+            <a th:href="@{/Food}">
+              <i class="bi bi-circle"></i><span>Foods</span>
+            </a>
+          </li>
+		  <li>
+            <a th:href="@{/cate}">
+              <i class="bi bi-circle"></i><span>Categories</span>
+            </a>
+          </li>
+
+  </aside><!-- End Sidebar-->
+	<!-- End Sidebar-->
+	<main id="main" class="main">
+
+		<div class="pagetitle">
+			<h1>Data Tables</h1>
+			<nav>
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a th:href="@{index.html}">Home</a></li>
+					<li class="breadcrumb-item">Tables</li>
+					<li class="breadcrumb-item active">Data</li>
+				</ol>
+			</nav>
+		</div>
+		<!-- End Page Title -->
+
+		<section class="section">
+			<div class="row">
+				<div class="col-lg-12">
+
+					<div class="card">
+						<div class="card-body">
+							<h5 class="card-title">Categories</h5>
+							<!-- Table with stripped rows -->
+							<table class="table datatable">
+								<button type="button"
+									class=" btn addbutton fs-5 fw-medium text-secondary-emphasis end-0 mt-2 ms-5 me-5 border-0"
+									style="float: right" data-bs-toggle="modal"
+									data-bs-target="#addModal">
+									<i class="bi-plus-square"></i> <span class="fs-6">Add</span>
+								</button>
+								<div class="modal fade" id="addModal" tabindex="-1"
+									aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="btn-close"
+													data-bs-dismiss="modal" aria-label="Close"
+													style="float: right"></button>
+											</div>
+											<div class="modal-body">
+												<form th:action="@{/category}" method="post">
+													<div class="mb-3">
+														<label for="category-name" class="col-form-label">Name:</label>
+														<input type="text" class="form-control" id="category-name"
+															name="name">
+													</div>
+													<div class="mb-3">
+														<label for="category-description" class="col-form-label">Description:</label>
+														<input type="text" class="form-control"
+															id="category-description" name="description">
+													</div>
+													<div class="text-end">
+														<button type="button" class="btn btn-secondary"
+															data-bs-dismiss="modal">Close</button>
+														<button type="submit" class="btn btn-primary"
+															data-bs-dismiss="modal">Add</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+								<thead>
+									<tr>
+										<th>Category Name</th>
+										<th>Description</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="category : ${category}">
+										<td th:text="${category.catName}"></td>
+										<td th:text="${category.catDescription}"></td>
+										<td>
+											<button type="button" class="btn btn-primary border-0"
+												data-bs-toggle="modal" th:data-bs-target="${'#' + category.catId}" id="${category.catId}" >
+												<i class="bi bi-gear"></i>
+											</button>
+											<div class="modal fade" th:id="${category.catId}" tabindex="-1"
+												aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-center">
+															<button type="button" class="btn-close"
+																data-bs-dismiss="modal" aria-label="Close"
+																style="float: right"></button>
+														</div>
+														<div class="modal-body" aria-labelledby="${category.catId}">
+															<form
+																th:action="@{/update-category/{catId}(catId=${category.catId})}"
+																method="post">
+																<input class="form-control"
+																	id="category-id" name="catId"
+																	th:value="@{{catId}(catId=${category.catId})}">
+																<div class="mb-3">
+																	<label for="category-name" class="col-form-label">Name:</label>
+																	<input type="text" class="form-control"
+																		id="category-name" name="name"
+																		th:value="${category.catName}">
+																</div>
+																<div class="mb-3">
+																	<label for="category-description"
+																		class="col-form-label">Description:</label> <input
+																		type="text" class="form-control"
+																		id="category-description" name="description"
+																		th:value="${category.catDescription}">
+																</div>
+																<div class="text-end">
+																	<button type="button" class="btn btn-secondary"
+																		data-bs-dismiss="modal">Close</button>
+																	<button type="submit" class="btn btn-primary">Save</button>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+											<button type="button" data-bs-toggle="modal"
+												th:data-bs-target="${'#delete'+category.catId}"
+												class=" btn btn-danger me-1 border-0">
+												<i class="bi bi-trash-fill"></i>
+											</button>
+											<div class="modal fade" th:id="${'delete'+category.catId}" tabindex="-1"
+												aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-center">
+															<button type="button" class="btn-close"
+																data-bs-dismiss="modal" aria-label="Close"
+																style="float: right"></button>
+														</div>
+														<div class="modal-body">
+															<form
+																th:action="@{/delete-category/{catId}(catId=${category.catId})}"
+																method="post">
+																<div class="text-center">
+																	<span>Xác nhận xóa!</span>
+																</div>
+																<div class="text-end">
+																	<button type="button" class="btn btn-secondary"
+																		data-bs-dismiss="modal">Close</button>
+																	<button type="submit" class="btn btn-danger">Delete</button>
+																</div>
+															</form>
+														</div>
+													</div>
+												</div>
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- End Table with stripped rows -->
+
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</section>
+
+	</main>
+	<!-- End #main -->
+	<script th:src="@{/js/apexcharts.min.js}"></script>
+	<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+	<script th:src="@{/js/chart.umd.js}"></script>
+	<script th:src="@{/js/echarts.min.js}"></script>
+	<script th:src="@{/js/quill.min.js}"></script>
+	<script th:src="@{/js/simple-datatables.js}"></script>
+	<script th:src="@{/js/tinymce.min.js}"></script>
+	<script th:src="@{/js/validate.js}"></script>
+
+	<!-- Template Main JS File -->
+	<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
