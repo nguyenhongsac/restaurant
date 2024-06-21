@@ -316,7 +316,7 @@
 						<button th:id="${food.foodId}" th:data-name="${food.foodName}"
 							th:data-price="${food.foodPrice}" class="btn-outline-primary p-0"
 							onclick="addToBill(this)" style="width: 100%;">
-							<img class="img_item img-fluid" th:src="${food.foodImg}"> <span
+							<img class="img_item img-fluid" th:src="${'/restaurant/img/food/'} + ${food.foodImg}"> <span
 								th:text="${food.foodName}"></span> <br> <span
 								th:text="${food.foodPrice}"></span>
 						</button>
@@ -400,7 +400,6 @@
 
 	<!-- Template Main JS File -->
 	<script th:src="@{/js/main.js}" src="js/main.js"></script>
-	<script th:src="@{/js/custom.js}" src="js/custom.js"></script>
 	<script th:src="@{/js/order.js}" src="js/order.js"></script>
 </body>
 </html>

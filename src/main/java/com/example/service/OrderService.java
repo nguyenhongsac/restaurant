@@ -1,12 +1,12 @@
 package com.example.service;
 
-import com.example.entity.Order;
-import com.example.entity.OrderDetail;
-import com.example.repository.OrderRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.entity.Order;
+import com.example.repository.OrderRepository;
 
 @Service
 public class OrderService {
@@ -38,6 +38,9 @@ public class OrderService {
         return orderRepository.findByOrderId(orderId);
     }
     
+    public Order add(Order order) {
+    	return orderRepository.save(order);
+    }
     public Order getLatestOrderByTableId(Integer tableId) {
         return orderRepository.findLatestOrderByTableId(tableId);
     }

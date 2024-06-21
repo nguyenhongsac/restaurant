@@ -147,8 +147,9 @@ function deleteAllBill() {
 document.getElementById('back').onclick = function() {
 	//console.log(orderItems)
 	const tableId = document.getElementById('bill').className;
+
 	// Gửi thông tin đơn hàng về server
-	fetch('/order/' + tableId + '/save', {
+	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -162,7 +163,7 @@ document.getElementById('back').onclick = function() {
 function tableClick(table) {
 	const newTableId = table.id;
 
-	fetch('/order/' + tableId + '/changeTable/' + newTableId, {
+	fetch('/restaurant/order/' + tableId + '/changeTable/' + newTableId, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -172,7 +173,7 @@ function tableClick(table) {
 	button.textContent = table.textContent;
 	console.log('Chuyển bàn thành công!');
 	setTimeout(function() {
-		window.location.href = '/order/' + newTableId
+		window.location.href = '/restaurant/order/' + newTableId
 	}, 1000)
 }
 
@@ -180,7 +181,7 @@ function tableClick(table) {
 //Lưu danh sách order về server và in phiếu báo bếp
 function printOrder() {
 	// Gửi thông tin đơn hàng về server
-	fetch('/order/' + tableId + '/save', {
+	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -189,7 +190,7 @@ function printOrder() {
 	})
 	console.log(orderItems);
 	//Gửi yêu cầu in phiếu
-	fetch('/order/' + tableId + '/print-order', {
+	fetch('/restaurant/order/' + tableId + '/print-order', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -209,7 +210,7 @@ function printOrder() {
 }
 
 function payment() {
-	fetch('/order/' + tableId + '/save', {
+	fetch('/restaurant/order/' + tableId + '/save', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -218,7 +219,7 @@ function payment() {
 	})
 	setTimeout(function() {
 		if (document.querySelector('.order-item') != null) {
-			window.location.href = '/payment/' + tableId;
+			window.location.href = '/restaurant/payment/' + tableId;
 		} else {
 			window.alert("Không có mặt hàng nào để thanh toán!");
 		}

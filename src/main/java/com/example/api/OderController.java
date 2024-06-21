@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.example.dto.OrderDetailDTO;
 import com.example.entity.Bill;
 import com.example.entity.CategoryEntity;
@@ -24,11 +25,13 @@ import com.example.entity.User;
 import com.example.service.BillService;
 import com.example.service.OrderDetailService;
 import com.example.service.OrderService;
+import com.example.service.TableService;
 import com.example.service.UserService;
 import com.example.service.impl.CategoryServiceImpl;
 import com.example.service.impl.FoodServiceImpl;
 import com.example.service.impl.TableServiceImpl;
 import com.example.service.impl.UserServiceImpl;
+import com.example.util.TimeManage;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -40,6 +43,9 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
+
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -47,7 +53,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+
 @Controller
+@AllArgsConstructor
 @RequestMapping("/order")
 public class OderController {
 	@Autowired
@@ -60,20 +68,22 @@ public class OderController {
 	private OrderDetailService orderDetailService;
 	@Autowired
 	private FoodServiceImpl foodService;
-	@Autowired
-	private TableServiceImpl tableService;
+
+	private TableService tableService;
 
 	@Autowired
 	private UserServiceImpl userService;
+	
+	private TimeManage timeManage;
 
 	List<OrderDetailDTO> OrderDetailDTOs = new ArrayList<>();
 
 	@GetMapping("/{tableId}")
-	public String OrderView(Model model, @PathVariable Integer tableId) {
+	public String OrderView(Model model, @PathVariable Integer tableId, HttpSession session) {
 		Order order = orderService.getLatestOrderByTableId(tableId);
 		if (order == null) {
 			// Lấy User theo id
-			User user = userService.findUserById(1);
+			User user = (User) session.getAttribute("loggedUser");
 
 			// Tạo bill mới theo user_id
 			Bill bill = new Bill();
@@ -82,8 +92,9 @@ public class OderController {
 			bill.setUser(user);
 			bill.setBill_created_time(new Timestamp(System.currentTimeMillis()));
 			bill.setBill_modified_time(new Timestamp(System.currentTimeMillis()));
+			bill.setBill_start_time(timeManage.getCurrentDateTime());
 			bill.setBill_status("null");
-
+			bill.setBill_people(1);
 			billService.saveBill(bill);
 
 			// Tạo order theo bill vừa tạo
@@ -108,13 +119,13 @@ public class OderController {
 		for (OrderDetail item : orderDetails) {
 			OrderDetailDTOs.add(
 					new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(), item.getFood_number(),
-							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_note()));
+							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_foodnotes()));
 		}
 
 		// Table
 		Table thisTable = tableService.getById(tableId);
-		thisTable.setStatus("busy");
-		tableService.update(tableId, thisTable);
+		thisTable.setStatus("occupied");
+		tableService.update(thisTable);
 		// Bàn hiện tại
 		List<Table> tables = new ArrayList<>();
 		tableService.getByStatus("available").forEach(item -> { // Lấy danh sách bàn trống
@@ -173,8 +184,8 @@ public class OderController {
 						if (item.getFood_number() == 0) {
 							orderDetailService.deleteOrderDetail(item);
 						} else {
-							Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-							item.setOrder_detail_modified_time(timestamp);
+							
+							item.setOrder_detail_modified_time(new Timestamp(System.currentTimeMillis()));
 							orderDetailService.updateOrderDetail(item);
 						}
 						exist = true;
@@ -190,12 +201,14 @@ public class OderController {
 					newOrderDetail.setFood_number(dto.getQuantity());
 					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 					newOrderDetail.setOrder_detail_created_time(timestamp);
-					newOrderDetail.setOrder_note(dto.getNote());
+					newOrderDetail.setOrder_foodnotes(dto.getNote());
 					// Lưu OrderDetail vào cơ sở dữ liệu
 					orderDetailService.saveOrderDetail(newOrderDetail);
 				}
 			}
 		}
+		order.setOrder_modified_time(new Timestamp(System.currentTimeMillis()));
+		orderService.updateOrder(order);
 		
 		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		if(timestamp.compareTo(order.getOrder_created_time()) > 0) {
@@ -203,20 +216,27 @@ public class OderController {
 		}
 		
 		List<OrderDetail> ODL = orderDetailService.getOrderDetailsByOrder(orderId);
-		System.out.println(ODL.size());
+		
 		if (ODL.size() == 0) {
 			Bill bill = billService.getBillById(order.getBill().getBill_id());
 			orderService.deleteOrder(orderId);
 			billService.deleteBill(bill.getBill_id());
+			
 			Table table = tableService.getById(tableId);
 			table.setStatus("available");
-			tableService.update(tableId, table);
+			tableService.update(table);
+			
+			System.out.println("ODL.size() == 0 true " + order.getBill().getBill_id() +" -- "+orderId +" -- "+tableId);
+			
+		} else {
+			System.out.println("ODL.size() == 0 false " + ODL.size());
+			System.out.println("deleted order table id: " + tableId);
 		}
-		return "redirect:/order/" + tableId;
+		return "saveOrder";
 	}
 
 	@PostMapping("/{OldTableId}/changeTable/{tableId}")
-	public String addOrder(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
+	public String changeTable(@PathVariable Integer OldTableId, @PathVariable Integer tableId) {
 		// Tìm đối tượng order theo orderId
 		Order orderEntity = orderService.getLatestOrderByTableId(OldTableId);
 
@@ -226,15 +246,15 @@ public class OderController {
 		// Đổi trạng thái bàn gốc sang available
 		Table OldTable = tableService.getById(OldTableId);
 		OldTable.setStatus("available");
-		tableService.update(OldTableId, OldTable);
+		tableService.update(OldTable);
 
 		// Đổi trạng thái bàn chuyển sang busy
 		Table NewTable = tableService.getById(tableId);
-		NewTable.setStatus("busy");
-		tableService.update(tableId, NewTable);
+		NewTable.setStatus("occupied");
+		tableService.update(NewTable);
 
 		orderService.updateOrder(orderEntity);
-		return "redirect:/order/" + tableId;
+		return "changeTable";
 	}
 
 	@PostMapping("{tableId}/print-order")
@@ -257,7 +277,7 @@ public class OderController {
 			Font font = new Font(bf, 12);
 
 			// Tạo header
-			Paragraph header = new Paragraph("Phiếu báo bếp", font);
+			Paragraph header = new Paragraph("Phiếu báo bếp",  new Font(bf, 12, Font.BOLD));
 
 			header.setAlignment(Element.ALIGN_CENTER);
 
@@ -265,12 +285,15 @@ public class OderController {
 
 			Paragraph tableLine = new Paragraph("Bàn: " + tableEntity.getName(), font);
 			Paragraph orderLine = new Paragraph("Mã order: " + orderId, font);
+			Paragraph timeLine = new Paragraph("Thời gian: " + timeManage.getCurrentDateTime(), font);
 
 			orderLine.setAlignment(Element.ALIGN_CENTER);
 			tableLine.setAlignment(Element.ALIGN_CENTER);
+			timeLine.setAlignment(Element.ALIGN_LEFT);
 
 			document.add(tableLine);
 			document.add(orderLine);
+			document.add(timeLine);
 
 			// Tạo bảng
 			PdfPTable table = new PdfPTable(3); // 3 cột: STT, Tên món, Số lượng
@@ -283,13 +306,14 @@ public class OderController {
 			table.setWidths(columnWidths);
 
 			// Thêm tiêu đề cột
-			addTableHeader(table, font);
+			addTableHeader(table, new Font(bf, 12, Font.BOLD));
 
 			// Thêm dữ liệu vào bảng
 			int i = 1;
 			for (OrderDetailDTO item : OrderDetailDTOs) {
 				addRows(i, table, item, font);
 				i++;
+
 			}
 			document.add(table);
 

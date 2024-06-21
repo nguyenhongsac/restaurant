@@ -10,15 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor  
+@NoArgsConstructor
 @Entity
 @Table(name = "tblorderdetail")
 public class OrderDetail {
@@ -34,12 +32,10 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name = "food_id")
     private FoodEntity food;
-    
-    private String order_note;
+
+    private String order_foodnotes;
     private int food_number;
 
     private Timestamp order_detail_created_time;
     private Timestamp order_detail_modified_time;
-    private Timestamp order_created_time;
-    private Timestamp order_modified_time;
 }

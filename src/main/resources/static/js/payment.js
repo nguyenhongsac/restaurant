@@ -1,26 +1,3 @@
-//document.addEventListener('DOMContentLoaded', function() {
-//	document.getElementById('bankTransfer').addEventListener('change', function() {
-//		if (this.checked) {
-//			document.getElementById('qrCode').style.display = 'block';
-//		}
-//	});
-//
-//	document.getElementById('cashPayment').addEventListener('change', function() {
-//		if (this.checked) {
-//			document.getElementById('qrCode').style.display = 'none';
-//		}
-//	});
-//});
-//
-//function submitPayment() {
-//	const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-//	if (paymentMethod) {
-//		alert(`Bạn đã chọn thanh toán bằng ${paymentMethod === 'cash' ? 'tiền mặt' : 'chuyển khoản ngân hàng'}`);
-//		// Add logic to handle payment submission
-//	} else {
-//		alert('Vui lòng chọn phương thức thanh toán');
-//	}
-//}
 
 document.addEventListener('DOMContentLoaded', function() {
 	document.getElementById('bankTransfer').addEventListener('change', function() {
@@ -45,11 +22,36 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 });
 
-function submitPayment() {
+// Function to save the blob to cache
+async function saveBlobToCache(cacheName, request, blob) {
+	const cache = await caches.open(cacheName);
+	const response = new Response(blob, { headers: { 'Content-Type': 'application/pdf' } });
+	await cache.put(request, response);
+}
+
+// Function to download blob from cache
+async function downloadBlobFromCache(cacheName, request) {
+	const cache = await caches.open(cacheName);
+	const response = await cache.match(request);
+	if (response) {
+		const blob = await response.blob();
+		const url = window.URL.createObjectURL(blob);
+		const link = document.createElement('a');
+		link.href = url;
+		link.setAttribute('download', 'Bill ' + tableId + '.pdf');
+		document.body.appendChild(link);
+		link.click();
+		link.parentNode.removeChild(link);
+		return true;
+	}
+	return false;
+}
+
+async function submitPayment() {
 	const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
 	if (paymentMethod === 'cash') {
 		const amountGiven = parseFloat(document.getElementById('amountGiven').value);
-		const totalAmount = parseFloat(document.querySelector('[th\\:text="${total}"]').textContent.replace(' VND', '').replace(',', ''));
+		const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' VND', '').replace(',', ''));
 		if (amountGiven >= totalAmount) {
 			alert(`Thanh toán thành công. Số tiền trả lại: ${amountGiven - totalAmount} VND`);
 			// Add logic to handle payment submission
@@ -63,7 +65,7 @@ function submitPayment() {
 		alert('Vui lòng chọn phương thức thanh toán');
 	}
 
-	fetch('/payemnt/' + tableId + '/print', {
+	fetch('/restaurant/payment/' + tableId + '/print', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -78,6 +80,14 @@ function submitPayment() {
 			document.body.appendChild(link);
 			link.click();
 			link.parentNode.removeChild(link);
+			setTimeout(function() {
+				fetch('/restaurant/payment/' + tableId + '/success', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					}
+				})
+			}, 3000)
 		})
 		.catch(error => console.error('Error:', error));
 }

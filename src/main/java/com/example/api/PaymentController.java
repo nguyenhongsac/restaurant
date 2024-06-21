@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.dto.OrderDetailDTO;
+import com.example.entity.Bill;
 import com.example.entity.Order;
 import com.example.entity.OrderDetail;
+import com.example.service.BillService;
 import com.example.service.CategoryService;
 import com.example.service.OrderDetailService;
 import com.example.service.OrderService;
@@ -37,6 +39,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.example.entity.Table;
+import com.example.util.TimeManage;
 
 @Controller
 @RequestMapping("/payment")
@@ -50,11 +53,16 @@ public class PaymentController {
 	@Autowired
 	OrderService orderService;
 
+	@Autowired
+	BillService billService;
 	List<OrderDetailDTO> OrderDetailDTOs = new ArrayList<>();
 
 	@GetMapping("/{tableId}")
 	public String getPayment(@PathVariable Integer tableId, Model model) {
 		Order order = orderService.getLatestOrderByTableId(tableId);
+		if (order == null) {
+			return "Đơn hàng không tồn tại";
+		}
 		Integer orderId = order.getOrder_id();
 		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(orderId);
 
@@ -64,9 +72,9 @@ public class PaymentController {
 		for (OrderDetail item : orderDetails) {
 			OrderDetailDTOs.add(
 					new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(), item.getFood_number(),
-							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_note()));
+							item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_foodnotes()));
 		}
-		
+
 		System.out.println(OrderDetailDTOs.size());
 
 		model.addAttribute("OrderDetails", OrderDetailDTOs);
@@ -78,6 +86,9 @@ public class PaymentController {
 	@PostMapping("{tableId}/print")
 	public ResponseEntity<byte[]> printOrder(@PathVariable Integer tableId) {
 		Order orderEntity = orderService.getLatestOrderByTableId(tableId);
+		if (orderEntity == null) {
+			return ResponseEntity.ok(("Không tìm thấy đơn hàng").getBytes(StandardCharsets.UTF_8));
+		}
 		Integer orderId = orderEntity.getOrder_id();
 		Table tableEntity = tableService.getById(tableId);
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -85,6 +96,7 @@ public class PaymentController {
 		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(orderId);
 
 		OrderDetailDTOs.clear();
+
 		Table thisTable = tableService.getById(tableId);
 
 		for (OrderDetail item : orderDetails) {
@@ -97,9 +109,9 @@ public class PaymentController {
 				}
 			}
 			if (!exist) {
-				OrderDetailDTOs.add(
-						new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(), item.getFood_number(),
-								item.getFood().getFoodName(), item.getFood().getFoodPrice(), item.getOrder_note()));
+				OrderDetailDTOs.add(new OrderDetailDTO(item.getOrder_detail_id(), item.getFood().getFoodId(),
+						item.getFood_number(), item.getFood().getFoodName(), item.getFood().getFoodPrice(),
+						item.getOrder_foodnotes()));
 			}
 		}
 		System.out.println(OrderDetailDTOs.size());
@@ -107,6 +119,8 @@ public class PaymentController {
 		// Thiết lập khổ giấy
 		com.itextpdf.text.Rectangle pageSize = new com.itextpdf.text.Rectangle(200f, 1000f); // 80mm x 200mm
 		Document document = new Document(pageSize, 5f, 5f, 5f, 5f); // margins: left, right, top, bottom
+		byte[] pdfBytes;
+		Float total = 0f;
 		try {
 			PdfWriter.getInstance(document, out);
 			document.open();
@@ -114,6 +128,10 @@ public class PaymentController {
 			// Load font hỗ trợ tiếng Việt
 			String fontPath = "times.ttf"; // Đường dẫn tương đối đến file font
 			BaseFont bf = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+			Font font = new Font(bf, 10, Font.NORMAL);
+
+			// Tạo header
+			Paragraph header = new Paragraph("Hóa đơn", new Font(bf, 16, Font.BOLD));
 			Font font = new Font(bf, 11);
 
 			// Tạo header
@@ -125,9 +143,8 @@ public class PaymentController {
 
 			Paragraph tableLine = new Paragraph("Bàn: " + tableEntity.getName(), font);
 			Paragraph orderLine = new Paragraph("Mã order: " + orderId, font);
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			@SuppressWarnings("deprecation")
-			Paragraph TimeLine = new Paragraph("Thời gian: " + timestamp.getTime() + ' ' + timestamp.getDate(), font);
+			TimeManage time = new TimeManage();
+			Paragraph TimeLine = new Paragraph("Thời gian: " + time.getCurrentDateTime(), font);
 
 			orderLine.setAlignment(Element.ALIGN_CENTER);
 			tableLine.setAlignment(Element.ALIGN_CENTER);
@@ -143,24 +160,34 @@ public class PaymentController {
 			table.setSpacingAfter(10f);
 
 			// Thiet lap kich thuoc cột
-			float[] columnWidths = { 1f, 4f, 1f, 1f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
+			float[] columnWidths = { 1f, 3f, 1f, 2f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
 			table.setWidths(columnWidths);
 
 			// Thêm tiêu đề cột
-			addTableHeader(table, font);
+			addTableHeader(table, new Font(bf, 12, Font.BOLD));
+			float[] columnWidths = { 1f, 4f, 1f, 1f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
+			table.setWidths(columnWidths);
 
 			// Thêm dữ liệu vào bảng
 			int i = 1;
 			for (OrderDetailDTO item : OrderDetailDTOs) {
+				total += item.getQuantity() * item.getPrice();
 				addRows(i, table, item, font);
 				i++;
 			}
 			document.add(table);
 
+			Paragraph TotalLine = new Paragraph("Tổng cộng: " + total.toString() + " VND", font);
+
+			TotalLine.setAlignment(Element.ALIGN_RIGHT);
+
+			document.add(TotalLine);
+
 			document.close();
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 		}
+		pdfBytes = out.toByteArray();
 
 		byte[] pdfBytes = out.toByteArray();
 		HttpHeaders headers = new HttpHeaders();
@@ -170,8 +197,33 @@ public class PaymentController {
 		headers.setContentDisposition(ContentDisposition.builder("attachment")
 				.filename("Bill " + tableId + ".pdf", StandardCharsets.UTF_8).build());
 
+		Bill bill = orderEntity.getBill();
+		bill.setBill_total(total.toString());
+
+		billService.saveBill(bill);
+
 		return ResponseEntity.ok().headers(headers).body(pdfBytes);
 	}
+
+	@PostMapping("{tableId}/success")
+	public ResponseEntity<byte[]> payment(@PathVariable Integer tableId) {
+		Order orderEntity = orderService.getLatestOrderByTableId(tableId);
+		if (orderEntity == null) {
+			return ResponseEntity.ok(("Không tìm thấy đơn hàng").getBytes(StandardCharsets.UTF_8));
+		}
+
+		Bill bill = orderEntity.getBill();
+		bill.setBill_status("paid");
+		TimeManage time = new TimeManage();
+		bill.setBill_end_time(time.getCurrentDateTime().toString());
+		
+		Table table = tableService.getById(tableId);
+		table.setStatus("available");
+		tableService.update(table);
+
+		billService.saveBill(bill);
+		return ResponseEntity.ok(("Success").getBytes(StandardCharsets.UTF_8));
+  }
 
 	private void addTableHeader(PdfPTable table, Font font) {
 		PdfPCell cell;
@@ -193,32 +245,15 @@ public class PaymentController {
 	}
 
 	private void addRows(int stt, PdfPTable table, OrderDetailDTO item, Font font) {
-		String fontPath = "timesi.ttf"; // Đường dẫn tương đối đến file font
-		BaseFont bfi = null;
-		try {
-			bfi = BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
-		} catch (DocumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		Font fonti = new Font(bfi, 11);
 		PdfPCell cell;
 		cell = new PdfPCell(new Phrase(String.valueOf(stt), font));
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		table.addCell(cell);
 
-		if (item.getNote() != null) {
-			cell = new PdfPCell();
-			cell.addElement(new Phrase(item.getItemName(), font));
-			cell.addElement(new Phrase(item.getNote(), fonti));
-			cell.setVerticalAlignment(Element.ALIGN_TOP);
-		} else {
-			cell = new PdfPCell(new Phrase(item.getItemName(), font));
-		}
+		cell = new PdfPCell();
+		cell.addElement(new Phrase(item.getItemName(), font));
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		// cell.setFixedHeight(20f);
 		table.addCell(cell);
 

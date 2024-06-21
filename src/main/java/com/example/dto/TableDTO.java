@@ -1,5 +1,7 @@
 package com.example.dto;
 
+import java.math.BigDecimal;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +17,11 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TableDTO {
+	Integer id;
 	String name;
-	String time;
+	String startTime;
 	Integer people;
 	String status;
-	String message;
+	String note;
+	BigDecimal total;
 }
