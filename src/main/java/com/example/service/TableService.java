@@ -11,6 +11,7 @@ public interface TableService {
 	public List<Table> getFloor(String floor); // like A or B
 	public List<Table> getByStatus(String status);
 
+	
 	public boolean add(Table table);
 	public boolean update(Table table);
 	public boolean delete(int id);

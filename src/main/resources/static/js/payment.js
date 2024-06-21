@@ -48,48 +48,60 @@ async function downloadBlobFromCache(cacheName, request) {
 }
 
 async function submitPayment() {
-	const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-	if (paymentMethod === 'cash') {
-		const amountGiven = parseFloat(document.getElementById('amountGiven').value);
-		const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' VND', '').replace(',', ''));
-		if (amountGiven >= totalAmount) {
-			alert(`Thanh toán thành công. Số tiền trả lại: ${amountGiven - totalAmount} VND`);
-			// Add logic to handle payment submission
-		} else {
-			alert('Số tiền khách đưa không đủ để thanh toán');
+	const paymentItem = document.querySelector('input[name="paymentMethod"]:checked');
+	var pay = false;
+	if (paymentItem != null) {
+		paymentMethod = paymentItem.value;
+		if (paymentMethod === 'cash') {
+			const given = document.getElementById('amountGiven').value;
+			if (given) {
+				const amountGiven = parseFloat(document.getElementById('amountGiven').value);
+				const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' VND', '').replace(',', ''));
+				if (amountGiven >= totalAmount) {
+					alert(`Thanh toán thành công. Số tiền trả lại: ${amountGiven - totalAmount} VND`);
+					pay = true;
+				} else {
+					alert('Số tiền không đủ để thanh toán!')
+				}
+			}else{
+				pay = true;
+			}
+
+		} else if (paymentMethod === 'bank') {
+			alert('Bạn đã chọn thanh toán bằng chuyển khoản ngân hàng');
+			pay = true;
 		}
-	} else if (paymentMethod === 'bank') {
-		alert('Bạn đã chọn thanh toán bằng chuyển khoản ngân hàng');
-		// Add logic to handle payment submission
 	} else {
 		alert('Vui lòng chọn phương thức thanh toán');
 	}
 
-	fetch('/restaurant/payment/' + tableId + '/print', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		}
-	})
-		.then(response => response.blob())
-		.then(blob => {
-			const url = window.URL.createObjectURL(new Blob([blob]));
-			const link = document.createElement('a');
-			link.href = url;
-			link.setAttribute('download', 'Bill ' + tableId + '.pdf');
-			document.body.appendChild(link);
-			link.click();
-			link.parentNode.removeChild(link);
-			setTimeout(function() {
-				fetch('/restaurant/payment/' + tableId + '/success', {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json'
-					}
-				})
-			}, 3000)
+	if (pay) {
+		fetch('/restaurant/payment/' + tableId + '/print', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			}
 		})
-		.catch(error => console.error('Error:', error));
+			.then(response => response.blob())
+			.then(blob => {
+				const url = window.URL.createObjectURL(new Blob([blob]));
+				const link = document.createElement('a');
+				link.href = url;
+				link.setAttribute('download', 'Bill ' + tableId + '.pdf');
+				document.body.appendChild(link);
+				link.click();
+				link.parentNode.removeChild(link);
+				setTimeout(function() {
+					fetch('/restaurant/payment/' + tableId + '/success', {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json'
+						}
+					})
+				}, 2000)
+			})
+			.catch(error => console.error('Error:', error));
+	}
 }
 
 

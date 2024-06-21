@@ -19,4 +19,3 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, Intege
     List<OrderDetail> findByTableId(Integer tableId);
 
 }
-

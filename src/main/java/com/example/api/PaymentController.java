@@ -159,6 +159,9 @@ public class PaymentController {
 			float[] columnWidths = { 1f, 3f, 1f, 2f }; // Tỷ lệ: STT - 1 phần, Tên món - 4 phần, Số lượng - 1 phần
 			table.setWidths(columnWidths);
 
+
+			addTableHeader(table, new Font(bf, 12, Font.BOLD));
+      
 			// Thêm dữ liệu vào bảng
 			int i = 1;
 			for (OrderDetailDTO item : OrderDetailDTOs) {

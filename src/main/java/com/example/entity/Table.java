@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,8 +21,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity
-@jakarta.persistence.Table(name = "tbltable")
+@Entity(name = "tbltable")
 public class Table {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
