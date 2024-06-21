@@ -10,9 +10,8 @@ import com.example.repository.OrderDetailRepository;
 
 @Service
 public class OrderDetailService {
-
-    @Autowired
-    private OrderDetailRepository orderDetailRepository;
+	@Autowired
+	private OrderDetailRepository orderDetailRepository;
 
 	public void saveOrderDetail(OrderDetail orderDetail) {
 		orderDetailRepository.save(orderDetail);

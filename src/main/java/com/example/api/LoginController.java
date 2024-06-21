@@ -37,7 +37,7 @@ public class LoginController {
 	        if (loggedUser != null) {
 	        	if ("admin".equalsIgnoreCase(loggedUser.getRole())) {
 	        		session.setAttribute("loggedUser", loggedUser);
-		            return "redirect:/index";
+		            return "redirect:/admin";
 	        	}
 	        	session.setAttribute("loggedUser", loggedUser);
 	            return "redirect:/home";

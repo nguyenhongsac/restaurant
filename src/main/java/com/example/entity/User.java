@@ -1,5 +1,7 @@
 package com.example.entity;
 
+import java.time.LocalDateTime;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -53,10 +55,10 @@ public class User {
 	String role;
 	@CreationTimestamp
 	@Column(name="user_created_time")
-	String createdTime;
+	LocalDateTime createdTime;
 	@UpdateTimestamp
 	@Column(name="user_modified_time")
-	String modifiedTime;
+	LocalDateTime modifiedTime;
 	@Column(name="user_last_logined")
 	String lastLogined;
 	@Column(name="user_permission")

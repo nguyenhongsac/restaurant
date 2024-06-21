@@ -1,10 +1,15 @@
 package com.example.api.admin;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -27,24 +32,35 @@ public class CategoryController {
 	}
 
 	@PostMapping("/category")
-	public String addCategory(@RequestParam String name, @RequestParam String description, Model model) {
+	public String addCategory(@RequestParam String name, @RequestParam String description) {
 		CategoryEntity category = new CategoryEntity();
-		category.setCatId(11);
 		category.setCatName(name);
 		category.setCatDescription(description);
+		category.setCatCreatedTime(LocalDateTime.now());
 		categoryService.create(category);
-		System.out.println(category.getCatName());
 		return "redirect:/cate";
 	}
-//	@ModelAttribute(value = "myCategory")
-//	public CategoryEntity newEntity()
-//	{
-//	    return new CategoryEntity();
-//	}
-//	@GetMapping("/category/{catId}")
-//	public String edit(Model model, @PathVariable("id") Integer id) {
-//		CategoryEntity category = this.categoryService.findById(id);
-//		model.addAttribute("category", category);
-//		return "redirect:/category";
-//	}
+
+	@PostMapping("/update-category/{catId}")
+	public String updateCategory(@RequestParam String name, @RequestParam String description,
+			@PathVariable("catId") Integer catId) {
+		// Fetch the category by ID
+		CategoryEntity category = categoryService.findById(catId);
+
+		// Update the category with the form values
+		category.setCatName(name);
+		category.setCatDescription(description);
+		category.setCatModifiedTime(LocalDateTime.now());
+		// Save the updated category
+		categoryService.save(category);
+
+		// Redirect or return appropriate response
+		return "redirect:/cate"; // assuming you have a view to show categories
+	}
+
+	@PostMapping("/delete-category/{catId}")
+	public String deleteCategory(@PathVariable Integer catId) {
+		categoryService.delete(catId);
+		return "redirect:/cate";
+	}
 }

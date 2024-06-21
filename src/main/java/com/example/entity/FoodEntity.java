@@ -1,5 +1,6 @@
 package com.example.entity;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -34,15 +35,15 @@ public class FoodEntity {
 	@Column
 	public String foodNote;
 	@Column
-	public byte foodAvailable;
+	public boolean foodAvailable;
 	@Column
 	public String foodAllergenInfo;
 	@Column
 	public String foodIngredients;
 	@Column
-	public Date foodCreatedTime;
+	public LocalDateTime foodCreatedTime;
 	@Column
-	public Date foodModifiedTime;
+	public LocalDateTime foodModifiedTime;
 	@ManyToOne
     @JoinColumn(name="cat_id")
 	public CategoryEntity category;
