@@ -26,7 +26,7 @@ public interface TableRepository extends JpaRepository<Table, Integer>{
             "FROM tbltable t " +
             "INNER JOIN tblorder o ON t.table_id = o.table_id " +
             "INNER JOIN tblbill b ON o.bill_id = b.bill_id " +
-            "WHERE t.table_id = ?1 AND b.bill_status != 'paid' " +
+            "WHERE t.table_id = ?1 AND IFNULL(b.bill_status,'')  != 'paid' " +
             "ORDER BY b.bill_start_time DESC " +
             "LIMIT 1", nativeQuery = true)
 	public List<Object[]> getInfo(int tableId);

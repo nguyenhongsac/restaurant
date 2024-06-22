@@ -1,4 +1,4 @@
-package com.example.api;
+package com.example.api.order_payment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -61,7 +61,8 @@ public class PaymentController {
 	public String getPayment(@PathVariable Integer tableId, Model model) {
 		Order order = orderService.getLatestOrderByTableId(tableId);
 		if (order == null) {
-			return "Đơn hàng không tồn tại";
+//			return "Đơn hàng không tồn tại";
+			return "redirect:/order/"+tableId;
 		}
 		Integer orderId = order.getOrder_id();
 		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(orderId);

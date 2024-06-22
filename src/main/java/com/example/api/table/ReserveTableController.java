@@ -1,5 +1,6 @@
 package com.example.api.table;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import org.springframework.http.ResponseEntity;
@@ -55,13 +56,17 @@ public class ReserveTableController {
 			
 			Bill bill = new Bill();
 			bill.setUser(user);
+			bill.setBill_created_time(new Timestamp(System.currentTimeMillis()));
+			bill.setBill_modified_time(new Timestamp(System.currentTimeMillis()));
 			bill.setBill_start_time(reserveTable.getDate() + " " +reserveTable.getTime());
 			bill.setBill_people(reserveTable.getPeople());
+			bill.setBill_status("null");
 			bill = billService.saveBill(bill);
 			
 			Order order = new Order();
 			order.setBill(bill);
 			order.setTable_id(table.getId());
+			
 			order = orderService.add(order);
 			
 			if (order != null) {
@@ -93,8 +98,11 @@ public class ReserveTableController {
 			
 			Bill bill = new Bill();
 			bill.setUser(user);
+			bill.setBill_created_time(new Timestamp(System.currentTimeMillis()));
+			bill.setBill_modified_time(new Timestamp(System.currentTimeMillis()));
 			bill.setBill_start_time(reserveTable.getDate() + " " +reserveTable.getTime()+":00");
 			bill.setBill_people(reserveTable.getPeople());
+			bill.setBill_status("null");
 			bill = billService.saveBill(bill);
 			
 			Order order = new Order();

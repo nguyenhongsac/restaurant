@@ -190,8 +190,10 @@ public class TableServiceImpl implements TableService{
 		List<TableDTO> list = new ArrayList<>();
 
 		rawList.forEach(item -> {
-			if (item.getName().contains(floor)) {
-				list.add(item);
+			if (item.getName() != null) {
+				if (item.getName().contains(floor)) {
+					list.add(item);
+				}
 			}
 		});
 

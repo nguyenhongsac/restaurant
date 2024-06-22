@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	document.getElementById('amountGiven').addEventListener('input', function() {
-		const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' VND', '').replace(',', ''));
+		const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' $', '').replace(',', ''));
 		const amountGiven = parseFloat(this.value);
 		const changeDue = amountGiven - totalAmount;
-		document.getElementById('changeDue').textContent = changeDue > 0 ? changeDue + ' VND' : '0 VND';
+		document.getElementById('changeDue').textContent = changeDue > 0 ? changeDue + ' $' : '0 $';
 	});
 });
 
@@ -56,9 +56,9 @@ async function submitPayment() {
 			const given = document.getElementById('amountGiven').value;
 			if (given) {
 				const amountGiven = parseFloat(document.getElementById('amountGiven').value);
-				const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' VND', '').replace(',', ''));
+				const totalAmount = parseFloat(document.getElementById('totalPrice').textContent.replace(' $', '').replace(',', ''));
 				if (amountGiven >= totalAmount) {
-					alert(`Thanh toán thành công. Số tiền trả lại: ${amountGiven - totalAmount} VND`);
+					alert(`Thanh toán thành công. Số tiền trả lại: ${amountGiven - totalAmount} $`);
 					pay = true;
 				} else {
 					alert('Số tiền không đủ để thanh toán!')
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		// Tạo div cho giá
 		const priceDiv = document.createElement('div');
 		priceDiv.className = 'col-sm-3 p-0 fs-5 text-end';
-		priceDiv.textContent = item.price + 'vnđ';
+		priceDiv.textContent = item.price + ' $';
 
 		// Chèn các div con vào div cha
 		itemDiv.appendChild(itemNameDiv);
@@ -143,5 +143,5 @@ document.addEventListener('DOMContentLoaded', function() {
 	});
 
 	// Hien thi tien
-	document.getElementById('totalPrice').textContent = totalPrice + ' VND';
+	document.getElementById('totalPrice').textContent = totalPrice + ' $';
 });

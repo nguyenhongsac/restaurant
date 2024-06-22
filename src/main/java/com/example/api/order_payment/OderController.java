@@ -1,4 +1,4 @@
-package com.example.api;
+package com.example.api.order_payment;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -114,6 +114,9 @@ public class OderController {
 		List<FoodEntity> foods = foodService.getAll();
 
 		// Bill
+		Bill bill = billService.getBillById(order.getBill().getBill_id());
+		bill.setBill_start_time(timeManage.getCurrentDateTime());
+		
 		List<OrderDetail> orderDetails = orderDetailService.getOrderDetailsByOrder(order.getOrder_id());
 		for (OrderDetail item : orderDetails) {
 			OrderDetailDTOs.add(
@@ -207,13 +210,14 @@ public class OderController {
 				}
 			}
 		}
+		orderDetails = orderDetailService.getOrderDetailsByOrder(orderId);
+		for (OrderDetail item : orderDetails) {
+			if (item.getFood_number()==0) {
+				orderDetailService.deleteOrderDetail(item);
+			}
+		}
 		order.setOrder_modified_time(new Timestamp(System.currentTimeMillis()));
 		orderService.updateOrder(order);
-
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		if (timestamp.compareTo(order.getOrder_created_time()) > 0) {
-			order.setOrder_created_time(timestamp);
-		}
 
 		List<OrderDetail> ODL = orderDetailService.getOrderDetailsByOrder(orderId);
 

@@ -112,7 +112,7 @@ function updateBill() {
 			priceDiv.classList.add('col-sm-3', 'float-end', 'ms-3', 'p-0');
 			const itemPrice = document.createElement('span');
 			itemPrice.classList.add('p-0', 'fs-5');
-			itemPrice.textContent = `${item.price}vnđ`;
+			itemPrice.textContent = `${item.price} $`;
 
 			priceDiv.appendChild(itemPrice)
 			orderItemDiv.appendChild(quantityInput);
@@ -147,6 +147,7 @@ function deleteAllBill() {
 document.getElementById('back').onclick = function() {
 	//console.log(orderItems)
 	const tableId = document.getElementById('bill').className;
+	console.log(tableId);
 
 	// Gửi thông tin đơn hàng về server
 	fetch('/restaurant/order/' + tableId + '/save', {
