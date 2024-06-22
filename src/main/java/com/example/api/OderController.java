@@ -158,18 +158,12 @@ public class OderController {
 					// Tìm các cặp có cùng id 2 mảng để sửa dữ liệu, nếu số lượng giống nhau thì bỏ
 					// qua
 					if (item.getOrder_detail_id().equals(dto.getId()) && dto.getQuantity() != item.getFood_number()) {
-
 						// Thay đổi số lượng theo dữ liệu mới nhận được
 						item.setFood_number(dto.getQuantity());
-						if (item.getFood_number() == 0) {
-							// Nếu số lượng bằng 0 thì xóa đối tượng
-							orderDetailService.deleteOrderDetail(item);
-						} else {
-							// Số lượng khác 0 thì lưu thay đổi, lưu thời gian thay đổi
-							Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-							item.setOrder_detail_modified_time(timestamp);
-							orderDetailService.updateOrderDetail(item);
-						}
+						// Số lượng khác 0 thì lưu thay đổi, lưu thời gian thay đổi
+						Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+						item.setOrder_detail_modified_time(timestamp);
+						orderDetailService.updateOrderDetail(item);
 						exist = true;
 						break;
 					}
@@ -181,13 +175,8 @@ public class OderController {
 				for (OrderDetail item : orderDetails) {
 					if (item.getOrder_detail_id().equals(dto.getId()) && dto.getQuantity() != item.getFood_number()) {
 						item.setFood_number(dto.getQuantity());
-						if (item.getFood_number() == 0) {
-							orderDetailService.deleteOrderDetail(item);
-						} else {
-
-							item.setOrder_detail_modified_time(new Timestamp(System.currentTimeMillis()));
-							orderDetailService.updateOrderDetail(item);
-						}
+						item.setOrder_detail_modified_time(new Timestamp(System.currentTimeMillis()));
+						orderDetailService.updateOrderDetail(item);
 						exist = true;
 						break;
 					}
@@ -203,17 +192,21 @@ public class OderController {
 					newOrderDetail.setOrder_detail_created_time(timestamp);
 					newOrderDetail.setOrder_foodnotes(dto.getNote());
 					// Lưu OrderDetail vào cơ sở dữ liệu
-					orderDetailService.saveOrderDetail(newOrderDetail);
+					if (dto.getQuantity() > 0) {
+						orderDetailService.saveOrderDetail(newOrderDetail);
+						orderDetails.add(newOrderDetail);
+					}
 				}
+			}
+		}
+		List<OrderDetail> orderDetails_2 = orderDetailService.getOrderDetailsByOrder(orderId);
+		for (OrderDetail item : orderDetails_2) {
+			if (item.getFood_number() == 0) {
+				orderDetailService.deleteOrderDetail(item);
 			}
 		}
 		order.setOrder_modified_time(new Timestamp(System.currentTimeMillis()));
 		orderService.updateOrder(order);
-
-		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-		if (timestamp.compareTo(order.getOrder_created_time()) > 0) {
-			order.setOrder_created_time(timestamp);
-		}
 
 		List<OrderDetail> ODL = orderDetailService.getOrderDetailsByOrder(orderId);
 

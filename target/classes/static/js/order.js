@@ -136,10 +136,10 @@ function deleteAllBill() {
 	const confirmed = confirm("Bạn có chắc chắn muốn xóa không?");
 	if (confirmed) {
 		orderItems.forEach(item => {
-			item.quantiy = 0;
+			item.quantity = 0;
 		})
-
-		updateBill;
+		console.log(orderItems);
+		updateBill();
 	}
 }
 
