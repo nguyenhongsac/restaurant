@@ -467,7 +467,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_lOJ6QCilEe-0W4De2Lp8TQ" elementId="org.eclipse.ui.workbench.file">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_IE_ywC_4Ee-BBc7a5nc4JA" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_k5xmOyilEe-0W4De2Lp8TQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_WlWwUFAiEe-BnKiS1vXX2A" elementId="print" visible="false" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/print_edit.png" tooltip="Print" command="_k5xmOyilEe-0W4De2Lp8TQ"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_lOJ6QSilEe-0W4De2Lp8TQ" elementId="group.edit" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -475,8 +475,8 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_lOJ6QyilEe-0W4De2Lp8TQ" elementId="org.eclipse.ui.workbench.edit">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_IFAZ0S_4Ee-BBc7a5nc4JA" elementId="undo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/undo_edit.png" tooltip="Undo" enabled="false" command="_k5vwnyilEe-0W4De2Lp8TQ"/>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_IFAZ0i_4Ee-BBc7a5nc4JA" elementId="redo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/redo_edit.png" tooltip="Redo" enabled="false" command="_k5wX0CilEe-0W4De2Lp8TQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_WlXXYFAiEe-BnKiS1vXX2A" elementId="undo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/undo_edit.png" tooltip="Undo" enabled="false" command="_k5vwnyilEe-0W4De2Lp8TQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_WlX-cFAiEe-BnKiS1vXX2A" elementId="redo" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/redo_edit.png" tooltip="Redo" enabled="false" command="_k5wX0CilEe-0W4De2Lp8TQ"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_lOJ6RCilEe-0W4De2Lp8TQ" elementId="additions" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -506,7 +506,7 @@
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_lOJ6SCilEe-0W4De2Lp8TQ" elementId="org.eclipse.ui.workbench.navigate">
         <tags>Draggable</tags>
-        <children xsi:type="menu:HandledToolItem" xmi:id="_IFBA4y_4Ee-BBc7a5nc4JA" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" enabled="false" type="Check" command="_k5xl3CilEe-0W4De2Lp8TQ"/>
+        <children xsi:type="menu:HandledToolItem" xmi:id="_WlZMkFAiEe-BnKiS1vXX2A" elementId="org.eclipse.ui.window.pinEditor" iconURI="platform:/plugin/org.eclipse.ui/icons/full/etool16/pin_editor.png" tooltip="Pin Editor" enabled="false" type="Check" command="_k5xl3CilEe-0W4De2Lp8TQ"/>
       </children>
       <children xsi:type="menu:ToolBar" xmi:id="_lOJ6SSilEe-0W4De2Lp8TQ" elementId="group.editor" toBeRendered="false">
         <tags>toolbarSeparator</tags>
@@ -830,8 +830,9 @@
     <bindings xmi:id="_k6NDnyilEe-0W4De2Lp8TQ" keySequence="ALT+SHIFT+D O" command="_k5wYDiilEe-0W4De2Lp8TQ"/>
     <bindings xmi:id="_k6NDoCilEe-0W4De2Lp8TQ" keySequence="ALT+SHIFT+D P" command="_k5xmNSilEe-0W4De2Lp8TQ"/>
     <bindings xmi:id="_k6NDoSilEe-0W4De2Lp8TQ" keySequence="ALT+SHIFT+D Q" command="_k5wXuCilEe-0W4De2Lp8TQ"/>
-    <bindings xmi:id="_rJrS8C_3Ee-b5eH2rSwxxA" keySequence="ALT+CTRL+," command="_rJaNNi_3Ee-b5eH2rSwxxA"/>
-    <bindings xmi:id="_rJr6AC_3Ee-b5eH2rSwxxA" keySequence="ALT+CTRL+." command="_rJaNMC_3Ee-b5eH2rSwxxA"/>
+    <bindings xmi:id="_ZGMpEEvHEe-U9PKSQ3OQzA" keySequence="ALT+[" command="_ZFal8EvHEe-U9PKSQ3OQzA"/>
+    <bindings xmi:id="_ZGNQIEvHEe-U9PKSQ3OQzA" keySequence="ALT+]" command="_ZFal8UvHEe-U9PKSQ3OQzA"/>
+    <bindings xmi:id="_ZGN3MEvHEe-U9PKSQ3OQzA" keySequence="TAB" command="_ZFal8kvHEe-U9PKSQ3OQzA"/>
   </bindingTables>
   <bindingTables xmi:id="_k6EgoyilEe-0W4De2Lp8TQ" elementId="org.eclipse.mylyn.tasks.ui.views.tasks" bindingContext="_k513USilEe-0W4De2Lp8TQ">
     <bindings xmi:id="_k6EgpCilEe-0W4De2Lp8TQ" keySequence="CTRL+CR" command="_k5vwhyilEe-0W4De2Lp8TQ"/>
@@ -1833,6 +1834,12 @@
     <persistedState key="originalCompatibilityViewBundle" value="org.springframework.tooling.ls.eclipse.gotosymbol"/>
     <tags>View</tags>
     <tags>categoryTag:Other</tags>
+  </descriptors>
+  <descriptors xmi:id="_ZSUZgEvHEe-U9PKSQ3OQzA" elementId="com.codeium.eclipse.ChatView" label="Chat View" iconURI="platform:/plugin/com.codeium.eclipse.plugin/icons/icon.png" tooltip="" category="Codeium" closeable="true" contributionURI="bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView">
+    <persistedState key="originalCompatibilityViewClass" value="com.codeium.eclipse.ChatView"/>
+    <persistedState key="originalCompatibilityViewBundle" value="com.codeium.eclipse.plugin"/>
+    <tags>View</tags>
+    <tags>categoryTag:Codeium</tags>
   </descriptors>
   <trimContributions xmi:id="_2r10UF9tEeO-yojH_y4TJA" elementId="org.eclipse.ui.ide.application.trimcontribution.QuickAccess" contributorURI="platform:/plugin/org.eclipse.ui.ide.application" toBeRendered="false" parentId="org.eclipse.ui.main.toolbar" positionInParent="last">
     <children xsi:type="menu:ToolControl" xmi:id="_76uUAF9tEeO-yojH_y4TJA" elementId="Spacer Glue" contributorURI="platform:/plugin/org.eclipse.ui.ide.application" contributionURI="bundleclass://org.eclipse.e4.ui.workbench.renderers.swt/org.eclipse.e4.ui.workbench.renderers.swt.LayoutModifierToolControl">
@@ -3177,6 +3184,9 @@
   <commands xmi:id="_rQqrxC_3Ee-b5eH2rSwxxA" elementId="AUTOGEN:::org.sf.feeling.decompiler.decompilerActionSet/org.sf.feeling.decompiler.actions.byteCodeMenu" commandName="Show Byte Code" category="_k5stMyilEe-0W4De2Lp8TQ"/>
   <commands xmi:id="_rQqrxS_3Ee-b5eH2rSwxxA" elementId="AUTOGEN:::org.sf.feeling.decompiler.decompilerActionSet/org.sf.feeling.decompiler.actions.sourceCodeMenu" commandName="Show Source Code" category="_k5stMyilEe-0W4De2Lp8TQ"/>
   <commands xmi:id="_rQrS0C_3Ee-b5eH2rSwxxA" elementId="AUTOGEN:::org.sf.feeling.decompiler.ClassFileEditor.BreakpointRulerActions/org.eclipse.jdt.debug.ui.actions.ManageBreakpointRulerAction" commandName="Toggle Breakpoint" category="_k5stMyilEe-0W4De2Lp8TQ"/>
+  <commands xmi:id="_ZFal8EvHEe-U9PKSQ3OQzA" elementId="com.codeium.prev" commandName="Codeium Previous Completion" description="Codeium Previous Completion" category="_k5stMyilEe-0W4De2Lp8TQ"/>
+  <commands xmi:id="_ZFal8UvHEe-U9PKSQ3OQzA" elementId="com.codeium.next" commandName="Codeium Next Completion" description="Codeium Next Completion" category="_k5stMyilEe-0W4De2Lp8TQ"/>
+  <commands xmi:id="_ZFal8kvHEe-U9PKSQ3OQzA" elementId="com.codeium.accept" commandName="Codeium Accept Completion" description="Codeium Accept Completion" category="_k5stMyilEe-0W4De2Lp8TQ"/>
   <addons xmi:id="_k5R2fiilEe-0W4De2Lp8TQ" elementId="org.eclipse.e4.core.commands.service" contributorURI="platform:/plugin/org.eclipse.platform" contributionURI="bundleclass://org.eclipse.e4.core.commands/org.eclipse.e4.core.commands.CommandServiceAddon"/>
   <addons xmi:id="_k5R2fyilEe-0W4De2Lp8TQ" elementId="org.eclipse.e4.ui.contexts.service" contributorURI="platform:/plugin/org.eclipse.platform" contributionURI="bundleclass://org.eclipse.e4.ui.services/org.eclipse.e4.ui.services.ContextServiceAddon"/>
   <addons xmi:id="_k5R2gCilEe-0W4De2Lp8TQ" elementId="org.eclipse.e4.ui.bindings.service" contributorURI="platform:/plugin/org.eclipse.platform" contributionURI="bundleclass://org.eclipse.e4.ui.bindings/org.eclipse.e4.ui.bindings.BindingServiceAddon"/>
