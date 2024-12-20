@@ -126,42 +126,6 @@
 								<li>
 									<hr class="dropdown-divider">
 								</li>
-
-								<li class="notification-item"><i
-									class="bi bi-x-circle text-danger"></i>
-									<div>
-										<h4>Atque rerum nesciunt</h4>
-										<p>Quae dolorem earum veritatis oditseno</p>
-										<p>1 hr. ago</p>
-									</div></li>
-
-								<li>
-									<hr class="dropdown-divider">
-								</li>
-
-								<li class="notification-item"><i
-									class="bi bi-check-circle text-success"></i>
-									<div>
-										<h4>Sit rerum fuga</h4>
-										<p>Quae dolorem earum veritatis oditseno</p>
-										<p>2 hrs. ago</p>
-									</div></li>
-
-								<li>
-									<hr class="dropdown-divider">
-								</li>
-
-								<li class="notification-item"><i
-									class="bi bi-info-circle text-primary"></i>
-									<div>
-										<h4>Dicta reprehenderit</h4>
-										<p>Quae dolorem earum veritatis oditseno</p>
-										<p>4 hrs. ago</p>
-									</div></li>
-
-								<li>
-									<hr class="dropdown-divider">
-								</li>
 								<li class="dropdown-footer"><a href="#">Show all
 										notifications</a></li>
 
@@ -239,11 +203,12 @@
 									<i class="bi bi-arrow-left-short"></i>
 								</button>
 							</a>
+<!-- ----------- Custom enter booking code here ---------- -->
 							<button type="button" class="btn btn-primary rounded-2 mb-2 me-2">Nhập
 								mã booking</button>
 						</div>
 						<div class="col-sm-3 my-2 text-center">
-							<span>Giờ vào: 20h30</span>
+							<span>Giờ vào: </span> <!-- Add start time -->
 						</div>
 					</div>
 				</div>
@@ -281,18 +246,20 @@
 			</div>
 
 			<!-- Menu -->
-			<div class="menu col-lg-6 col-sm-7 border"
+			<div class="menu col-lg-7 col-sm-7 border"
 				style="overflow-x: auto; height: inherit; scroll-behavior: smooth;">
 				<div th:each="category : ${categories}" class="row mb-4 border"
 					th:id="${category.catName}">
 					<div class="col-sm-12 fs-5" th:text="${category.catName}"></div>
 					<div th:each="food : ${foods}"
 						th:if="${food.category.catId} == ${category.catId}"
-						class="col-sm-3 border m-0 p-0 text-center">
+						class="div-food-item col-sm-3 border m-0 p-0 text-center">
 						<button th:id="${food.foodId}" th:data-name="${food.foodName}"
-							th:data-price="${food.foodPrice}" class="btn-outline-primary p-0"
+							th:data-price="${food.foodPrice}" class="btn-food-item btn-outline-primary p-0"
 							onclick="addToBill(this)" style="width: 100%;">
-							<img class="img_item img-fluid" th:src="${'/restaurant/img/food/'} + ${food.foodImg}"> <span
+							<img class="img_item img-fluid" th:src="${'/restaurant/img/food/'} + ${food.foodImg}"> 
+							<br>
+							<span
 								th:text="${food.foodName}"></span> <br> <span
 								th:text="${food.foodPrice}"></span>
 						</button>
@@ -301,7 +268,7 @@
 			</div>
 
 			<!-- Bill -->
-			<div class="bill col-lg-4 col-sm-5 border" style="height: inherit;">
+			<div class="bill col-lg-3 col-sm-5 border" style="height: inherit;">
 				<div class="row top-bill">
 					<div class="col-sm-12 text-center pt-4 fs-5 d-flex justify-content-between">
 						<button class="btn btn-outline-primary fs-6" type="button"
@@ -321,7 +288,7 @@
 							<li><button id="printDrink" class="dropdown-item" type="button" onclick="printDrink()">Phiếu báo bar</button></li>
 						</ul>
 
-						&nbsp;&nbsp; Phiếu báo order &nbsp;&nbsp; 
+						&nbsp;&nbsp; Phiếu báo bếp &nbsp;&nbsp; 
 
 						<button class="btn btn-danger fs-6" type="button"
 							onclick="deleteAllBill()">
@@ -353,7 +320,7 @@
 				<div class="row text-center mt-3 mb-5 bot-bill">
 					<div class="col-sm-12">
 						<button id="total" type="button"
-							class="btn btn-outline-primary fs-5" onclick="payment()">Thanh Toán</button>
+							class="btn-payment btn btn-outline-primary fs-5" onclick="payment()">Thanh Toán</button>
 					</div>
 				</div>
 			</div>
